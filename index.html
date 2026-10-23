@@ -3,216 +3,264 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="AI 숏폼·AI CF·CM송 뮤직비디오 기획·제작·편집 포트폴리오">
+<meta name="description" content="AI 숏폼·AI CF·CM송 뮤직비디오 기획·제작·편집 포트폴리오 — 스타마운틴 이성산">
 <title>스타마운틴 AI 영상 포트폴리오</title>
+<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: 편집 타임라인 컨셉 — 세로(9:16) 프레임 그리드와 가로(16:9) 프레임 그리드를 분리, 각 작품은 '타이틀 카드' 화면 + 아래 제작 정보 */
+/* Layout: 상영관(스크리닝 룸) 컨셉 — 어두운 화면 위에 작품이 빛나도록, 골드는 수상·포인트에만 */
 :root{
-  --bg:#F3F4F7; --surface:#FFFFFF; --fg:#151826; --muted:#5B6074; --line:#D9DCE5;
-  --accent:#2E47E6; --accent-soft:#E3E7FF; --award:#B66A00; --award-soft:#FFF1D9;
+  --bg:#0D0E11; --surface:#15171C; --raise:#1C1F25; --fg:#EEEBE4; --muted:#93949B; --faint:#5E6068;
+  --line:#25282F; --line-2:#33363E;
+  --gold:#D6B676; --gold-soft:#2A2418; --gold-ink:#1A1408;
   --screen-fg:#FFFFFF;
   --f-display:"Nanum Gothic","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   --f-body:"Nanum Gothic","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#0F1220; --surface:#171B2C; --fg:#ECEEF6; --muted:#A1A6BC; --line:#2A3048;
-    --accent:#8A9BFF; --accent-soft:#232A4D; --award:#FFB547; --award-soft:#3A2A10;
-    color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#0F1220; --surface:#171B2C; --fg:#ECEEF6; --muted:#A1A6BC; --line:#2A3048;
-  --accent:#8A9BFF; --accent-soft:#232A4D; --award:#FFB547; --award-soft:#3A2A10;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
 img{max-width:100%}
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1200px 600px at 80% -10%,rgba(214,182,118,.07),transparent 60%),radial-gradient(900px 500px at -10% 10%,rgba(120,140,200,.05),transparent 60%);background-repeat:no-repeat}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 a{color:inherit}
-.wrap{max-width:1160px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+::selection{background:var(--gold);color:var(--gold-ink)}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.mono{font-family:var(--f-mono);letter-spacing:.14em;text-transform:uppercase;font-size:11px}
 
 /* header */
-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.hd{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
-.brand{font-family:var(--f-display);font-weight:800;font-size:20px;letter-spacing:.01em;text-decoration:none}
-.brand small{font-family:var(--f-mono);font-size:11px;color:var(--muted);margin-left:8px;letter-spacing:.06em}
-nav{display:flex;gap:4px;flex-wrap:wrap}
-nav a{font-size:13px;font-weight:500;text-decoration:none;padding:6px 10px;border-radius:6px;color:var(--muted)}
-nav a:hover,nav a:focus-visible{background:var(--accent-soft);color:var(--accent);outline:none}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(13,14,17,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-block:16px}
+.brand{display:flex;align-items:baseline;gap:10px;text-decoration:none}
+.brand b{font-weight:800;font-size:17px;letter-spacing:-.01em}
+.brand span{color:var(--faint)}
+nav{display:flex;align-items:center;gap:2px;flex-wrap:wrap}
+nav a{font-size:13px;text-decoration:none;padding:6px 11px;border-radius:999px;color:var(--muted);transition:color .2s}
+nav a:hover,nav a:focus-visible{color:var(--fg);outline:none}
+nav a.cta{margin-left:8px;color:var(--gold-ink);background:var(--gold);font-weight:700}
+nav a.cta:hover{color:var(--gold-ink);filter:brightness(1.08)}
 
 /* hero */
-.hero{padding-block:56px 40px;display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:end}
-.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;color:var(--accent);text-transform:uppercase}
-h1{font-family:var(--f-display);font-weight:800;font-size:clamp(36px,6vw,66px);line-height:1.2;margin:12px 0 18px;text-wrap:balance;letter-spacing:-.03em}
-h1 em{font-style:normal;color:var(--accent)}
-.lead{color:var(--muted);font-size:16px;max-width:34em;margin:0}
-.stats{display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--fg)}
-.stat{padding:14px 0 12px;border-bottom:1px solid var(--line)}
-.stat:nth-child(odd){padding-right:16px;border-right:1px solid var(--line)}
-.stat:nth-child(even){padding-left:16px}
-.stat b{display:block;font-family:var(--f-display);font-weight:800;font-size:34px;line-height:1.1;font-variant-numeric:tabular-nums}
-.stat span{font-size:12.5px;color:var(--muted)}
-.stat.award b{color:var(--award)}
+.hero{padding-block:104px 56px}
+.hero .mono{color:var(--gold)}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(40px,7.2vw,92px);line-height:1.12;letter-spacing:-.045em;margin:22px 0 28px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--gold)}
+.lead{color:var(--muted);font-size:17px;line-height:1.8;max-width:36em;margin:0}
+.lead b{color:var(--fg);font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:72px;border-top:1px solid var(--line-2)}
+.stat{padding:22px 24px 4px 0;min-width:0}
+.stat+.stat{padding-left:24px;border-left:1px solid var(--line)}
+.stat b{display:block;font-weight:800;font-size:clamp(30px,3.4vw,44px);line-height:1.1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.stat span{display:block;margin-top:8px;font-size:13px;color:var(--muted);line-height:1.5}
+.stat.award b{color:var(--gold)}
 
-/* timeline ruler */
-.ruler{height:22px;margin-top:8px;background:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px 12px),repeating-linear-gradient(90deg,var(--muted) 0 1px,transparent 1px 60px);background-size:auto 8px,auto 14px;background-repeat:repeat-x;background-position:bottom,bottom;opacity:.7}
+/* showreel strip */
+.reel{position:relative;overflow:hidden;padding-block:8px 0;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.reel-track{display:flex;gap:14px;width:max-content;animation:reel 70s linear infinite}
+.reel:hover .reel-track{animation-play-state:paused}
+@keyframes reel{to{transform:translateX(-50%)}}
+.reel-item{position:relative;flex:none;width:132px;aspect-ratio:9/16;border-radius:10px;overflow:hidden;
+  background:radial-gradient(120% 80% at 85% 10%,hsl(var(--h2) 70% 55% / .7),transparent 60%),linear-gradient(160deg,hsl(var(--h) 55% 26%),hsl(var(--h) 60% 10%))}
+.reel-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.85}
+.reel-item span{position:absolute;left:10px;right:10px;bottom:10px;font-size:12px;font-weight:700;line-height:1.35;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.6);word-break:keep-all}
 
 /* section */
-section{padding-block:48px}
-.sec-hd{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--line)}
-h2{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4vw,40px);line-height:1.15;margin:0;text-wrap:balance}
-h2 .ratio{font-family:var(--f-mono);font-size:.42em;vertical-align:middle;margin-left:10px;padding:3px 8px;border:1.5px solid currentColor;border-radius:4px;letter-spacing:.04em}
-.sec-hd p{margin:0;color:var(--muted);font-size:14px;max-width:32em}
+section{padding-block:120px 0}
+.sec-hd{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 48px;align-items:end;margin-bottom:48px}
+.sec-hd .mono{color:var(--gold);display:flex;gap:12px;align-items:center}
+.sec-hd .mono i{font-style:normal;color:var(--faint)}
+h2{font-family:var(--f-display);font-weight:800;font-size:clamp(30px,4.2vw,52px);line-height:1.18;letter-spacing:-.04em;margin:14px 0 0;text-wrap:balance}
+.sec-hd p{margin:0;color:var(--muted);font-size:15px;max-width:34em;justify-self:end}
 
 /* grids */
-.grid-v{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 20px}
-.grid-h{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 24px}
+.grid-v{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:44px 22px}
+.grid-h{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:52px 28px}
 .grid-h .work:first-child{grid-column:1/-1}
 .grid-h .work:first-child .screen{aspect-ratio:21/9}
-.grid-h .work:first-child .screen .t{font-size:clamp(26px,4vw,46px)}
+.grid-h .work:first-child .screen .t{font-size:clamp(26px,3.6vw,44px)}
 
 /* work card */
-.work{min-width:0;display:flex;flex-direction:column;gap:12px}
-.screen{position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:14px;border-radius:10px;overflow:hidden;color:var(--screen-fg);text-decoration:none;max-width:100%;
-  background:
-    repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px),
-    radial-gradient(120% 80% at 85% 10%,hsl(var(--h2) 85% 62% / .9),transparent 60%),
-    linear-gradient(160deg,hsl(var(--h) 70% 30%),hsl(var(--h) 75% 12%));
-  transition:transform .25s ease,box-shadow .25s ease}
+.work{min-width:0;display:flex;flex-direction:column;gap:18px}
+.screen{position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:16px;border:0;border-radius:14px;overflow:hidden;color:var(--screen-fg);text-decoration:none;text-align:left;font:inherit;width:100%;max-width:100%;cursor:pointer;
+  background:radial-gradient(120% 80% at 85% 10%,hsl(var(--h2) 70% 55% / .75),transparent 60%),linear-gradient(160deg,hsl(var(--h) 55% 26%),hsl(var(--h) 60% 9%));
+  box-shadow:0 0 0 1px var(--line);transition:box-shadow .35s ease}
 .grid-v .screen{aspect-ratio:9/16}
 .grid-h .screen{aspect-ratio:16/9}
-.screen:hover{transform:translateY(-3px);box-shadow:0 14px 30px -14px hsl(var(--h) 70% 25% / .8)}
-.screen:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-.screen .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;font-family:var(--f-mono);font-size:11px;letter-spacing:.05em}
-.screen .rec{display:inline-flex;align-items:center;gap:6px;opacity:.9}
-.screen .rec::before{content:"";width:7px;height:7px;border-radius:50%;background:#FF4B4B}
-.screen .dur{padding:2px 6px;border-radius:3px;background:rgba(0,0,0,.35)}
-.screen .t{font-family:var(--f-display);font-weight:800;font-size:clamp(22px,2.4vw,30px);line-height:1.15;text-wrap:balance;word-break:keep-all;text-shadow:0 2px 14px rgba(0,0,0,.35)}
-.screen .bot{display:flex;justify-content:space-between;align-items:flex-end;gap:8px;font-size:12px}
-.screen .org{opacity:.88;line-height:1.35}
-.play{flex:none;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;transition:transform .2s}
-.play::after{content:"";margin-left:3px;border-style:solid;border-width:7px 0 7px 11px;border-color:transparent transparent transparent hsl(var(--h) 70% 22%)}
-.screen:hover .play{transform:scale(1.1)}
-.badge{position:absolute;left:14px;top:38px;font-family:var(--f-body);font-size:12px;font-weight:700;padding:4px 9px;border-radius:4px;background:#FFB547;color:#2A1A00;letter-spacing:.02em}
-
-.meta{display:flex;flex-direction:column;gap:8px;min-width:0}
-.meta .org2{font-weight:700;font-size:14px;line-height:1.4}
-.tags{display:flex;flex-wrap:wrap;gap:5px}
-.tag{font-size:11.5px;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:500}
-.tag.aw{background:var(--award-soft);color:var(--award)}
-.tools{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);line-height:1.55}
-.role{font-size:12px;color:var(--muted)}
-
-/* tools stack */
-.stack{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 48px}
-.bar{display:grid;grid-template-columns:110px 1fr 48px;align-items:center;gap:12px;font-size:14px}
-.bar .nm{font-weight:500}
-.bar .tr{height:10px;background:var(--line);border-radius:2px;overflow:hidden}
-.bar .fl{height:100%;background:var(--accent);border-radius:2px}
-.bar .n{font-family:var(--f-mono);font-size:12px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
-.stack-note{margin-top:14px;font-size:12.5px;color:var(--muted)}
-
-/* process */
-.proc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:2px solid var(--fg)}
-.step{padding:18px 18px 18px 0;border-right:1px solid var(--line);min-width:0}
-.step+.step{padding-left:18px}
-.step:last-child{border-right:0}
-.step .k{font-family:var(--f-mono);font-size:12px;color:var(--accent)}
-.step h3{font-family:var(--f-display);font-weight:800;font-size:22px;margin:6px 0 6px}
-.step p{margin:0;font-size:13.5px;color:var(--muted)}
-.step .tl{font-family:var(--f-mono);font-size:11.5px;margin-top:10px;color:var(--fg)}
-
-/* pending */
-.pending{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.slot{border:1.5px dashed var(--line);border-radius:10px;padding:20px;min-width:0}
-.slot .k{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--muted)}
-.slot h3{font-size:17px;margin:6px 0 4px}
-.slot p{margin:0;font-size:13px;color:var(--muted)}
-.slot.filled{border-style:solid;border-color:var(--fg);background:var(--surface)}
-.ct{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:10px 0 0;font-size:14px}
-.ct dt{color:var(--muted)}
-.ct dd{margin:0;font-weight:700;min-width:0;overflow-wrap:anywhere}
-.mail{user-select:all}
-.copy{margin-left:6px;font:inherit;font-size:12px;font-weight:500;padding:2px 9px;border-radius:5px;border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}
-.copy:hover,.copy:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
-
-footer{padding-block:32px 48px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
-
-
-/* 실제 유튜브 썸네일 + 클릭 시 사이트 안 재생 */
-.screen{cursor:pointer;border:0;font:inherit;text-align:left;width:100%}
-.screen .thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
-.screen::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 45%,rgba(0,0,0,.8) 100%)}
+.screen .thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.screen::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.42) 0%,rgba(0,0,0,0) 26%,rgba(0,0,0,0) 46%,rgba(0,0,0,.86) 100%)}
 .screen>*:not(.thumb){position:relative;z-index:2}
-.screen .badge{position:absolute;z-index:2}
-.screen .t{margin-top:auto;margin-bottom:8px}
-.player{position:relative;border-radius:10px;overflow:hidden;background:#000;max-width:100%}
+.screen:hover{box-shadow:0 0 0 1px var(--line-2),0 30px 60px -30px rgba(0,0,0,.9)}
+.screen:hover .thumb{transform:scale(1.045)}
+.screen:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+.screen .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.chip{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;padding:3px 8px;border-radius:999px;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:rgba(255,255,255,.88)}
+.screen .t{margin-top:auto;font-family:var(--f-display);font-weight:800;font-size:clamp(19px,1.9vw,25px);line-height:1.28;letter-spacing:-.02em;text-wrap:balance;word-break:keep-all;text-shadow:0 2px 16px rgba(0,0,0,.5)}
+.screen .bot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px}
+.screen .org{font-size:12px;opacity:.78;line-height:1.35}
+.play{flex:none;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.55);display:grid;place-items:center;transition:background .25s,border-color .25s}
+.play::after{content:"";margin-left:3px;border-style:solid;border-width:6px 0 6px 10px;border-color:transparent transparent transparent #fff}
+.screen:hover .play{background:var(--gold);border-color:var(--gold)}
+.screen:hover .play::after{border-left-color:var(--gold-ink)}
+.work.award .screen{box-shadow:0 0 0 1.5px var(--gold)}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--gold);color:var(--gold-ink)}
+.player{position:relative;border-radius:14px;overflow:hidden;background:#000;max-width:100%}
 .grid-v .player{aspect-ratio:9/16}
 .grid-h .player{aspect-ratio:16/9}
 .player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-@media (max-width:900px){
-  .hero{grid-template-columns:1fr;gap:28px;padding-block:36px 28px}
-  .grid-v{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 14px}
-  .stack{grid-template-columns:1fr}
+
+.meta{display:flex;flex-direction:column;gap:10px;min-width:0}
+.meta .org2{font-weight:700;font-size:15px;line-height:1.45}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:11.5px;padding:2px 9px;border-radius:999px;border:1px solid var(--line-2);color:var(--muted)}
+.tag.aw{border-color:var(--gold);color:var(--gold)}
+.tools{font-family:var(--f-mono);font-size:11px;color:var(--faint);line-height:1.6;letter-spacing:.02em}
+.role{font-size:12.5px;color:var(--muted)}
+.role a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line-2)}
+.role a:hover{border-color:var(--gold);color:var(--gold)}
+
+/* tools */
+.stack{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 64px}
+.bar{display:grid;grid-template-columns:120px 1fr 52px;align-items:center;gap:18px;font-size:15px}
+.bar .nm{font-weight:700}
+.bar .tr{height:3px;background:var(--line);border-radius:2px;overflow:hidden}
+.bar .fl{display:block;height:100%;background:linear-gradient(90deg,#9E8452,var(--gold));border-radius:2px}
+.bar .n{font-family:var(--f-mono);font-size:12px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.cats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;margin-top:56px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.cat{background:var(--bg);padding:20px;min-width:0}
+.cat .mono{color:var(--faint);font-size:10.5px}
+.cat b{display:block;margin-top:10px;font-size:15px}
+.cat p{margin:4px 0 0;font-size:13px;color:var(--muted);line-height:1.6}
+
+/* process */
+.proc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+.step{padding:28px 24px;border-radius:14px;background:var(--surface);border:1px solid var(--line);min-width:0;display:flex;flex-direction:column;gap:8px}
+.step .no{font-family:var(--f-mono);font-size:44px;line-height:1;font-weight:400;color:transparent;-webkit-text-stroke:1px var(--line-2);letter-spacing:-.02em}
+.step h3{font-weight:800;font-size:20px;margin:14px 0 0;letter-spacing:-.02em}
+.step p{margin:0;font-size:14px;color:var(--muted);line-height:1.7}
+.step .tl{margin-top:auto;padding-top:14px;font-family:var(--f-mono);font-size:11px;color:var(--gold);letter-spacing:.02em}
+
+/* vibe */
+.vibe{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.tool{position:relative;display:flex;flex-direction:column;gap:12px;min-width:0;padding:30px;border:1px solid var(--line);border-radius:16px;background:var(--surface);text-decoration:none;color:var(--fg);transition:border-color .3s,background .3s}
+.tool:hover{border-color:var(--line-2);background:var(--raise)}
+.tool:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+.tool.feat{grid-column:1/-1;padding:40px;background:linear-gradient(135deg,#1A1812,var(--surface) 55%);border-color:#3A3324}
+.tool .mono{color:var(--gold);font-size:10.5px}
+.tool h3{font-weight:800;font-size:24px;margin:0;line-height:1.3;letter-spacing:-.03em}
+.tool.feat h3{font-size:clamp(28px,3.4vw,40px)}
+.tool p{margin:0;font-size:14.5px;color:var(--muted);max-width:58em;line-height:1.75}
+.flow{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.flow span{font-size:12px;padding:3px 10px;border-radius:999px;border:1px solid var(--line-2);color:var(--fg)}
+.tool.feat .flow span{border-color:#4A4130}
+.tool .go{margin-top:auto;padding-top:8px;font-size:13px;font-weight:700;color:var(--gold);display:inline-flex;gap:6px;align-items:center}
+.tool .go::after{content:"↗";transition:transform .25s}
+.tool:hover .go::after{transform:translate(2px,-2px)}
+
+/* channels */
+.channels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.ch{display:flex;flex-direction:column;gap:10px;padding:28px;border:1px solid var(--line);border-radius:16px;background:var(--surface);text-decoration:none;color:var(--fg);min-width:0;transition:border-color .3s,background .3s}
+.ch:hover{border-color:var(--line-2);background:var(--raise)}
+.ch:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+.ch .mono{color:var(--faint);font-size:10.5px;display:flex;justify-content:space-between}
+.ch .mono em{font-style:normal;color:var(--gold)}
+.ch b{font-size:22px;letter-spacing:-.02em;margin-top:18px}
+.ch p{margin:0;font-size:14px;color:var(--muted)}
+.ch .url{margin-top:auto;padding-top:16px;font-family:var(--f-mono);font-size:11px;color:var(--faint);overflow-wrap:anywhere}
+
+/* profile */
+.profile{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:end;padding:72px 64px;border-radius:24px;border:1px solid #3A3324;background:radial-gradient(800px 400px at 0% 0%,rgba(214,182,118,.12),transparent 60%),var(--surface)}
+.profile .mono{color:var(--gold)}
+.profile h2{font-size:clamp(32px,4.4vw,56px);margin-top:18px}
+.profile .pf-lead p{margin:22px 0 0;color:var(--muted);font-size:16px;max-width:30em}
+.pf-list{margin:0;display:flex;flex-direction:column}
+.pf-list>div{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line-2)}
+.pf-list>div:first-child{border-top:1px solid var(--line-2)}
+.pf-list dt{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;color:var(--faint)}
+.pf-list dd{margin:0;font-size:16px;font-weight:700;min-width:0;overflow-wrap:anywhere;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pf-list dd.nm{font-size:24px;font-weight:800;letter-spacing:-.02em}
+.pf-list dd.nm span{font-family:var(--f-mono);font-size:11px;font-weight:400;letter-spacing:.14em;color:var(--muted)}
+.sel{user-select:all;font-variant-numeric:tabular-nums}
+.copy{font:inherit;font-size:11.5px;font-weight:700;padding:3px 11px;border-radius:999px;border:1px solid var(--line-2);background:transparent;color:var(--muted);cursor:pointer;transition:color .2s,border-color .2s}
+.copy:hover,.copy:focus-visible{border-color:var(--gold);color:var(--gold);outline:none}
+
+footer{margin-top:120px;padding-block:32px 48px;border-top:1px solid var(--line);font-size:12.5px;color:var(--faint)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media (max-width:1000px){
+  .grid-v{grid-template-columns:repeat(3,minmax(0,1fr))}
   .proc{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .step:nth-child(2){border-right:0}
-  .step:nth-child(3){padding-left:0}
-  .step:nth-child(n+3){border-top:1px solid var(--line)}
-  .pending{grid-template-columns:1fr}
+  .cats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .channels{grid-template-columns:1fr 1fr}
+  .profile{grid-template-columns:1fr;gap:40px;padding:48px 32px}
 }
-@media (max-width:640px){
-  nav{display:none}
+@media (max-width:760px){
+  nav a:not(.cta){display:none}
+  .hero{padding-block:64px 40px}
+  .stats{grid-template-columns:1fr 1fr;margin-top:48px}
+  .stat:nth-child(3){padding-left:0;border-left:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--line)}
+  section{padding-block:88px 0}
+  .sec-hd{grid-template-columns:1fr;margin-bottom:32px}
+  .sec-hd p{justify-self:start}
+  .grid-v{grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 14px}
+  .grid-v .screen{padding:12px}
+  .grid-v .screen .t{font-size:17px}
+  .play{width:32px;height:32px}
   .grid-h{grid-template-columns:1fr}
   .grid-h .work:first-child .screen{aspect-ratio:16/9}
-  .screen .t{font-size:20px}
-  .grid-v .screen{padding:11px}
-  .badge{left:11px;top:34px;font-size:11px}
-  .bar{grid-template-columns:90px 1fr 48px}
+  .stack{grid-template-columns:1fr}
+  .bar{grid-template-columns:96px 1fr 44px}
+  .cats{grid-template-columns:1fr 1fr}
+  .vibe,.channels{grid-template-columns:1fr}
+  .tool,.tool.feat{padding:24px}
+  .proc{grid-template-columns:1fr}
+  .profile{padding:36px 22px;border-radius:18px}
+  .pf-list>div{grid-template-columns:1fr;gap:4px}
+  .reel-item{width:104px}
 }
-@media (prefers-reduced-motion:reduce){.screen,.play{transition:none}.screen:hover{transform:none}}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .reel-track{animation:none}
+  .screen,.screen .thumb,.tool,.ch,.play{transition:none}
+  .screen:hover .thumb{transform:none}
+}
 </style>
 </head>
 <body>
 
 <header>
   <div class="wrap hd">
-    <a class="brand" href="#top">스타마운틴<small>AI VIDEO CREATOR</small></a>
+    <a class="brand" href="#top"><b>스타마운틴</b><span class="mono">AI Video Creator</span></a>
     <nav aria-label="섹션 이동">
-      <a href="#vertical">세로형 숏폼</a>
-      <a href="#horizontal">가로형 CF·MV</a>
+      <a href="#vertical">숏폼</a>
+      <a href="#horizontal">CF·MV</a>
       <a href="#tools">AI 툴</a>
       <a href="#process">작업 방식</a>
-      <a href="#contact">연락처</a>
+      <a href="#vibe">바이브코딩</a>
+      <a href="#channels">채널</a>
+      <a class="cta" href="#profile">문의하기</a>
     </nav>
   </div>
 </header>
 
 <main id="top">
-  <div class="wrap">
-    <div class="hero">
-      <div>
-        <div class="eyebrow">AI 숏폼 · AI CF · CM송 뮤직비디오</div>
-        <h1>기획부터 완성까지,<br><em>하루</em>면 충분합니다.</h1>
-        <p class="lead">ChatGPT로 기획하고, Flow·MiniMax·Seedance로 영상을 만들고, Suno로 CM송을 붙입니다. 기업과 공공기관 홍보 영상을 혼자서 기획·제작·편집까지 끝냅니다.</p>
-      </div>
-      <div>
-        <div class="stats" id="stats"></div>
-        <div class="ruler" aria-hidden="true"></div>
-      </div>
-    </div>
+  <div class="wrap hero">
+    <div class="mono">AI Shortform · AI CF · CM Song</div>
+    <h1>기획부터 완성까지,<br><em>하루</em>면 충분합니다.</h1>
+    <p class="lead">ChatGPT로 기획하고, Flow·MiniMax·Seedance로 영상을 만들고, Suno로 CM송을 붙입니다. <b>기업과 공공기관 홍보 영상을 혼자서 기획·제작·편집까지</b> 끝냅니다.</p>
+    <div class="stats" id="stats"></div>
   </div>
+  <div class="reel" aria-hidden="true"><div class="reel-track" id="reel"></div></div>
 
   <section id="vertical">
     <div class="wrap">
       <div class="sec-hd">
-        <h2>세로형 숏폼<span class="ratio">9:16</span></h2>
+        <div><div class="mono">Works <i>/</i> Vertical 9:16</div><h2>세로형 숏폼</h2></div>
         <p>유튜브 쇼츠·릴스용 세로 영상입니다. 화면을 누르면 바로 재생됩니다.</p>
       </div>
       <div class="grid-v" id="grid-v"></div>
@@ -222,7 +270,7 @@ footer{padding-block:32px 48px;border-top:1px solid var(--line);font-size:12.5px
   <section id="horizontal">
     <div class="wrap">
       <div class="sec-hd">
-        <h2>가로형 AI CF·MV<span class="ratio">16:9</span></h2>
+        <div><div class="mono">Works <i>/</i> Horizontal 16:9</div><h2>가로형 AI CF·MV</h2></div>
         <p>TV 광고·브랜드 필름 형식의 가로 영상입니다. 내레이션은 타입캐스트, 음악은 Suno로 제작했습니다.</p>
       </div>
       <div class="grid-h" id="grid-h"></div>
@@ -232,52 +280,131 @@ footer{padding-block:32px 48px;border-top:1px solid var(--line);font-size:12.5px
   <section id="tools">
     <div class="wrap">
       <div class="sec-hd">
-        <h2>AI 제작 툴</h2>
+        <div><div class="mono">Toolkit</div><h2>AI 제작 툴</h2></div>
         <p>공모전 출품작 <span id="total-n"></span>편 중 각 툴을 사용한 작품의 비율입니다.</p>
       </div>
       <div class="stack" id="stack"></div>
-      <p class="stack-note">기획·대본 ChatGPT, Gemini / 영상 생성 Flow, MiniMax H3, Seedance / 음악·CM송 Suno / 내레이션 타입캐스트 / 편집 CapCut</p>
+      <div class="cats">
+        <div class="cat"><div class="mono">Planning</div><b>기획·대본</b><p>ChatGPT, Gemini</p></div>
+        <div class="cat"><div class="mono">Generation</div><b>이미지·영상 생성</b><p>ChatGPT, Flow, MiniMax H3, Seedance</p></div>
+        <div class="cat"><div class="mono">Music</div><b>음악·CM송</b><p>Suno</p></div>
+        <div class="cat"><div class="mono">Voice</div><b>내레이션</b><p>타입캐스트</p></div>
+        <div class="cat"><div class="mono">Edit</div><b>편집·효과</b><p>CapCut</p></div>
+      </div>
     </div>
   </section>
 
   <section id="process">
     <div class="wrap">
       <div class="sec-hd">
-        <h2>작업 방식</h2>
+        <div><div class="mono">Process</div><h2>작업 방식</h2></div>
         <p>공모전 출품작 기준, 영상 한 편이 만들어지는 순서입니다.</p>
       </div>
       <div class="proc">
-        <div class="step"><div class="k">STEP 1</div><h3>기획</h3><p>주최 측 메시지를 한 줄 컨셉으로 정리하고 대본·콘티를 씁니다.</p><div class="tl">ChatGPT · Gemini</div></div>
-        <div class="step"><div class="k">STEP 2</div><h3>영상 생성</h3><p>장면별 프롬프트로 영상을 만들고, 톤이 맞을 때까지 다시 생성합니다.</p><div class="tl">Flow · MiniMax H3 · Seedance</div></div>
-        <div class="step"><div class="k">STEP 3</div><h3>음악·내레이션</h3><p>브랜드 이름이 귀에 남는 CM송을 만들고 내레이션을 입힙니다.</p><div class="tl">Suno · 타입캐스트</div></div>
-        <div class="step"><div class="k">STEP 4</div><h3>편집·납품</h3><p>자막·전환·싱크를 맞춰 플랫폼 규격(9:16, 16:9)으로 내보냅니다.</p><div class="tl">CapCut</div></div>
+        <div class="step"><div class="no">01</div><h3>기획</h3><p>주최 측 메시지를 한 줄 컨셉으로 정리하고 대본·콘티를 씁니다.</p><div class="tl">ChatGPT · Gemini</div></div>
+        <div class="step"><div class="no">02</div><h3>이미지·영상 생성</h3><p>장면별 이미지를 먼저 만들고, 그 이미지로 영상을 생성합니다. 톤이 맞을 때까지 다시 만듭니다.</p><div class="tl">ChatGPT · Flow · MiniMax H3 · Seedance</div></div>
+        <div class="step"><div class="no">03</div><h3>음악·내레이션</h3><p>브랜드 이름이 귀에 남는 CM송을 만들고 내레이션을 입힙니다.</p><div class="tl">Suno · 타입캐스트</div></div>
+        <div class="step"><div class="no">04</div><h3>편집·효과</h3><p>자막·효과·전환·싱크를 맞춰 플랫폼 규격(9:16, 16:9)으로 내보냅니다.</p><div class="tl">CapCut</div></div>
       </div>
     </div>
   </section>
 
-  <section id="contact">
+  <section id="vibe">
     <div class="wrap">
       <div class="sec-hd">
-        <h2>블로그 · 바이브코딩 · 연락처</h2>
-        <p>블로그와 바이브코딩 결과물은 정리되는 대로 추가합니다.</p>
+        <div><div class="mono">Vibe Coding</div><h2>바이브코딩 결과물</h2></div>
+        <p>Claude와 대화하며 직접 만든 제작 자동화 도구입니다. 공모전·쇼츠·블로그 작업 과정을 그대로 도구로 옮겼습니다.</p>
       </div>
-      <div class="pending">
-        <div class="slot"><div class="k">BLOG</div><h3>운영 블로그</h3><p>티스토리 · 네이버 블로그 주소가 들어갑니다.</p></div>
-        <div class="slot"><div class="k">VIBE CODING</div><h3>바이브코딩 결과물</h3><p>AI로 직접 만든 웹앱·도구 링크와 화면이 들어갑니다.</p></div>
-        <div class="slot filled"><div class="k">CONTACT</div><h3>연락처</h3>
-          <dl class="ct">
-            <dt>성명</dt><dd>이성산</dd>
-            <dt>별칭</dt><dd>스타마운틴 (StarMountain)</dd>
-            <dt>이메일</dt><dd><span id="mail" class="mail">imoses1611@mail.com</span> <button type="button" class="copy" id="copy-mail">복사</button></dd>
-          </dl>
+      <div class="vibe">
+        <a class="tool feat" href="https://claude.ai/artifact/CUWWkcM8FcCQQpyHuQcouH" target="_blank" rel="noopener">
+          <div class="mono">AI Video Contest</div>
+          <h3>공모전 제작실</h3>
+          <p>공고문 PDF를 올리면 주제와 심사 기준을 읽고, 배점으로 채점한 시놉시스 9편을 제안합니다. 고른 시놉시스로 장면별 이미지·영상 프롬프트, 내레이션, Suno 음악 프롬프트까지 이어서 만듭니다.</p>
+          <div class="flow"><span>공고문 분석</span><span>시놉시스 채점</span><span>이미지 프롬프트</span><span>영상 프롬프트</span><span>내레이션</span><span>Suno 음악</span></div>
+          <div class="go">열어보기</div>
+        </a>
+        <a class="tool" href="https://claude.ai/artifact/8xN6pz1gmHj6FKE6LYvkAS" target="_blank" rel="noopener">
+          <div class="mono">Shopping Shorts</div>
+          <h3>쇼핑쇼츠 제작실</h3>
+          <p>상품 링크와 캡처를 넣으면 vidIQ로 실제 터진 영상을 찾아 구조를 분석하고, 내레이션 대본·자막(SRT)·플랫폼별 업로드 문구를 만듭니다.</p>
+          <div class="flow"><span>바이럴 영상 분석</span><span>9:16 미리보기</span><span>중국 숏폼 검색</span></div>
+          <div class="go">열어보기</div>
+        </a>
+        <a class="tool" href="https://claude.ai/artifact/6bc9qaNCnbBmm5eRGJCKFu" target="_blank" rel="noopener">
+          <div class="mono">Naver Blog</div>
+          <h3>네이버 블로그 제작실</h3>
+          <p>주제를 고르면 글, 대표이미지, 4컷 만평, 사실 점검까지 발행 7단계를 한 화면에서 끝냅니다. 같은 글을 카드뉴스·쇼츠 대본으로 다시 씁니다.</p>
+          <div class="flow"><span>실시간 이슈</span><span>이미지 자동 제작</span><span>SNS 재활용</span></div>
+          <div class="go">열어보기</div>
+        </a>
+        <a class="tool" href="https://claude.ai/artifact/9Eao3jFvcoZpXYDUCVr6kR" target="_blank" rel="noopener">
+          <div class="mono">Tistory</div>
+          <h3>티스토리 제작실</h3>
+          <p>AI 활용법 글을 결과물·프롬프트와 함께 티스토리용 HTML로 만들고, SEO 점검과 대표·서브 이미지, 애드센스 준비도까지 관리합니다.</p>
+          <div class="flow"><span>HTML 발행</span><span>SEO 점검</span><span>애드센스 관리</span></div>
+          <div class="go">열어보기</div>
+        </a>
+        <a class="tool" href="https://claude.ai/artifact/K8MAW4zxq6uZsF7Kg5BSxr" target="_blank" rel="noopener">
+          <div class="mono">Web Service</div>
+          <h3>서식자동화 사이트</h3>
+          <p>이력서·차용증·견적서 등 인기 서식 10종을 칸만 채우면 A4 문서로 완성합니다. 금액 한글 표기, 부가세 계산, 최저임금 미달 경고가 자동입니다.</p>
+          <div class="flow"><span>인기 서식 10종</span><span>자동 계산</span><span>A4 미리보기</span></div>
+          <div class="go">열어보기</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="channels">
+    <div class="wrap">
+      <div class="sec-hd">
+        <div><div class="mono">Channels</div><h2>운영 채널</h2></div>
+        <p>직접 운영하는 블로그와 유튜브 채널입니다.</p>
+      </div>
+      <div class="channels">
+        <a class="ch" href="https://blog.naver.com/the-financial" target="_blank" rel="noopener">
+          <div class="mono">Blog <em>Naver ↗</em></div>
+          <b>까닭노트</b>
+          <p>요즘 뜨는 이슈가 왜 뜨는지 이유를 짚어주는 블로그</p>
+          <div class="url">blog.naver.com/the-financial</div>
+        </a>
+        <a class="ch" href="https://starmountain.tistory.com/" target="_blank" rel="noopener">
+          <div class="mono">Blog <em>Tistory ↗</em></div>
+          <b>AI 시그널</b>
+          <p>50~70대를 위한 쉬운 AI·스마트폰 사용법</p>
+          <div class="url">starmountain.tistory.com</div>
+        </a>
+        <a class="ch" href="https://www.youtube.com/@HealingMusicMix" target="_blank" rel="noopener">
+          <div class="mono">YouTube <em>Channel ↗</em></div>
+          <b>힐링뮤직믹스</b>
+          <p>힐링 음악 믹스 채널</p>
+          <div class="url">youtube.com/@HealingMusicMix</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="profile">
+    <div class="wrap">
+      <div class="profile">
+        <div class="pf-lead">
+          <div class="mono">Profile · Contact</div>
+          <h2>함께 새로운 가능성을<br>만들어갑니다.</h2>
+          <p>AI 영상 제작 · 콘텐츠 기획 · 비즈니스 협업에 관한 문의를 환영합니다.</p>
         </div>
+        <dl class="pf-list">
+          <div><dt>AI CREATOR</dt><dd class="nm">이성산 <span>LEE SUNGSAN</span></dd></div>
+          <div><dt>PHONE</dt><dd><span id="phone" class="sel">010-4635-3070</span><button type="button" class="copy" data-copy="phone">복사</button></dd></div>
+          <div><dt>EMAIL</dt><dd><span id="mail" class="sel">imoses1611@gmail.com</span><button type="button" class="copy" data-copy="mail">복사</button></dd></div>
+          <div><dt>LOCATION</dt><dd>광주광역시 · 전국 및 원격 협업 가능</dd></div>
+        </dl>
       </div>
     </div>
   </section>
 </main>
 
 <footer>
-  <div class="wrap">© 스타마운틴 · 모든 영상은 AI 툴로 직접 기획·제작·편집했습니다.</div>
+  <div class="wrap"><span>© 스타마운틴 · 이성산</span><span>모든 영상은 AI 툴로 직접 기획·제작·편집했습니다.</span></div>
 </footer>
 
 <script>
@@ -296,42 +423,47 @@ const W=[
  {v:0,id:"v_oiCSw1Uzo",t:"천년동안, 깊이가 다른 선택",org:"해양심층수산업 고성진흥원",tags:["특산품 홍보","AI CF"],dur:"2일",tools:["ChatGPT","MiniMax H3","Suno","CapCut","타입캐스트"],h:215,h2:185},
  {v:0,id:"TMee_wUq5uc",t:"청주시 홍보 AI CF",org:"청주시",tags:["도시홍보","AI CF"],dur:"2일",tools:["ChatGPT","Flow","Suno","CapCut","타입캐스트"],h:22,h2:350,todo:"작품명 확인 중"}
 ];
+// 일반 웹사이트에서는 사이트 안에서 재생, 임베드가 막힌 환경(Claude 미리보기)에서는 유튜브 링크로 열기
+const CAN_EMBED=!/claude|anthropic/i.test(location.hostname);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const url=w=>w.v?`https://www.youtube.com/shorts/${w.id}`:`https://www.youtube.com/watch?v=${w.id}`;
+const thumb=id=>`<img class="thumb" src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">`;
 function card(w){
   const tags=(w.award?`<span class="tag aw">${esc(w.award)}</span>`:"")+w.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")+(w.todo?`<span class="tag">${esc(w.todo)}</span>`:"");
-  return `<article class="work">
-    <button type="button" class="screen" data-id="${w.id}" style="--h:${w.h};--h2:${w.h2}" aria-label="${esc(w.t)} 재생">
-      <img class="thumb" src="https://i.ytimg.com/vi/${w.id}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">
-      <div class="top"><span class="rec">${w.v?"9:16":"16:9"}</span><span class="dur">제작 ${esc(w.dur)}</span></div>
-      ${w.award?`<span class="badge">${esc(w.award.split(" · ")[0])}</span>`:""}
+  return `<article class="work${w.award?" award":""}">
+    ${CAN_EMBED?`<button type="button" class="screen" data-id="${w.id}"`:`<a class="screen" href="${url(w)}" target="_blank" rel="noopener"`} style="--h:${w.h};--h2:${w.h2}" aria-label="${esc(w.t)} 재생">
+      ${thumb(w.id)}
+      <div class="top">${w.award?`<span class="badge">★ ${esc(w.award.split(" · ")[0])}</span>`:`<span class="chip">${w.v?"9:16":"16:9"}</span>`}<span class="chip">제작 ${esc(w.dur)}</span></div>
       <div class="t">${esc(w.t)}</div>
       <div class="bot"><span class="org">${esc(w.org)}</span><span class="play" aria-hidden="true"></span></div>
-    </button>
+    ${CAN_EMBED?"</button>":"</a>"}
     <div class="meta">
       <div class="org2">${esc(w.sub||w.org+" 공모전 출품")}</div>
       <div class="tags">${tags}</div>
       <div class="tools">${w.tools.map(esc).join(" · ")}</div>
-      <div class="role">역할: 기획 · 제작 · 편집 (1인) · <a href="${url(w)}" target="_blank" rel="noopener">유튜브에서 보기</a></div>
+      <div class="role">기획 · 제작 · 편집 1인 · <a href="${url(w)}" target="_blank" rel="noopener">유튜브에서 보기</a></div>
     </div>
   </article>`;
 }
 document.getElementById("grid-v").innerHTML=W.filter(w=>w.v).map(card).join("");
 document.getElementById("grid-h").innerHTML=W.filter(w=>!w.v).map(card).join("");
 
+const reelItems=W.filter(w=>w.v).map(w=>`<div class="reel-item" style="--h:${w.h};--h2:${w.h2}">${thumb(w.id).replace(' class="thumb"','')}<span>${esc(w.t)}</span></div>`).join("");
+document.getElementById("reel").innerHTML=reelItems+reelItems;
+
 const orgs=new Set();W.forEach(w=>w.org.split(" · ").forEach(o=>orgs.add(o)));
 const stats=[
-  ["100편+","숏폼 제작 (공모전 출품작 외)"],
-  [W.length+"편","AI 영상 공모전 출품작 (주최 "+orgs.size+"곳)"],
-  ["1~2일","편당 제작 기간 (최단 4시간)"],
-  ["2등","광주신세계 AI 영상 공모전",1]
+  ["100편+","숏폼 제작<br>(공모전 출품작 외)"],
+  [W.length+"편","AI 영상 공모전 출품<br>(주최 "+orgs.size+"곳)"],
+  ["1~2일","편당 제작 기간<br>(최단 4시간)"],
+  ["2등","광주신세계<br>AI 영상 공모전",1]
 ];
 document.getElementById("stats").innerHTML=stats.map(s=>`<div class="stat${s[2]?" award":""}"><b>${s[0]}</b><span>${s[1]}</span></div>`).join("");
 
 const cnt={};W.forEach(w=>w.tools.forEach(t=>{const k=t.startsWith("Seedance")?"Seedance":t;cnt[k]=(cnt[k]||0)+1}));
 const rows=Object.entries(cnt).sort((a,b)=>b[1]-a[1]);
 document.getElementById("total-n").textContent=W.length;
-document.getElementById("stack").innerHTML=rows.map(([k,n])=>`<div class="bar"><span class="nm">${esc(k)}</span><span class="tr"><span class="fl" style="display:block;width:${n/W.length*100}%"></span></span><span class="n">${Math.round(n/W.length*100)}%</span></div>`).join("");
+document.getElementById("stack").innerHTML=rows.map(([k,n])=>`<div class="bar"><span class="nm">${esc(k)}</span><span class="tr"><span class="fl" style="width:${n/W.length*100}%"></span></span><span class="n">${Math.round(n/W.length*100)}%</span></div>`).join("");
 
 document.addEventListener("click",e=>{
   const b=e.target.closest(".screen[data-id]");if(!b)return;
@@ -340,12 +472,12 @@ document.addEventListener("click",e=>{
   b.replaceWith(d);
 });
 
-document.getElementById("copy-mail").addEventListener("click",e=>{
-  const b=e.currentTarget,t=document.getElementById("mail").textContent;
+document.querySelectorAll(".copy[data-copy]").forEach(b=>b.addEventListener("click",()=>{
+  const el=document.getElementById(b.dataset.copy),t=el.textContent;
   const done=()=>{b.textContent="복사됨";setTimeout(()=>b.textContent="복사",1500)};
-  const sel=()=>{const r=document.createRange();r.selectNodeContents(document.getElementById("mail"));const g=getSelection();g.removeAllRanges();g.addRange(r)};
+  const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const g=getSelection();g.removeAllRanges();g.addRange(r)};
   try{navigator.clipboard.writeText(t).then(done,sel)}catch(_){sel()}
-});
+}));
 </script>
 </body>
 </html>
