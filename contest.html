@@ -1,0 +1,985 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body><div style="background:#0D0E11;color:#EEEBE4;font:13px/1.6 'Nanum Gothic','Apple SD Gothic Neo','Malgun Gothic',sans-serif;padding:10px max(16px,env(safe-area-inset-left,0px));display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between;border-bottom:1px solid #33363E"><span><b>데모 화면</b> · 이 도구는 Claude 안에서 AI가 글·대본·프롬프트를 생성합니다. 여기서는 예시 화면과 구성만 볼 수 있습니다.</span><span style="display:flex;gap:16px;flex-wrap:wrap"><a href="https://claude.ai/artifact/CUWWkcM8FcCQQpyHuQcouH" target="_blank" rel="noopener" style="color:#D6B676;font-weight:700;text-decoration:none;white-space:nowrap">Claude에서 실행 ↗</a><a href="./" style="color:#EEEBE4;text-decoration:none;white-space:nowrap">← 포트폴리오로</a></span></div>
+<title>공모전 제작실</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#EDF0F3; --surface:#FFFFFF; --sunk:#E3E7EC; --ink:#141A2A; --muted:#5A6377; --line:#CDD3DC;
+  --accent:#2E3FD1; --accent-ink:#FFFFFF; --accent-soft:#E2E5FB;
+  --slate:#F3C23A; --slate-ink:#1A1604;
+  --good:#1E7A4F; --bad:#B42318;
+  --display:"Do Hyeon","IBM Plex Sans KR",system-ui,sans-serif;
+  --body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#10131C; --surface:#181C28; --sunk:#0C0F16; --ink:#E7EAF2; --muted:#98A0B4; --line:#2B3142;
+    --accent:#7C8BFF; --accent-ink:#0D1030; --accent-soft:#232A55;
+    --slate:#F3C23A; --slate-ink:#1A1604; --good:#5BD29A; --bad:#FF8A7A;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#10131C; --surface:#181C28; --sunk:#0C0F16; --ink:#E7EAF2; --muted:#98A0B4; --line:#2B3142;
+  --accent:#7C8BFF; --accent-ink:#0D1030; --accent-soft:#232A55;
+  --slate:#F3C23A; --slate-ink:#1A1604; --good:#5BD29A; --bad:#FF8A7A;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;padding-top:28px}
+.clap{display:flex;align-items:center;gap:14px}
+.clap-mark{width:46px;height:46px;border-radius:6px;background:var(--ink);position:relative;overflow:hidden;flex:none}
+.clap-mark::before{content:"";position:absolute;left:0;right:0;top:0;height:14px;background:repeating-linear-gradient(-45deg,var(--slate) 0 7px,var(--ink) 7px 14px)}
+.clap-mark span{position:absolute;left:0;right:0;bottom:4px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--bg)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.1;margin:0;letter-spacing:.01em}
+.sub{color:var(--muted);margin:2px 0 0;font-size:14px}
+.status-pill{font-family:var(--mono);font-size:12px;padding:5px 10px;border-radius:999px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.status-pill.on{background:var(--accent-soft);color:var(--accent)}
+.status-pill.off{color:var(--bad)}
+
+/* progress rail */
+.railbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--line)}
+.rail{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.rail div{cursor:pointer}
+.next{font-size:13px;display:flex;gap:8px;align-items:baseline}
+.next b{font-family:var(--mono);font-size:11px;font-weight:500;background:var(--slate);color:var(--slate-ink);padding:1px 6px;border-radius:3px;white-space:nowrap}
+.rail div{font-size:12px;color:var(--muted);border-top:3px solid var(--line);padding-top:6px}
+.rail div b{font-family:var(--mono);font-weight:500;margin-right:4px}
+.rail div.done{border-color:var(--accent);color:var(--ink)}
+.rail div.now{border-color:var(--slate);color:var(--ink)}
+@media (max-width:560px){.rail div span{display:none}}
+
+section.step{display:flex;flex-direction:column;gap:14px}
+.step-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.step-no{font-family:var(--mono);font-size:12px;background:var(--ink);color:var(--bg);padding:2px 8px;border-radius:3px}
+h2{font-family:var(--display);font-weight:400;font-size:24px;margin:0;line-height:1.2}
+.hint{color:var(--muted);font-size:13px;margin:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px}
+
+/* form */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+label{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:500}
+label small{font-weight:400;color:var(--muted)}
+input,select,textarea{font:inherit;font-size:15px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:9px 11px;width:100%}
+textarea{resize:vertical;min-height:84px}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.full{grid-column:1/-1}
+
+/* buttons */
+button{font:inherit;cursor:pointer;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:9px 14px;font-weight:500}
+button:hover:not(:disabled){border-color:var(--ink)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.primary:hover:not(:disabled){filter:brightness(1.08);border-color:var(--accent)}
+.ghost{background:transparent;border-color:transparent;color:var(--muted);padding:6px 8px;font-size:13px}
+.ghost:hover:not(:disabled){color:var(--ink);border-color:var(--line)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+.concepts{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.concept{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:12px 14px}
+.concept strong{font-family:var(--display);font-weight:400;font-size:19px;line-height:1.2}
+.concept span{font-size:12px;color:var(--muted);font-weight:400}
+.concept.active{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.concept .count{font-family:var(--mono);font-size:11px;color:var(--accent)}
+
+.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.tab{border:none;border-bottom:2px solid transparent;border-radius:0;background:none;padding:8px 12px;color:var(--muted)}
+.tab.on{color:var(--ink);border-bottom-color:var(--ink)}
+
+.syn-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;align-items:start}
+details.mine>summary{cursor:pointer;list-style:none;display:flex;flex-direction:column;gap:2px}
+details.mine>summary::-webkit-details-marker{display:none}
+details.mine>summary strong::after{content:"  열기 ▾";font-size:12px;font-weight:500;color:var(--accent)}
+details.mine[open]>summary strong::after{content:"  접기 ▴"}
+.syn-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.score{font-family:var(--mono);font-size:12px;font-weight:500;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap;font-variant-numeric:tabular-nums}
+.score.hi{background:var(--accent);color:var(--accent-ink)}
+.crit{display:flex;flex-wrap:wrap;gap:4px}
+.crit span{font-size:11.5px;background:var(--sunk);border-radius:4px;padding:1px 6px;color:var(--muted);font-variant-numeric:tabular-nums}
+.crit span b{color:var(--ink);font-weight:700}
+details.more summary{cursor:pointer;font-size:13px;font-weight:500;color:var(--accent)}
+details.more[open] summary{margin-bottom:8px}
+details.more div.body{display:flex;flex-direction:column;gap:8px}
+.why{margin:0;padding-left:16px;font-size:12.5px;color:var(--muted)}
+.analysis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;font-size:14px}
+.analysis h4{margin:0 0 4px;font-size:12px;color:var(--muted);font-weight:500}
+.analysis p{margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chips span{font-size:12.5px;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:1px 9px}
+.concept.best{grid-column:span 2;background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.concept.best span{color:var(--bg);opacity:.75}
+.concept.best .count{color:var(--slate);opacity:1}
+@media (max-width:360px){.concept.best{grid-column:auto}}
+.syn{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.syn.picked{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.syn h3{font-family:var(--display);font-weight:400;font-size:21px;margin:0;line-height:1.25;text-wrap:balance}
+.syn .log{font-weight:500;margin:0}
+.syn p{margin:0;font-size:14px}
+.tag{display:inline-block;font-size:11px;letter-spacing:.04em;font-family:var(--mono);color:var(--muted);text-transform:uppercase}
+.win{background:var(--sunk);border-radius:6px;padding:8px 10px;font-size:13px}
+.win b{color:var(--accent)}
+.syn .row{margin-top:auto;padding-top:6px}
+.drop{display:flex;flex-direction:column;gap:10px;border-style:dashed;border-width:2px}
+.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+.drop-head{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.drop-head strong{font-size:16px}
+.filebtn{position:relative;overflow:hidden;display:inline-flex}
+.filebtn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.notice{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;font-size:14px}
+.notice div{background:var(--bg);border-radius:6px;padding:8px 10px}
+.notice b{display:block;font-size:12px;color:var(--muted);font-weight:500}
+.mine{display:flex;flex-direction:column;gap:12px}
+.mine textarea{min-height:180px;line-height:1.7}
+details.script{border-top:1px solid var(--line);padding-top:8px}
+details.script summary{cursor:pointer;font-size:13px;font-weight:500;color:var(--accent)}
+details.script pre{font-family:var(--body);font-size:14px;line-height:1.7;white-space:pre-wrap;margin:8px 0 0;max-height:420px;overflow:auto;background:var(--bg);border-radius:6px;padding:10px 12px}
+.fixnote{font-size:13px;line-height:1.55;background:var(--accent-soft);color:var(--ink);border-radius:6px;padding:8px 10px;margin:0}
+.fixnote b{color:var(--accent)}
+.fixguide{display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:1.6}
+.fixguide ol{margin:0;padding-left:18px}
+.ask{display:flex;gap:8px;flex-wrap:wrap}
+.ask input{flex:1;min-width:180px}
+textarea.edit{font-family:var(--mono);font-size:13px;line-height:1.55;min-height:110px}
+textarea.edit.big{font-family:var(--body);font-size:15px;min-height:320px;line-height:1.7}
+.pblock.editing{border:1px solid var(--accent);border-radius:8px;padding:10px;gap:8px;background:var(--surface)}
+.btns{display:flex;gap:2px;flex-wrap:wrap;justify-content:flex-end}
+.changes{margin:0;padding-left:18px;font-size:13px;color:var(--muted)}
+
+.example{font-family:var(--mono);font-size:11px;background:var(--slate);color:var(--slate-ink);padding:2px 7px;border-radius:3px;letter-spacing:.03em}
+
+/* waiting */
+.wait{display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:14px}
+.wait .dot{width:10px;height:10px;border-radius:50%;background:var(--slate);animation:pulse 1.1s ease-in-out infinite;flex:none}
+@keyframes pulse{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.wait .dot{animation:none}}
+.err{color:var(--bad);font-size:14px}
+.stream{font-family:var(--mono);font-size:11px;color:var(--muted);max-height:60px;overflow:hidden;white-space:pre-wrap;word-break:break-all;opacity:.7}
+
+/* bible */
+.bible{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.bible .panel h4{margin:0 0 6px;font-size:13px;color:var(--muted);font-weight:500}
+.bible .panel p{margin:0;font-size:14px}
+.char{padding-block:6px;border-top:1px solid var(--line)}
+.char:first-of-type{border-top:none}
+
+/* scenes */
+.scene{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.scene-top{display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--sunk);flex-wrap:wrap}
+.tc{font-family:var(--mono);font-size:12px;background:var(--ink);color:var(--bg);padding:2px 8px;border-radius:3px;font-variant-numeric:tabular-nums}
+.scene-top h3{margin:0;font-size:16px;font-weight:700}
+.scene-body{padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.scene-body .act{margin:0;font-size:14px}
+.pblock{display:flex;flex-direction:column;gap:4px}
+.pblock-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.plabel{font-size:12px;font-weight:700;letter-spacing:.03em}
+.plabel.img{color:var(--accent)}
+.plabel.vid{color:var(--good)}
+.plabel.nar{color:var(--ink)}
+.prompt{font-family:var(--mono);font-size:13px;line-height:1.55;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px 12px;white-space:pre-wrap;word-break:break-word;margin:0}
+.ko{font-size:13px;color:var(--muted);margin:0}
+.narr{font-size:16px;font-weight:500;margin:0;padding-left:12px;border-left:3px solid var(--slate)}
+.meta{font-size:12px;color:var(--muted)}
+
+.audio{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.audio .panel h4{margin:0 0 4px;font-size:13px;color:var(--muted);font-weight:500}
+.audio .panel p{margin:0;font-size:14px}
+
+.lyrics{font-family:var(--body);font-size:15px;line-height:1.75;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:12px 14px;white-space:pre-wrap;margin:0;max-height:520px;overflow:auto}
+.suno-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;align-items:start}
+.plabel.mus{color:var(--slate-ink);background:var(--slate);padding:1px 6px;border-radius:3px}
+.export{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:6px;font-size:13px;z-index:10}
+footer{color:var(--muted);font-size:12px}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="clap">
+      <div class="clap-mark" aria-hidden="true"><span>TAKE 1</span></div>
+      <div>
+        <h1>공모전 제작실</h1>
+        <p class="sub">주제 한 줄로 시놉시스, 장면별 이미지·영상 프롬프트, 내레이션까지</p>
+      </div>
+    </div>
+    <span id="aiState" class="status-pill">Claude 연결 확인 중</span>
+  </header>
+
+  <div class="railbar">
+  <nav class="rail" id="rail" aria-label="진행 단계">
+    <div data-s="1"><b>01</b><span>공모전 정보</span></div>
+    <div data-s="2"><b>02</b><span>시놉시스</span></div>
+    <div data-s="3"><b>03</b><span>이미지 프롬프트</span></div>
+    <div data-s="4"><b>04</b><span>영상 프롬프트</span></div>
+    <div data-s="5"><b>05</b><span>내레이션</span></div>
+    <div data-s="6"><b>06</b><span>음악 (Suno)</span></div>
+  </nav>
+  <div class="next" id="nextHint"></div>
+  </div>
+
+  <!-- STEP 1 -->
+  <section class="step" id="s1">
+    <div class="step-head"><span class="step-no">STEP 01</span><h2>공모전 정보</h2></div>
+    <div class="panel drop" id="drop">
+      <div class="drop-head">
+        <div><strong>공고문 파일 올리기</strong><p class="hint">PDF, Word(.docx), 텍스트, 포스터 이미지(JPG·PNG)를 올리거나 여기로 끌어 놓으세요. 클실장이 읽고 아래 칸을 채웁니다.</p></div>
+        <span class="filebtn"><button type="button" id="btnPick">파일 선택</button><input id="noticeFile" type="file" accept=".pdf,.docx,.txt,.md,.jpg,.jpeg,.png,.webp,.hwp,.hwpx" aria-label="공고문 파일 선택"></span>
+      </div>
+      <div id="fileWait"></div>
+      <div id="noticeBox"></div>
+    </div>
+    <div class="panel grid">
+      <label class="full" for="topic">공모전 주제 <small>공고문의 주제 문구를 그대로 붙여 넣으면 가장 정확합니다</small>
+        <textarea id="topic" rows="2"></textarea>
+      </label>
+      <label for="contest">공모전 이름 <small>선택</small><input id="contest" type="text"></label>
+      <label for="length">영상 길이
+        <select id="length">
+          <option value="15">15초</option><option value="30">30초</option><option value="60">1분</option>
+          <option value="90">1분 30초</option><option value="180">3분</option>
+        </select>
+      </label>
+      <label for="ratio">화면 비율
+        <select id="ratio"><option value="16:9">16:9 가로</option><option value="9:16">9:16 세로 (쇼츠)</option><option value="1:1">1:1 정방형</option></select>
+      </label>
+      <label for="imgTool">이미지 생성 툴
+        <select id="imgTool"><option>Midjourney</option><option>나노 바나나 (Gemini)</option><option>Flux</option><option>GPT 이미지</option><option>기타</option></select>
+      </label>
+      <label for="fixChar">캐릭터 고정 <small>같은 인물을 모든 장면에 똑같이</small>
+        <select id="fixChar"><option>고정 캐릭터 사용 (레퍼런스 이미지)</option><option>사용 안 함</option></select>
+      </label>
+      <label for="vidTool">영상 생성 툴
+        <select id="vidTool"><option>Kling</option><option>Veo</option><option>Runway</option><option>Sora</option><option>Omni</option><option>Seedance</option><option>Hailuo</option><option>기타</option></select>
+      </label>
+      <label class="full" for="notes">심사 기준·필수 조건 <small>선택 · 예: 창의성 40%, 로고 노출 필수, 대상 연령</small>
+        <textarea id="notes" rows="2"></textarea>
+      </label>
+    </div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="step" id="s2">
+    <div class="step-head"><span class="step-no">STEP 02</span><h2>시놉시스</h2></div>
+    <p class="hint">"주제 맞춤 추천 9선"은 장르를 섞어 9편을, 장르 버튼은 그 장르로 9편을 만듭니다. 모두 주제와 심사 기준으로 채점해 적합도 높은 순으로 보여 줍니다. 직접 쓴 시나리오가 있으면 아래 "내 시나리오로 시작하기"를 쓰세요.</p>
+    <div class="concepts" id="concepts"></div>
+    <details class="panel mine" id="mineBox">
+      <summary><strong>내 시나리오로 시작하기</strong><p class="hint">직접 쓴 시나리오나 아이디어를 붙여 넣으세요. 클실장이 고른 방식대로 다듬어 시놉시스와 장면 단위 시나리오로 정리합니다.</p></summary>
+      <label for="myScript">내 시나리오
+        <textarea id="myScript" rows="8" placeholder="예) 혼자 사는 할머니 집에 AI 스피커가 온다. 처음엔 말을 안 듣던 할머니가..."></textarea>
+      </label>
+      <div class="grid">
+        <label for="myGenre">장르
+          <select id="myGenre"><option>장르 자동 판단</option><option>꽁트</option><option>CF</option><option>단편영화</option><option>다큐</option><option>뮤직비디오</option><option>애니메이션</option><option>공익광고</option><option>SF·판타지</option></select>
+        </label>
+        <label for="editMode">수정 방식
+          <select id="editMode"><option>맞춤법·문장만 다듬기</option><option selected>공모전 입상용으로 보강</option><option>과감하게 각색</option></select>
+        </label>
+      </div>
+      <div class="row"><button class="primary" id="btnPolish">클실장이 다듬기</button><button id="btnAsIs">수정 없이 그대로 쓰기</button></div>
+    </details>
+    <div id="synWait"></div>
+    <div id="analysisBox"></div>
+    <div class="tabs" id="tabs" role="tablist"></div>
+    <div class="syn-list" id="synList"></div>
+  </section>
+
+  <!-- STEP 3-5 -->
+  <section class="step" id="s3">
+    <div class="step-head"><span class="step-no">STEP 03–05</span><h2>장면 설계</h2></div>
+    <div id="pickedBox"></div>
+    <div class="row" id="stageBtns">
+      <button class="primary" id="btnScenes">장면별 이미지 프롬프트 만들기</button>
+      <button id="btnVideo">영상 프롬프트 만들기</button>
+      <button id="btnNarr">내레이션 만들기</button>
+      <button id="btnAuto">남은 단계 한 번에 만들기</button>
+    </div>
+    <div id="sceneWait"></div>
+    <div class="bible" id="bible"></div>
+    <div id="scenes" style="display:flex;flex-direction:column;gap:12px"></div>
+    <div class="audio" id="audio"></div>
+  </section>
+
+  <section class="step" id="s5">
+    <div class="step-head"><span class="step-no">STEP 06</span><h2>음악 · Suno</h2></div>
+    <p class="hint">Suno의 Custom 모드에 그대로 붙여 넣을 곡 제목, Style of Music, 제외 스타일, 가사를 만듭니다. 칸마다 다시 생성과 수정이 따로 됩니다. 장면과 내레이션을 먼저 만들면 영상 흐름에 맞춰 곡 구성을 짭니다.</p>
+    <div class="panel grid">
+      <label for="musicType">음악 용도
+        <select id="musicType"><option>주제가 (보컬 있음)</option><option>광고 징글 (짧은 후렴)</option><option>뮤직비디오 본곡</option><option>배경음악 (가사 없음)</option></select>
+      </label>
+      <label for="vocal">보컬
+        <select id="vocal"><option>여성 보컬</option><option>남성 보컬</option><option>남녀 듀엣</option><option>합창·아이들</option><option>랩</option></select>
+      </label>
+      <label for="lyricLang">가사 언어
+        <select id="lyricLang"><option>한국어</option><option>영어</option><option>한국어+영어 후렴</option></select>
+      </label>
+      <label for="musicLen">곡 길이
+        <select id="musicLen"><option value="30">30초</option><option value="60">60초 (1분)</option><option value="90">90초 (1분 30초)</option><option value="120">120초 (2분)</option><option value="150">150초 (2분 30초)</option><option value="180">180초 (3분)</option></select>
+      </label>
+      <label for="genre">장르·분위기 <small>선택 · 비우면 시놉시스 톤에 맞춰 정합니다</small><input id="genre" type="text"></label>
+    </div>
+    <div class="row"><button class="primary" id="btnMusic">Suno 음악 프롬프트 만들기</button></div>
+    <div id="musicWait"></div>
+    <div id="music"></div>
+  </section>
+
+  <section class="step" id="s6">
+    <div class="panel export">
+      <div><strong>기획서 한 번에 가져가기</strong><p class="hint">주제, 시놉시스, 장면별 프롬프트, 내레이션, Suno 음악을 한 문서로 묶습니다.</p></div>
+      <div class="row">
+        <button id="btnCopyAll">전체 복사</button>
+        <button id="btnSave" hidden>텍스트 파일로 저장</button>
+        <button class="ghost" id="btnReset">새로 시작</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>생성은 보는 사람의 Claude 계정으로 실행됩니다. 작업 내용은 이 브라우저에만 저장됩니다.</footer>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+const CONCEPTS=[
+  {k:"skit",name:"꽁트",desc:"반전·웃음 한 방"},
+  {k:"cf",name:"CF",desc:"15~60초 광고 문법"},
+  {k:"film",name:"단편영화",desc:"인물·갈등·여운"},
+  {k:"docu",name:"다큐",desc:"사실 기반 내레이션"},
+  {k:"mv",name:"뮤직비디오",desc:"리듬·이미지 중심"},
+  {k:"anim",name:"애니메이션",desc:"동화·캐릭터"},
+  {k:"psa",name:"공익광고",desc:"메시지·캠페인"},
+  {k:"sf",name:"SF·판타지",desc:"AI만 가능한 비주얼"}
+];
+const cName=k=>k==="best"?"추천 9선":k==="mine"?"내 시나리오":((CONCEPTS.find(c=>c.k===k)||{}).name||k);
+
+const EXAMPLE={
+  example:true,
+  form:{topic:"일상 속 탄소중립, 내가 바꾸는 내일",contest:"2026 기후행동 AI 영상 공모전",length:"30",ratio:"16:9",imgTool:"Midjourney",vidTool:"Kling",notes:"창의성 40%, 주제 적합성 30%, 완성도 30%"},
+  exV2:true,
+  analysis:{keywords:["일상","개인 실천","내일(미래)","작은 습관"],intent:"거창한 기술보다 개인이 오늘 할 수 있는 작은 실천이 미래를 바꾼다는 메시지",judges:"창의성 배점이 40%로 가장 크므로, 익숙한 실천을 처음 보는 시선으로 보여 주는 작품이 유리합니다.",avoid:"녹는 빙하와 북극곰, 통계만 나열하는 설교형 내레이션",criteria:["창의성 40%","주제 적합성 30%","완성도 30%"]},
+  syn:{best:[
+    {title:"내일에서 온 영수증",genre:"SF",logline:"2050년의 내가 오늘 쓴 탄소 영수증을 보내온다.",synopsis:"편의점에서 계산하던 지우의 휴대폰에 2050년발 영수증이 도착한다. 일회용 컵, 택시, 남긴 반찬마다 미래에 치를 대가가 찍혀 있다. 지우가 텀블러를 꺼내고 걷기 시작하자 영수증 금액이 한 줄씩 지워진다. 마지막 줄에 '내일의 나: 고마워'가 뜬다.",hook:"'영수증'이라는 일상 소품으로 미래와 오늘을 한 화면에 연결해 주제 문구 '내가 바꾸는 내일'을 그대로 시각화합니다.",tone:"따뜻한 SF, 네온 영수증 그래픽",fit:{total:93,scores:[{name:"창의성",score:10,why:"미래에서 온 영수증이라는 장치가 새롭다"},{name:"주제 적합성",score:9,why:"일상 실천과 내일이 직접 연결된다"},{name:"완성도",score:9,why:"장소 2곳, 인물 1명으로 제작이 쉽다"}]}},
+    {title:"냉장고의 파업",genre:"꽁트",logline:"버려지는 음식에 지친 냉장고가 파업을 선언한다.",synopsis:"자취생 민수가 냉장고 문을 열자 채소들이 피켓을 들고 있다. '유통기한 지났다고 버리지 마라!' 당황한 민수는 남은 재료로 요리를 시작하고, 냉장고는 흡족하게 불을 켠다.",hook:"의인화 반전이 첫 3초에 시선을 잡고, 남은 재료 요리라는 행동 하나를 분명히 보여 줍니다.",tone:"유쾌, 파스텔 3D",fit:{total:91,scores:[{name:"창의성",score:9,why:"가전 의인화 시위가 웃기고 선명하다"},{name:"주제 적합성",score:9,why:"음식물 쓰레기 줄이기라는 일상 실천"},{name:"완성도",score:9,why:"한 공간에서 끝나 AI 제작 부담이 적다"}]}},
+    {title:"할머니의 장바구니",genre:"단편영화",logline:"손녀는 할머니가 평생 탄소중립을 살아왔다는 걸 알게 된다.",synopsis:"할머니 집 정리를 돕던 손녀가 낡은 장바구니, 고쳐 쓴 우산, 빈 병 모음을 발견한다. 촌스럽다고 웃던 손녀는 할머니의 하루를 따라가며 그게 오늘의 탄소중립이라는 걸 깨닫는다. 엔딩에서 손녀가 같은 장바구니를 들고 장을 본다.",hook:"세대를 잇는 감동 서사로 메시지 전달력이 강하고, 오래된 습관을 새롭게 보는 시선이 창의성 점수로 이어집니다.",tone:"따뜻한 실사풍, 햇살 톤",fit:{total:90,scores:[{name:"창의성",score:9,why:"'원래 하던 일'을 재발견하는 관점"},{name:"주제 적합성",score:9,why:"일상 습관이 곧 실천이라는 메시지"},{name:"완성도",score:9,why:"감정선이 짧은 길이에도 완결된다"}]}},
+    {title:"지구의 체중계",genre:"애니메이션",logline:"무거워진 지구가 매일 아침 체중계에 오른다.",synopsis:"한숨 쉬며 체중계에 오른 지구, 바늘이 탄소 무게로 휘청인다. 도시 곳곳에서 사람들이 플러그를 뽑고 자전거를 타자 지구가 조금씩 가벼워진다. 마지막에 지구가 처음으로 웃으며 거울 앞에서 포즈를 잡는다.",hook:"추상적인 탄소를 '체중'으로 바꿔 아이부터 어른까지 한눈에 이해하게 합니다.",tone:"둥근 2D 카툰, 밝은 원색",fit:{total:88,scores:[{name:"창의성",score:9,why:"탄소를 체중으로 바꾼 은유"},{name:"주제 적합성",score:8,why:"개인 실천 묘사가 다소 짧다"},{name:"완성도",score:9,why:"캐릭터 하나로 일관성 유지가 쉽다"}]}},
+    {title:"30초 정전",genre:"CF",logline:"온 동네가 30초 동안 불을 끄자 별이 쏟아진다.",synopsis:"밤 9시, 아파트 단지에 '30초만 꺼 볼까요?' 안내 방송이 나온다. 하나둘 창문의 불이 꺼지고 사람들이 베란다로 나온다. 마지막 집이 불을 끄는 순간 도시 위로 별이 쏟아진다.",hook:"한 번의 장관 컷으로 강렬한 엔딩을 만들고, 함께 하는 실천의 힘을 보여 줍니다.",tone:"시네마틱 야경, 정적 뒤 웅장한 음악",fit:{total:87,scores:[{name:"창의성",score:8,why:"소등 캠페인을 별로 보상하는 연출"},{name:"주제 적합성",score:9,why:"누구나 할 수 있는 에너지 절약"},{name:"완성도",score:9,why:"야경 컷 위주라 AI 품질이 잘 나온다"}]}},
+    {title:"텀블러 소개팅",genre:"꽁트",logline:"일회용 컵과 텀블러가 같은 사람에게 선택받으려 한다.",synopsis:"카페 카운터 위에서 일회용 컵과 텀블러가 연애 예능처럼 자기 어필을 한다. 주인공은 텀블러를 고르고, 일회용 컵은 쓸쓸히 쌓인 컵 더미로 돌아간다.",hook:"연애 예능 포맷을 빌려 익숙하면서도 웃음 포인트가 확실합니다.",tone:"예능 자막 스타일, 밝은 카페",fit:{total:86,scores:[{name:"창의성",score:8,why:"예능 패러디가 재미있지만 익숙한 편"},{name:"주제 적합성",score:9,why:"텀블러 사용이라는 실천이 분명하다"},{name:"완성도",score:9,why:"소품 중심이라 제작이 쉽다"}]}},
+    {title:"나무가 된 택배상자",genre:"공익광고",logline:"재활용된 택배상자가 다시 숲으로 돌아가는 여정.",synopsis:"현관 앞 택배상자가 테이프를 떼어 내고 깨끗이 접혀 분리수거된다. 상자는 공장을 지나 종이가 되고, 마지막에 작은 묘목 화분으로 다시 집에 돌아온다.",hook:"분리배출의 '그다음'을 보여 주는 순환 구조가 메시지를 자연스럽게 전합니다.",tone:"스톱모션 질감, 크라프트지 색감",fit:{total:85,scores:[{name:"창의성",score:8,why:"사물의 여정 시점이 신선하다"},{name:"주제 적합성",score:9,why:"올바른 분리배출이라는 일상 실천"},{name:"완성도",score:8,why:"장소 전환이 많아 연결에 신경 써야 한다"}]}},
+    {title:"탄소 발자국 추적자",genre:"다큐",logline:"평범한 직장인의 하루를 탄소 발자국으로 추적하는 모큐멘터리.",synopsis:"내레이터가 자연 다큐 톤으로 직장인 수진의 하루를 관찰한다. 출근, 점심, 퇴근마다 발밑에 탄소 발자국이 찍힌다. 수진이 선택을 바꾸자 발자국이 점점 옅어진다.",hook:"자연 다큐 내레이션을 사람에게 적용한 유머로 정보 전달과 재미를 함께 잡습니다.",tone:"다큐 내레이션, 관찰 카메라",fit:{total:84,scores:[{name:"창의성",score:8,why:"자연 다큐 패러디 시선"},{name:"주제 적합성",score:9,why:"하루 단위 실천이 구체적이다"},{name:"완성도",score:8,why:"장면 수가 많아 30초에 빠듯하다"}]}},
+    {title:"엘리베이터 전쟁",genre:"꽁트",logline:"2층 가는 사람과 계단이 벌이는 신경전.",synopsis:"회사원이 엘리베이터 버튼을 누르려는 순간 계단이 말을 건다. 서부극 같은 슬로모션 대결 끝에 그는 계단을 택하고, 계단 끝에서 동료들이 박수를 친다.",hook:"영화 결투 패러디로 짧은 길이에도 긴장감과 웃음을 만듭니다.",tone:"서부극 패러디",fit:{total:82,scores:[{name:"창의성",score:8,why:"결투 패러디가 재미있다"},{name:"주제 적합성",score:8,why:"탄소중립 연결이 다소 간접적이다"},{name:"완성도",score:8,why:"슬로모션 연출 난도가 있다"}]}}
+  ]},
+  tab:"best",
+  picked:{k:"best",i:1},
+  plan:{
+    style:"Pixar-like 3D animation, soft pastel palette, warm kitchen lighting, shallow depth of field",
+    characters:[{name:"민수",look:"Korean man in his mid-20s, messy black hair, oversized grey hoodie, round glasses"},{name:"냉장고",look:"white retro two-door fridge with a friendly LED face on the door"}],
+    scenes:[
+      {no:1,time:"00:00-00:05",title:"문을 여는 순간",action:"민수가 하품하며 냉장고 문을 연다. 안에서 채소들이 피켓을 들고 있다.",image_prompt:"Korean man in his mid-20s, messy black hair, oversized grey hoodie, round glasses, opening a white retro fridge, inside tiny vegetables holding protest signs, Pixar-like 3D animation, soft pastel palette, warm kitchen lighting --ar 16:9",image_ko:"냉장고 안 채소들의 시위 장면",video_prompt:"Slow push-in from behind the man as the fridge door swings open, cold light spills onto his face, vegetables raise their signs in unison",camera:"뒤에서 천천히 밀고 들어가기",duration:5},
+      {no:2,time:"00:05-00:12",title:"파업 선언",action:"냉장고 문에 LED 얼굴이 켜지며 '더는 못 참아!'라고 외친다.",image_prompt:"close-up of a white retro two-door fridge with an angry LED face on the door, tiny vegetables cheering on shelves, Pixar-like 3D animation, soft pastel palette --ar 16:9",image_ko:"화난 냉장고 얼굴 클로즈업",video_prompt:"Static close-up, the LED face flickers on and shouts, fridge shakes slightly, shelves rattle",camera:"고정 클로즈업, 약한 흔들림",duration:7}
+    ]
+  },
+  narr:{voice:"담백한 20대 남성 목소리, 약간 코믹하게",bgm:"경쾌한 우쿨렐레 루프, 120BPM",lines:[{no:1,time:"00:00-00:05",text:"(효과음) 덜컥.",sfx:"냉장고 문 여는 소리"},{no:2,time:"00:05-00:12",text:"우리 집 냉장고가 파업을 시작했다.",sfx:"작은 함성"}],closing:"남기지 않는 한 끼가 내일을 바꿉니다."},
+  music:{title:"Fridge Strike",style:"playful ukulele pop, whistling hook, light claps, pizzicato strings, bright and quirky, 120 bpm, short jingle",exclude:"heavy drums, distorted guitar, dark",lyrics:"[Intro]\n[Ukulele and whistle]\n\n[Verse]\n문 열자마자 들리는 함성\n시든 채소들의 작은 행진\n\n[Chorus]\n남기지 마, 버리지 마\n오늘 한 끼로 내일을 지켜\n\n[Outro]\n[Claps and fade out]",bpm:"120",structure:"0~5초 인트로(문 여는 장면) → 5~20초 벌스 → 20~30초 후렴(엔딩 문구와 겹치기)",tip:"Suno에서 2~3개를 생성해 후렴이 25초 부근에 오는 버전을 고르고, 편집 툴에서 30초로 자르세요."}
+};
+
+let S=blank();
+function blank(){return{example:false,form:{topic:"",contest:"",length:"60",ratio:"16:9",imgTool:"Midjourney",vidTool:"Kling",notes:"",musicType:"주제가 (보컬 있음)",vocal:"여성 보컬",lyricLang:"한국어",genre:"",musicLen:"60",musicV2:true},syn:{},tab:null,picked:null,plan:null,narr:null,music:null}}
+try{const raw=localStorage.getItem("contest-studio-v1");if(raw)S=JSON.parse(raw);else S=JSON.parse(JSON.stringify(EXAMPLE));}catch(e){S=JSON.parse(JSON.stringify(EXAMPLE));}
+if(S.form&&!S.form.musicV2){S.form.musicType="주제가 (보컬 있음)";S.form.musicV2=true;}
+if(S.example&&!S.exV2){S=JSON.parse(JSON.stringify(EXAMPLE));}
+if(S.example&&!S.music)S.music=JSON.parse(JSON.stringify(EXAMPLE.music));
+function save(){try{localStorage.setItem("contest-studio-v1",JSON.stringify(S))}catch(e){}}
+
+const $=id=>document.getElementById(id);
+const FIELDS=["topic","contest","length","ratio","imgTool","vidTool","notes","musicType","vocal","lyricLang","genre","musicLen","myScript","myGenre","editMode","fixChar"];
+const FDEF={musicType:"주제가 (보컬 있음)",vocal:"여성 보컬",lyricLang:"한국어",genre:"",musicLen:"60",myScript:"",myGenre:"장르 자동 판단",editMode:"공모전 입상용으로 보강",fixChar:"고정 캐릭터 사용 (레퍼런스 이미지)"};
+FIELDS.forEach(f=>{const el=$(f);el.value=S.form[f]??FDEF[f]??"";if(S.form[f]==null&&FDEF[f]!=null)S.form[f]=FDEF[f];el.addEventListener("input",()=>{S.form[f]=el.value;save();if(f==="musicType"||f==="fixChar"||f==="imgTool"||f==="vidTool")render();})});
+
+let sample=null,busy=false;
+function setAI(state){const p=$("aiState");p.className="status-pill "+(state==="on"?"on":state==="off"?"off":"");p.textContent=state==="on"?"Claude 연결됨":state==="off"?"Claude를 쓸 수 없는 화면":"Claude 연결 확인 중";}
+(async()=>{
+  await Promise.resolve();
+  try{sample=window.claude?await window.claude.use("sample"):null}catch(e){sample=null}
+  setAI(sample?"on":"off");render();
+  try{const dl=window.claude?await window.claude.use("downloads"):null;if(dl){$("btnSave").hidden=false;$("btnSave").onclick=()=>dl.save({filename:fileName(),data:exportText()}).catch(()=>{});}}catch(e){}
+})();
+
+function toast(msg){const t=$("toast");t.textContent=msg;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,1800)}
+function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+async function copy(text){try{await navigator.clipboard.writeText(text);toast("복사했습니다")}catch(e){const ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast("복사했습니다")}catch(_){toast("복사가 막혀 있어 텍스트를 직접 선택해 주세요")}ta.remove();}}
+function errMsg(e){const c=e&&e.code;return({
+  not_granted:"Claude 사용을 허용하지 않아 생성할 수 없습니다. 페이지를 새로 열면 다시 물어봅니다.",
+  rate_limited:"요청이 몰렸거나 사용 한도에 닿았습니다. 잠시 뒤 다시 눌러 주세요.",
+  invalid_json:"결과 형식이 깨졌습니다. 한 번 더 눌러 주세요.",
+  refused:"Claude가 이 요청을 처리하지 않았습니다. 주제 문구를 바꿔 보세요.",
+  session_expired:"로그인이 만료되었습니다. 다시 로그인해 주세요.",
+  prompt_too_large:"입력이 너무 깁니다. 주제와 조건을 줄여 주세요.",
+  cancelled:"취소했습니다."
+})[c]||"생성 중 문제가 생겼습니다. 다시 눌러 주세요.";}
+
+function brief(){
+  const f=S.form;const L=+f.length;
+  return `[공모전 정보]
+- 공모전: ${f.contest||"(미입력)"}
+- 주제: ${f.topic}
+- 영상 길이: ${L}초, 화면 비율 ${f.ratio}
+- 이미지 툴: ${f.imgTool}, 영상 툴: ${f.vidTool}
+- 심사 기준·조건: ${f.notes||"(미입력: 일반적인 AI 영상 공모전 기준인 주제 적합성, 창의성, 완성도, 메시지 전달력으로 가정)"}`;
+}
+function sceneCount(){const L=+S.form.length;return Math.max(3,Math.min(14,Math.round(L/6)));}
+function pickedSyn(){if(!S.picked)return null;return (S.syn[S.picked.k]||[])[S.picked.i]||null;}
+
+function waitBox(id,label,onStop){
+  const box=$(id);box.innerHTML=`<div class="wait"><span class="dot"></span><div style="flex:1;min-width:0"><div>${esc(label)}</div><div class="stream"></div></div><button class="ghost">중지</button></div>`;
+  box.querySelector("button").onclick=onStop;
+  return t=>{const s=box.querySelector(".stream");if(s)s.textContent=t.slice(-220);};
+}
+
+async function run(boxId,label,prompt,apply,opt={}){
+  if(!sample||busy)return;
+  if(!opt.noTopic&&!S.form.topic.trim()){toast("먼저 공모전 주제를 입력해 주세요");$("topic").focus();return;}
+  busy=true;render();
+  const ctl=new AbortController();
+  const show=waitBox(boxId,label,()=>ctl.abort());
+  let errHtml="",ok=false;
+  try{
+    const o={signal:ctl.signal,cache:false,onText:({text})=>show(text)};if(opt.images&&opt.images.length)o.images=opt.images;const data=await sample.json(prompt,o);
+    apply(data);S.example=false;save();$(boxId).innerHTML="";ok=true;
+  }catch(e){
+    errHtml=e&&e.code==="cancelled"?"":`<p class="err">${esc(errMsg(e))}</p>`;
+    if(e&&e.code==="not_granted"){sample=null;setAI("off");}
+  }finally{busy=false;render();if(errHtml&&$(boxId))$(boxId).innerHTML=errHtml;}
+  return ok;
+}
+
+// ---------- 내 시나리오
+function clearExample(){if(S.example){S.analysis=null;S.syn={};S.picked=null;S.plan=null;S.narr=null;S.music=null;}}
+const MODE={
+  "맞춤법·문장만 다듬기":"아이디어, 인물, 사건 순서, 대사는 그대로 두고 맞춤법, 문장, 흐름만 다듬으세요. 새 사건을 넣지 마세요.",
+  "공모전 입상용으로 보강":"사용자의 핵심 아이디어, 인물, 결말 방향은 지키되 첫 3초 훅, 주제 메시지, 반전과 엔딩 한 줄을 공모전 심사 기준에 맞게 보강하세요.",
+  "과감하게 각색":"핵심 메시지와 소재만 남기고 구성, 시점, 장르 연출을 과감하게 바꿔 입상 가능성을 최대로 높이세요."
+};
+function polishMine(){
+  const f=S.form;const text=(f.myScript||"").trim();
+  if(text.length<10){toast("시나리오를 조금 더 써 주세요");$("myScript").focus();return;}
+  const prompt=`당신은 AI 영상 공모전 수상작을 여러 편 쓴 시나리오 작가이자 각색가입니다.
+${brief()}
+
+[사용자가 직접 쓴 시나리오]
+${text.slice(0,20000)}
+
+[장르] ${f.myGenre}
+[수정 방식] ${f.editMode}: ${MODE[f.editMode]||""}
+
+[요청] 위 수정 방식대로 이 시나리오를 다듬어 주세요.
+- 분량은 영상 ${f.length}초에 맞추고, AI 이미지·영상 툴로 만들 수 있는 규모로 정리하세요.
+- script는 장면 단위 시나리오입니다. 각 장면을 "S#1. 장소 - 시간" 머리줄, 지문, 대사(인물: 대사) 순으로 쓰고 장면 사이는 빈 줄로 나누세요.
+- changes에는 원본에서 무엇을 왜 바꿨는지 2~5개를 짧게 쓰세요. 바꾼 게 없으면 빈 배열.
+- 모든 글은 한국어로.
+
+JSON 객체만 답하세요. 형식:
+{"title":"제목","logline":"한 줄 로그라인","synopsis":"3~5문장 줄거리","script":"S#1. ...","hook":"입상 포인트 1~2문장","tone":"톤·비주얼 스타일","genre":"판단한 장르","changes":["..."]}`;
+  run("synWait",`내 시나리오를 '${f.editMode}' 방식으로 다듬는 중`,prompt,data=>{
+    if(!data||!data.title||!(data.script||data.synopsis))throw{code:"invalid_json"};
+    clearExample();
+    data.original=text;data.mode=f.editMode;
+    (S.syn.mine=S.syn.mine||[]).push(data);S.tab="mine";
+  },{noTopic:true});
+}
+function useAsIs(){
+  const f=S.form;const text=(f.myScript||"").trim();
+  if(text.length<10){toast("시나리오를 조금 더 써 주세요");$("myScript").focus();return;}
+  clearExample();S.example=false;
+  const first=text.split(/\n/).find(l=>l.trim())||"내 시나리오";
+  (S.syn.mine=S.syn.mine||[]).push({title:first.trim().slice(0,40),logline:"",synopsis:text.length>400?text.slice(0,400)+"…":text,script:text,hook:"직접 쓴 시나리오 (수정 없음)",tone:f.myGenre==="장르 자동 판단"?"":f.myGenre,changes:[],original:text,mode:"그대로"});
+  S.tab="mine";save();render();toast("내 시나리오를 추가했습니다");
+}
+$("btnPolish").onclick=polishMine;
+if((S.form.myScript||"").trim()||S.syn.mine)$("mineBox").open=true;$("btnAsIs").onclick=useAsIs;
+
+// ---------- 공고문 파일
+const CDN="https://cdnjs.cloudflare.com/ajax/libs/";
+function loadScript(src){return new Promise((ok,no)=>{if(document.querySelector(`script[src="${src}"]`))return ok();const sc=document.createElement("script");sc.src=src;sc.onload=ok;sc.onerror=()=>no(new Error("load"));document.head.appendChild(sc);});}
+async function docxText(file){
+  await loadScript(CDN+"jszip/3.10.1/jszip.min.js");
+  const zip=await JSZip.loadAsync(await file.arrayBuffer());
+  const xml=await zip.file("word/document.xml").async("string");
+  const d=new DOMParser().parseFromString(xml.replace(/<\/w:p>/g,"</w:p>\n").replace(/<w:tab\/>/g,"\t"),"text/xml");
+  return (d.documentElement.textContent||"").replace(/\n{3,}/g,"\n\n");
+}
+async function pdfRead(file,maxImg){
+  await loadScript(CDN+"pdf.js/3.11.174/pdf.min.js");
+  const lib=window.pdfjsLib;lib.GlobalWorkerOptions.workerSrc=CDN+"pdf.js/3.11.174/pdf.worker.min.js";
+  const pdf=await lib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;
+  let text="";const pages=Math.min(pdf.numPages,20);
+  for(let i=1;i<=pages;i++){const pg=await pdf.getPage(i);const c=await pg.getTextContent();text+=c.items.map(x=>x.str+(x.hasEOL?"\n":" ")).join("")+"\n";}
+  const imgs=[];
+  if(text.replace(/\s/g,"").length<200&&maxImg>0){
+    for(let i=1;i<=Math.min(pdf.numPages,maxImg);i++){
+      const pg=await pdf.getPage(i);const vp=pg.getViewport({scale:1.6});
+      const cv=document.createElement("canvas");cv.width=vp.width;cv.height=vp.height;
+      await pg.render({canvasContext:cv.getContext("2d"),viewport:vp}).promise;
+      imgs.push(await new Promise(r=>cv.toBlob(r,"image/jpeg",0.85)));
+    }
+  }
+  return {text,imgs};
+}
+async function readNotice(file){
+  if(!file)return;
+  if(!sample){toast("Claude를 쓸 수 없는 화면입니다");return;}
+  if(busy)return;
+  const name=file.name||"파일";const ext=(name.split(".").pop()||"").toLowerCase();
+  const box=$("fileWait");
+  if(ext==="hwp"||ext==="hwpx"){box.innerHTML=`<p class="err">한글(HWP) 파일은 바로 읽을 수 없습니다. 한글에서 PDF로 저장해 올려 주세요.</p>`;return;}
+  let caps=null;try{caps=await sample.limits()}catch(e){}
+  const maxImg=caps&&caps.images?caps.images.maxCount:0;
+  let text="",images=[];
+  box.innerHTML=`<div class="wait"><span class="dot"></span><div>${esc(name)} 여는 중</div></div>`;
+  try{
+    if(/^image\//.test(file.type)||["jpg","jpeg","png","webp"].includes(ext)){
+      if(!maxImg)throw new Error("noimg");images=[file];
+    }else if(ext==="pdf"){const r=await pdfRead(file,Math.min(maxImg,5));text=r.text;images=r.imgs;}
+    else if(ext==="docx"){text=await docxText(file);}
+    else{text=await file.text();}
+  }catch(e){
+    box.innerHTML=`<p class="err">${e&&e.message==="noimg"?"이 화면에서는 이미지를 읽을 수 없습니다. 공고문을 PDF나 텍스트로 올려 주세요.":"파일을 읽지 못했습니다. PDF나 텍스트로 다시 저장해 올려 보세요."}</p>`;return;
+  }
+  if(!text.trim()&&!images.length){box.innerHTML=`<p class="err">파일에서 글자를 찾지 못했습니다. 스캔본이면 이미지(JPG·PNG)로 올려 주세요.</p>`;return;}
+  const prompt=`다음은 AI 영상 공모전 공고문입니다${images.length?" (첨부 이미지가 공고문입니다)":""}. 영상 기획에 필요한 정보만 정확히 뽑아 주세요. 공고문에 없는 내용은 지어내지 말고 빈 문자열로 두세요.
+${text.trim()?"\n[공고문 텍스트]\n"+text.slice(0,40000):""}
+
+- contest: 공모전 이름
+- topic: 공모 주제 문구 (공고문 표현 그대로, 부제·세부 주제 포함)
+- length_sec: 출품 영상 권장 또는 최대 길이(초, 숫자). 범위면 최대값. 없으면 0
+- ratio: "16:9", "9:16", "1:1" 중 하나. 없으면 ""
+- notes: 심사 기준(배점), 필수 조건, 금지 사항, 제출 규격, 출품 자격을 한국어로 줄바꿈해서 정리
+- deadline: 접수 마감일
+- prize: 시상 내역 요약
+- summary: 이 공모전에서 입상하려면 무엇에 집중해야 하는지 2~3문장
+
+JSON 객체만 답하세요. 형식:
+{"contest":"","topic":"","length_sec":60,"ratio":"16:9","notes":"","deadline":"","prize":"","summary":""}`;
+  run("fileWait",`${name} 공고문을 읽는 중`,prompt,d=>{
+    if(!d||!(d.topic||d.contest))throw{code:"invalid_json"};
+    const set=(f,v)=>{if(v){S.form[f]=String(v);$(f).value=S.form[f];}};
+    set("contest",d.contest);set("topic",d.topic);set("notes",d.notes);
+    const L=+d.length_sec;if(L>0){const opts=[...$("length").options].map(o=>+o.value);const best=opts.reduce((a,b)=>Math.abs(b-L)<Math.abs(a-L)?b:a);set("length",best);}
+    if(["16:9","9:16","1:1"].includes(d.ratio))set("ratio",d.ratio);
+    S.notice={file:name,deadline:d.deadline||"",prize:d.prize||"",summary:d.summary||"",length:L||0};
+  },{noTopic:true,images});
+  $("noticeFile").value="";
+}
+$("noticeFile").addEventListener("change",e=>readNotice(e.target.files[0]));
+(()=>{const d=$("drop");
+  d.addEventListener("dragover",e=>{e.preventDefault();d.classList.add("over");});
+  d.addEventListener("dragleave",()=>d.classList.remove("over"));
+  d.addEventListener("drop",e=>{e.preventDefault();d.classList.remove("over");readNotice(e.dataTransfer.files[0]);});
+})();
+
+function genSyn(k){
+  const c=CONCEPTS.find(x=>x.k===k);const best=k==="best";
+  const prompt=`당신은 국내 AI 영상 공모전의 심사위원과 수상작 감독을 모두 해 본 크리에이티브 디렉터입니다.
+${brief()}
+
+[1단계: 주제와 심사 기준 분석]
+공모전 주제에서 핵심 키워드, 주최 측이 진짜 전하고 싶은 메시지, 심사위원이 높게 볼 포인트, 피해야 할 뻔한 표현을 정리하세요. 심사 기준이 주어졌으면 그 항목과 배점을 그대로 쓰고, 없으면 주제 적합성 30%, 창의성 30%, 완성도 20%, 메시지 전달력 20%로 가정하세요.
+
+[2단계: 시놉시스 9편]
+${best?"장르를 가리지 않고(꽁트, CF, 단편영화, 다큐, 뮤직비디오, 애니메이션, 공익광고, SF 등) 이 공모전에서 입상 가능성이 가장 높은 시놉시스 9편을 쓰세요. 장르가 한쪽으로 몰리지 않게 섞으세요.":`"${c.name}" 장르(${c.desc})로 시놉시스 9편을 쓰세요.`}
+- 9편은 관점, 주인공, 소재, 반전 방식이 서로 겹치지 않아야 합니다.
+- 모든 편이 1단계의 핵심 키워드를 이야기의 중심 사건으로 담아야 합니다. 주제와 느슨하게만 이어지는 이야기는 쓰지 마세요.
+- 심사 기준에서 배점이 가장 큰 항목을 특히 강하게 충족하세요.
+- 첫 3초 안에 시선을 잡는 장면, 주제를 말로 설명하지 않고 보여 주는 장면, 결말의 한 줄 메시지를 갖추세요.
+- ${S.form.length}초 안에 AI 이미지·영상 툴로 만들 수 있는 규모(인물 1~3명, 장소 2~4곳)로 잡으세요.
+- 각 편을 심사 기준 항목별로 10점 만점으로 냉정하게 채점하고, 배점 가중치로 100점 만점 total을 계산하세요. 점수를 부풀리지 마세요.
+- 모든 글은 한국어로. synopsis는 3~4문장, why는 한 줄.
+
+JSON 객체만 답하세요. 형식:
+{"analysis":{"keywords":["키워드"],"intent":"주최 측 의도 1문장","judges":"심사위원이 볼 포인트 1~2문장","avoid":"피해야 할 뻔한 표현 1문장","criteria":["주제 적합성 30%"]},"synopses":[{"title":"제목","genre":"장르","logline":"한 줄 로그라인","synopsis":"줄거리","hook":"입상 포인트 1~2문장","tone":"톤·비주얼 스타일","fit":{"total":88,"scores":[{"name":"주제 적합성","score":9,"why":"근거"}]}}]}`;
+  return run("synWait",`${best?"주제 맞춤":c.name} 시놉시스 9편을 쓰는 중 (주제 분석과 채점까지 1~2분 걸립니다)`,prompt,data=>{
+    const arr=(Array.isArray(data)?data:(data&&data.synopses)||[]).filter(x=>x&&x.title).slice(0,9);
+    if(!arr.length)throw{code:"invalid_json"};
+    arr.sort((a,b)=>((b.fit&&+b.fit.total)||0)-((a.fit&&+a.fit.total)||0));
+    clearExample();
+    if(data.analysis)S.analysis=data.analysis;
+    S.syn[k]=arr;S.tab=k;
+  });
+}
+async function autoAll(){
+  if(!pickedSyn()){toast("먼저 시놉시스를 하나 고르세요");return;}
+  const steps=[];
+  if(!S.plan)steps.push(genScenes);
+  if(!S.plan||!S.plan.scenes.some(x=>x.video_prompt))steps.push(genVideo);
+  if(!S.narr)steps.push(genNarr);
+  if(!S.music)steps.push(genMusic);
+  if(!steps.length){toast("모든 단계를 이미 만들었습니다. 다시 만들 단계의 버튼을 눌러 주세요");return;}
+  for(const f of steps){if(!(await f()))break;}
+}
+
+function genScenes(){
+  const s=pickedSyn();if(!s)return;
+  const n=sceneCount();
+  const prompt=`당신은 AI 영상 공모전용 스토리보드 아티스트이자 ${S.form.imgTool} 프롬프트 전문가입니다.
+${brief()}
+
+[선택한 시놉시스] (${cName(S.picked.k)})
+제목: ${s.title}
+로그라인: ${s.logline}
+줄거리: ${s.synopsis}${s.script?"\n전체 시나리오(이 내용과 대사를 최대한 살려 장면을 나누세요):\n"+s.script.slice(0,15000):""}
+톤: ${s.tone}
+
+[요청] 이 시놉시스를 ${S.form.length}초 영상용 ${n}개 장면으로 나누고, 장면마다 ${S.form.imgTool}에 바로 넣을 첫 프레임 이미지 프롬프트를 쓰세요.
+- 먼저 모든 장면에 공통으로 쓸 비주얼 스타일(style)과 등장인물 외형(characters)을 영어로 정하세요. 캐릭터 일관성을 위해 각 image_prompt에 해당 인물의 외형 묘사와 style 문구를 그대로 반복해 넣으세요.
+- image_prompt는 영어, 한 문단, 피사체·행동·배경·조명·구도·렌즈를 포함. 화면 비율 ${S.form.ratio}${S.form.imgTool==="Midjourney"?" (끝에 --ar "+S.form.ratio+" 추가)":""}.
+- time은 누적 타임코드("00:00-00:05" 형식)이고 합계가 ${S.form.length}초가 되게 하세요.
+- action, image_ko, title, 인물 name은 한국어. chars에는 그 장면에 나오는 인물 name을 넣으세요(없으면 빈 배열).${fixed()?"\n- 고정 캐릭터 레퍼런스 이미지를 함께 넣어 생성합니다. 인물 외형 묘사는 짧게 유지하고 같은 인물임이 드러나도록 이름 대신 외형 핵심(머리, 옷, 안경 등)을 매번 같은 문구로 쓰세요.":""}
+
+JSON 객체만 답하세요. 형식:
+{"style":"...","characters":[{"name":"...","look":"..."}],"scenes":[{"no":1,"time":"00:00-00:05","title":"장면 제목","action":"장면 설명 1~2문장","image_prompt":"English prompt","image_ko":"이미지 한 줄 요약","chars":["인물 이름"]}]}`;
+  return run("sceneWait",`${n}개 장면과 이미지 프롬프트를 쓰는 중`,prompt,data=>{
+    if(!data||!Array.isArray(data.scenes)||!data.scenes.length)throw{code:"invalid_json"};
+    S.plan={style:data.style||"",characters:data.characters||[],scenes:data.scenes};S.narr=null;editKey=null;
+  });
+}
+
+function genVideo(){
+  if(!S.plan)return;
+  const list=S.plan.scenes.map(x=>`#${x.no} [${x.time}] ${x.title}: ${x.action}\n  image: ${x.image_prompt}`).join("\n");
+  const prompt=`당신은 ${S.form.vidTool} 이미지→영상(image-to-video) 프롬프트 전문가입니다.
+${brief()}
+
+[비주얼 스타일] ${S.plan.style}
+[장면 목록]
+${list}
+
+[요청] 각 장면의 첫 프레임 이미지를 움직이게 할 영상 프롬프트를 쓰세요.
+- video_prompt는 영어, 1~3문장. 이미지에 이미 있는 외형은 다시 쓰지 말고 움직임(인물 동작, 표정 변화), 카메라 무빙, 속도, 분위기 변화에 집중하세요.
+- ${S.form.vidTool}에서 한 번에 생성 가능한 길이(5초 또는 10초)를 duration으로 지정하세요.
+- camera는 카메라 워킹을 한국어로 짧게.
+
+JSON 객체만 답하세요. 형식:
+{"scenes":[{"no":1,"video_prompt":"English","camera":"한국어","duration":5}]}`;
+  return run("sceneWait","장면별 영상 프롬프트를 쓰는 중",prompt,data=>{
+    const arr=(data&&data.scenes)||[];if(!arr.length)throw{code:"invalid_json"};
+    arr.forEach(v=>{const sc=S.plan.scenes.find(x=>+x.no===+v.no);if(sc){sc.video_prompt=v.video_prompt;sc.camera=v.camera;sc.duration=v.duration;}});
+  });
+}
+
+function genNarr(){
+  if(!S.plan)return;const s=pickedSyn();
+  const list=S.plan.scenes.map(x=>`#${x.no} [${x.time}] ${x.title}: ${x.action}`).join("\n");
+  const prompt=`당신은 공모전 영상 내레이션 작가입니다.
+${brief()}
+
+[시놉시스] ${s?s.title+" - "+s.logline:""}${s&&s.script?"\n[전체 시나리오] (대사가 있으면 살려서 쓰세요)\n"+s.script.slice(0,12000):""}
+[장면 목록]
+${list}
+
+[요청] 장면별 내레이션(또는 대사)을 한국어로 쓰세요.
+- 한국어 내레이션은 1초에 약 4음절 기준으로 각 장면 길이에 맞춰 짧게. 말이 없는 게 더 좋은 장면은 text를 "(무음)"으로 두세요.
+- 마지막은 공모전 주제를 담은 기억에 남는 엔딩 문구(closing)로 마무리.
+- voice는 AI 음성(TTS)으로 만들 때 쓸 목소리 톤 설명, bgm은 배경음악 분위기·템포, sfx는 장면별 효과음.
+
+JSON 객체만 답하세요. 형식:
+{"voice":"...","bgm":"...","lines":[{"no":1,"time":"00:00-00:05","text":"내레이션","sfx":"효과음"}],"closing":"엔딩 문구"}`;
+  return run("sceneWait","내레이션과 사운드를 쓰는 중",prompt,data=>{
+    if(!data||!Array.isArray(data.lines))throw{code:"invalid_json"};
+    S.narr=data;editKey=null;
+  });
+}
+
+// ---------- 고정 캐릭터
+const fixed=()=>!(S.form.fixChar||"").startsWith("사용 안");
+const IMG_TIP={
+  "Midjourney":"V7은 프롬프트 끝에 --oref 캐릭터이미지URL --ow 100, V6는 --cref 캐릭터이미지URL --cw 100을 붙이세요.",
+  "나노 바나나 (Gemini)":"캐릭터 이미지를 첨부하고 프롬프트 맨 앞에 \"첨부한 이미지와 같은 인물로\"라고 적으세요.",
+  "Flux":"Kontext나 레퍼런스 이미지 입력에 캐릭터 이미지를 넣으세요.",
+  "GPT 이미지":"캐릭터 이미지를 첨부하고 \"이 인물의 얼굴·헤어·의상을 그대로 유지\"라고 적으세요."
+};
+const VID_TIP={
+  "Kling":"이미지→영상으로 고정 캐릭터가 나온 장면 이미지를 첫 프레임에 넣거나, Elements(멀티 이미지 참조)에 캐릭터 이미지를 추가하세요.",
+  "Veo":"Flow의 Ingredients(재료)에 캐릭터 이미지를 넣거나, 장면 이미지를 첫 프레임으로 쓰세요.",
+  "Runway":"References에 캐릭터 이미지를 넣거나, 장면 이미지를 첫 프레임으로 쓰세요.",
+  "Sora":"장면 이미지를 첫 프레임으로 넣어 이미지→영상으로 만드세요.",
+  "Omni":"참조 이미지(레퍼런스)에 캐릭터 이미지를 넣고 프롬프트에 같은 인물임을 적으세요.",
+  "Seedance":"참조 이미지에 캐릭터 이미지를 넣거나, 장면 이미지를 첫 프레임으로 쓰세요.",
+  "Hailuo":"Subject Reference(주체 참조)에 캐릭터 이미지를 넣으세요."
+};
+const imgTip=()=>IMG_TIP[S.form.imgTool]||"툴의 레퍼런스(참조) 이미지 기능에 캐릭터 이미지를 넣으세요.";
+const vidTip=()=>VID_TIP[S.form.vidTool]||"장면 이미지를 첫 프레임으로 넣어 이미지→영상으로 만드세요.";
+function charsOf(sc){
+  const cs=(S.plan&&S.plan.characters)||[];
+  if(Array.isArray(sc.chars)&&sc.chars.length)return sc.chars;
+  const t=(sc.action||"")+(sc.title||"");return cs.filter(c=>c.name&&t.includes(c.name)).map(c=>c.name);
+}
+const sheetPrompt=c=>`${c.look}, character reference sheet, front view, side view, back view, full body, neutral pose, plain white background, ${(S.plan&&S.plan.style)||""}${S.form.imgTool==="Midjourney"?" --ar 3:2":""}`;
+
+// ---------- 프롬프트 수정
+let editKey=null;
+function getF(key){const [a,b,c]=key.split(":");try{
+  if(a==="sc")return S.plan.scenes[+b][c]||"";
+  if(a==="ch")return S.plan.characters[+b].look||"";
+  if(a==="plan")return S.plan[b]||"";
+  if(a==="nl")return S.narr.lines[+b][c]||"";
+  if(a==="nr")return S.narr[b]||"";
+  if(a==="mu")return S.music[b]||"";
+}catch(e){}return "";}
+function setF(key,v){const [a,b,c]=key.split(":");
+  if(a==="sc")S.plan.scenes[+b][c]=v;else if(a==="ch")S.plan.characters[+b].look=v;else if(a==="plan")S.plan[b]=v;
+  else if(a==="nl")S.narr.lines[+b][c]=v;else if(a==="nr")S.narr[b]=v;else if(a==="mu")S.music[b]=v;}
+const fid=k=>k.replace(/[^a-z0-9]/gi,"-");
+function field(key,label,cls,kind,o={}){
+  const v=getF(key),id=fid(key);
+  if(editKey===key)return `<div class="pblock editing"><div class="pblock-h"><span class="plabel ${cls}">${label} 수정</span></div>
+    <textarea class="edit${kind==="lyrics"?" big":""}" id="ed-${id}" aria-label="${esc(label)} 직접 수정">${esc(v)}</textarea>
+    <div class="ask"><input id="ask-${id}" data-k="${key}" type="text" placeholder="클실장에게 요청 (예: 비 오는 밤으로, 더 코믹하게, 후렴을 더 짧게)" aria-label="수정 요청"><button data-ai="${key}" ${!sample||busy?"disabled":""}>요청대로 고치기</button></div>
+    <div class="row"><button class="primary" data-save="${key}">저장</button><button class="ghost" data-cancel="1">취소</button></div>
+    <div id="w-${id}"></div></div>`;
+  const body=kind==="lyrics"?`<pre class="lyrics">${esc(v)}</pre>`:kind==="narr"?`<p class="narr">${esc(v)}</p>`:kind==="title"?`<p style="margin:0;font-weight:700;font-size:17px">${esc(v)}</p>`:kind==="text"?`<p style="margin:0;font-size:14px">${esc(v)}</p>`:`<pre class="prompt">${esc(v)}</pre>`;
+  return `<div class="pblock${o.panel?" panel":""}"><div class="pblock-h"><span class="plabel ${cls}">${label}</span><span class="btns">${o.regen?`<button class="ghost" data-regen="${key}" ${!sample||busy?"disabled":""}>다시 생성</button>`:""}<button class="ghost" data-fedit="${key}" ${busy?"disabled":""}>수정</button><button class="ghost" data-copy="${esc(v)}">복사</button></span></div>${o.pre||""}${body}${o.extra||""}<div id="w-${id}"></div></div>`;
+}
+function fieldCtx(key){
+  const [a,b]=key.split(":");const p=pickedSyn();const out=[];
+  if(p)out.push(`[시놉시스] ${p.title} - ${p.logline}`);
+  if(S.plan&&a!=="mu"){out.push(`[공통 스타일] ${S.plan.style}`,`[등장인물] ${(S.plan.characters||[]).map(c=>c.name+": "+c.look).join(" / ")}`);}
+  if((a==="sc"||a==="nl")&&S.plan){const sc=S.plan.scenes[a==="sc"?+b:0];const nl=a==="nl"&&S.narr.lines[+b];const t=a==="sc"?sc:S.plan.scenes.find(x=>+x.no===+(nl&&nl.no))||{};out.push(`[장면] #${t.no} [${t.time}] ${t.title}: ${t.action}`);if(t.image_prompt&&a==="sc")out.push(`[이 장면 이미지 프롬프트] ${t.image_prompt}`);}
+  if(a==="mu"&&S.music){const M=S.music;out.push(musicCond(),`[현재 Suno 결과] 제목: ${M.title}\nStyle: ${M.style}\nExclude: ${M.exclude}\n가사:\n${(M.lyrics||"").slice(0,4000)}`);}
+  return out.join("\n");
+}
+const LABEL=k=>{const [a,,c]=k.split(":");return a==="sc"?(c==="image_prompt"?`${S.form.imgTool} 이미지 프롬프트(영어)`:`${S.form.vidTool} 영상 프롬프트(영어)`):a==="ch"?"인물 외형 묘사(영어)":a==="plan"?"공통 비주얼 스타일(영어)":a==="nl"?"장면 내레이션(한국어)":a==="nr"?({voice:"내레이션 목소리 설명",bgm:"배경음악 설명",closing:"엔딩 문구"}[k.split(":")[1]]):({style:"Suno Style of Music(영어 태그, 200자 이내)",lyrics:"Suno 가사(메타태그 포함)",exclude:"Suno Exclude Styles(영어 태그)",title:"곡 제목"}[k.split(":")[1]]);};
+function aiEdit(key){
+  const id=fid(key);const base=$("ed-"+id).value;const req=$("ask-"+id).value.trim();
+  if(!req){toast("어떻게 고칠지 요청을 적어 주세요");$("ask-"+id).focus();return;}
+  setF(key,base);
+  const prompt=`당신은 AI 영상 공모전 제작을 돕는 프롬프트 편집자입니다.
+${brief()}
+${fieldCtx(key)}
+
+[작업 대상] ${LABEL(key)}
+[현재 내용]
+${base}
+
+[사용자 요청] ${req}
+
+요청대로 현재 내용을 고치세요. 요청과 관계없는 부분, 언어(영어 프롬프트는 영어로), 형식(Suno 메타태그, --ar 같은 파라미터), 고정 캐릭터 외형 묘사는 유지하세요.
+JSON 객체만 답하세요: {"text":"고친 전체 내용"}`;
+  run("w-"+id,"클실장이 요청대로 고치는 중",prompt,d=>{if(!d||typeof d.text!=="string"||!d.text.trim())throw{code:"invalid_json"};setF(key,d.text);editKey=null;},{noTopic:true});
+}
+function regenMusic(key){
+  const fld=key.split(":")[1];const M=S.music;const id=fid(key);
+  const rule={style:'영어, 쉼표로 구분한 태그, 200자 이내. 장르, 악기, 분위기, 템포(bpm), 보컬 음색(인스트루멘탈이면 instrumental) 포함. 지금 가사와 어울리게.',
+    lyrics:`Suno 메타태그([Intro] [Verse] [Pre-Chorus] [Chorus] [Bridge] [Outro], 악기 지시는 대괄호)를 쓴 가사. 곡 길이 ${S.form.musicLen||60}초 분량. 주제 메시지가 후렴에 들어가게. 지금 Style과 어울리게.${M.inst?" 인스트루멘탈이므로 가사 없이 구조·악기 태그만, 맨 앞에 [Instrumental].":""}`,
+    exclude:"Suno Exclude Styles용 영어 태그, 짧게. 지금 Style과 충돌하는 요소.",
+    title:"곡 제목, 짧고 기억에 남게."}[fld];
+  const prompt=`당신은 Suno AI로 공모전 영상 음악을 만드는 음악 감독입니다.
+${brief()}
+${fieldCtx(key)}
+
+[요청] ${LABEL(key)}를 새 버전으로 다시 쓰세요. 지금 버전과 확실히 다른 방향으로, 다른 칸과는 어울리게.
+- ${rule}
+JSON 객체만 답하세요: {"text":"새 내용"}`;
+  run("w-"+id,"새 버전을 만드는 중",prompt,d=>{if(!d||typeof d.text!=="string"||!d.text.trim())throw{code:"invalid_json"};setF(key,d.text);},{noTopic:true});
+}
+function musicCond(){const f=S.form;const inst=(f.musicType||"").startsWith("배경음악");
+  return `[음악 조건] 용도: ${f.musicType} / 보컬: ${inst?"없음":f.vocal} / 가사 언어: ${inst?"없음":f.lyricLang} / 장르·분위기: ${f.genre||"시놉시스 톤에 맞춤"} / 곡 길이: ${f.musicLen||60}초`;}
+function wireFields(){
+  document.querySelectorAll("[data-fedit]").forEach(b=>b.onclick=()=>{editKey=b.dataset.fedit;render();const t=$("ed-"+fid(editKey));if(t){t.focus();t.scrollIntoView({block:"center",behavior:"smooth"});}});
+  document.querySelectorAll("[data-cancel]").forEach(b=>b.onclick=()=>{editKey=null;render();});
+  document.querySelectorAll("[data-save]").forEach(b=>b.onclick=()=>{const k=b.dataset.save;setF(k,$("ed-"+fid(k)).value);editKey=null;S.example=false;save();render();toast("저장했습니다");});
+  document.querySelectorAll("[data-ai]").forEach(b=>b.onclick=()=>aiEdit(b.dataset.ai));
+  document.querySelectorAll("[data-regen]").forEach(b=>b.onclick=()=>regenMusic(b.dataset.regen));
+  document.querySelectorAll(".ask input").forEach(i=>i.onkeydown=e=>{if(e.key==="Enter"&&!e.isComposing){e.preventDefault();aiEdit(i.dataset.k)}});
+}
+
+function genMusic(){
+  const s=pickedSyn();if(!s)return;const f=S.form;
+  const inst=f.musicType.startsWith("배경음악");
+  const scenes=S.plan?S.plan.scenes.map(x=>`#${x.no} [${x.time}] ${x.title}: ${x.action}`).join("\n"):"(장면 미설계)";
+  const narr=S.narr?`내레이션 목소리: ${S.narr.voice}\n엔딩 문구: ${S.narr.closing}`:"(내레이션 미작성)";
+  const prompt=`당신은 Suno AI로 공모전 영상 음악을 만드는 음악 감독입니다.
+${brief()}
+
+[시놉시스] ${s.title} - ${s.logline}
+톤: ${s.tone}
+[장면]
+${scenes}
+[내레이션]
+${narr}
+
+[음악 조건]
+- 용도: ${f.musicType}
+- 보컬: ${inst?"없음 (인스트루멘탈)":f.vocal}
+- 가사 언어: ${inst?"가사 없음":f.lyricLang}
+- 장르·분위기 요청: ${f.genre||"(시놉시스 톤에 맞춰 제안)"}
+- 곡 길이: ${f.musicLen||60}초 (영상 길이 ${f.length}초)
+
+[요청] Suno Custom 모드에 바로 붙여 넣을 수 있게 작성하세요.
+- style: Suno "Style of Music" 칸용. 영어, 쉼표로 구분한 태그, 200자 이내. 장르, 악기, 분위기, 템포(bpm), ${inst?"instrumental":"보컬 성별·음색"}을 포함.
+- exclude: Suno "Exclude styles" 칸용 영어 태그, 짧게.
+- lyrics: Suno 메타태그([Intro] [Verse] [Pre-Chorus] [Chorus] [Bridge] [Outro], 악기 지시는 [Guitar solo]처럼 대괄호)를 쓴 가사. ${inst?"가사 없이 구조·악기 태그만 쓰고 맨 앞에 [Instrumental]을 넣으세요.":"주제 메시지가 후렴에 들어가게, 따라 부르기 쉬운 후렴으로. 내레이션과 겹치는 구간은 짧게."} 곡 길이 ${f.musicLen||60}초에 맞는 분량(대략 30초당 벌스 또는 후렴 한 덩어리).
+- structure: ${f.musicLen||60}초 곡의 구간별 구성(예: 0~15초 인트로)을 한국어 한 줄로. 영상보다 곡이 길면 영상에 쓸 구간도 짚어 주세요.
+- tip: Suno 생성·편집 팁(한국어, 1~2문장).
+- title: 곡 제목.
+
+JSON 객체만 답하세요. 형식:
+{"title":"...","style":"...","exclude":"...","lyrics":"...","bpm":"120","structure":"...","tip":"..."}`;
+  return run("musicWait","Suno용 스타일과 가사를 쓰는 중",prompt,data=>{
+    if(!data||!data.style||!data.lyrics)throw{code:"invalid_json"};
+    data.inst=inst;data.len=f.musicLen||"60";S.music=data;editKey=null;
+  });
+}
+$("btnMusic").onclick=genMusic;
+$("btnAuto").onclick=autoAll;
+$("btnScenes").onclick=genScenes;$("btnVideo").onclick=genVideo;$("btnNarr").onclick=genNarr;
+$("btnCopyAll").onclick=()=>copy(exportText());
+let resetArmed=false;
+$("btnReset").onclick=()=>{
+  if(!resetArmed){resetArmed=true;$("btnReset").textContent="한 번 더 누르면 모두 지워집니다";setTimeout(()=>{resetArmed=false;$("btnReset").textContent="새로 시작";},3000);return;}
+  S=blank();FIELDS.forEach(f=>{S.form[f]=S.form[f]??FDEF[f]??"";$(f).value=S.form[f];});save();resetArmed=false;$("btnReset").textContent="새로 시작";render();
+};
+
+function render(){
+  // rail
+  const st=[true,Object.keys(S.syn).length>0&&!!S.picked,!!S.plan,!!(S.plan&&S.plan.scenes.some(x=>x.video_prompt)),!!S.narr,!!S.music];
+  const now=st.findIndex(x=>!x);
+  const SEC=["s1","s2","s3","s3","s3","s5"];
+  document.querySelectorAll("#rail div").forEach((d,i)=>{d.className=st[i]?"done":(i===now?"now":"");d.onclick=()=>$(SEC[i]).scrollIntoView({behavior:"smooth",block:"start"});});
+  const hasV=S.plan&&S.plan.scenes.some(x=>x.video_prompt);
+  const nx=!S.form.topic.trim()?"공모전 주제를 입력하거나 공고문 파일을 올리세요.":!Object.keys(S.syn).length?"\"주제 맞춤 추천 9선\"을 눌러 시놉시스를 받으세요.":!S.picked?"마음에 드는 시놉시스에서 \"이 시놉시스로 진행\"을 누르세요.":!S.plan?"\"남은 단계 한 번에 만들기\"를 누르면 장면부터 음악까지 차례로 만듭니다.":!hasV?"영상 프롬프트를 만드세요.":!S.narr?"내레이션을 만드세요.":!S.music?"STEP 06에서 Suno 음악을 만드세요.":"모두 준비됐습니다. 아래 \"전체 복사\"나 텍스트 파일 저장으로 기획서를 가져가세요.";
+  $("nextHint").innerHTML=`<b>다음 할 일</b><span>${esc(nx)}</span>`;
+
+  // notice
+  const NT=S.notice;
+  $("noticeBox").innerHTML=NT?`<div class="notice"><div><b>읽은 파일</b>${esc(NT.file)}</div>${NT.deadline?`<div><b>마감</b>${esc(NT.deadline)}</div>`:""}${NT.prize?`<div><b>시상</b>${esc(NT.prize)}</div>`:""}${NT.length?`<div><b>공고상 길이</b>${esc(NT.length)}초</div>`:""}${NT.summary?`<div style="grid-column:1/-1"><b>입상 포인트</b>${esc(NT.summary)}</div>`:""}</div>`:"";
+  $("btnPick").disabled=!sample||busy;$("noticeFile").disabled=!sample||busy;
+  $("btnPolish").disabled=!sample||busy;
+
+  // concepts
+  $("concepts").innerHTML=`<button class="concept best${S.tab==="best"?" active":""}" data-k="best" ${!sample||busy?"disabled":""}><strong>주제 맞춤 추천 9선</strong><span>장르를 섞어 주제와 심사 기준에 가장 잘 맞는 9편</span>${S.syn.best?`<span class="count">${S.syn.best.length}편 · 다시 만들기</span>`:""}</button>`+CONCEPTS.map(c=>`<button class="concept${S.tab===c.k?" active":""}" data-k="${c.k}" ${!sample||busy?"disabled":""}><strong>${c.name}</strong><span>${c.desc}</span>${S.syn[c.k]?`<span class="count">${S.syn[c.k].length}편 · 다시 만들기</span>`:""}</button>`).join("");
+  $("concepts").querySelectorAll("button").forEach(b=>b.onclick=()=>genSyn(b.dataset.k));
+
+  // analysis
+  const A=S.analysis;
+  $("analysisBox").innerHTML=A?`<div class="panel analysis">
+    <div style="grid-column:1/-1"><h4>주제 분석 ${S.example?'<span class="example">예시</span>':""}</h4><div class="chips">${(A.keywords||[]).map(k=>`<span>${esc(k)}</span>`).join("")}</div></div>
+    <div><h4>주최 측 의도</h4><p>${esc(A.intent)}</p></div>
+    <div><h4>심사위원이 볼 포인트</h4><p>${esc(A.judges)}</p></div>
+    <div><h4>피해야 할 표현</h4><p>${esc(A.avoid)}</p></div>
+    ${(A.criteria&&A.criteria.length)?`<div><h4>채점 기준</h4><p>${esc(A.criteria.join(" · "))}</p></div>`:""}
+  </div>`:"";
+
+  // tabs
+  const ks=Object.keys(S.syn);
+  $("tabs").innerHTML=ks.length>1?ks.map(k=>`<button class="tab${S.tab===k?" on":""}" role="tab" data-k="${k}">${cName(k)}</button>`).join(""):"";
+  $("tabs").hidden=ks.length<2;
+  $("tabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.tab=b.dataset.k;save();render();});
+
+  const list=S.syn[S.tab]||[];
+  $("synList").innerHTML=list.length?list.map((s,i)=>{const pk=S.picked&&S.picked.k===S.tab&&S.picked.i===i;const F=s.fit||{};const tot=+F.total||0;return`<article class="syn${pk?" picked":""}">
+    <div class="syn-top"><span class="tag">${i+1}안${s.genre?" · "+esc(s.genre):S.tab!=="best"&&S.tab!=="mine"?" · "+cName(S.tab):""} ${S.example?'<span class="example">예시</span>':""}</span>${tot?`<span class="score${tot>=90?" hi":""}">적합도 ${tot}</span>`:""}</div>
+    <h3>${esc(s.title)}</h3>${s.logline?`<p class="log">${esc(s.logline)}</p>`:""}
+    ${(F.scores&&F.scores.length)?`<div class="crit">${F.scores.map(c=>`<span>${esc(c.name)} <b>${esc(c.score)}</b></span>`).join("")}</div>`:""}
+    <details class="more"${pk||S.tab==="mine"?" open":""}><summary>줄거리와 입상 포인트</summary><div class="body">
+      <p>${esc(s.synopsis)}</p>
+      <div class="win"><b>입상 포인트</b> ${esc(s.hook)}</div>
+      ${(F.scores&&F.scores.some(c=>c.why))?`<ul class="why">${F.scores.map(c=>`<li>${esc(c.name)} ${esc(c.score)}점: ${esc(c.why)}</li>`).join("")}</ul>`:""}
+      ${s.tone?`<span class="meta">톤 · ${esc(s.tone)}</span>`:""}
+      ${S.tab==="mine"?`<span class="meta">수정 방식 · ${esc(s.mode||"")}</span>${(s.changes&&s.changes.length)?`<ul class="changes">${s.changes.map(c=>`<li>${esc(c)}</li>`).join("")}</ul>`:""}${s.script?`<details class="script"><summary>장면 단위 시나리오 보기</summary><pre>${esc(s.script)}</pre></details>`:""}`:""}
+    </div></details>
+    <div class="row"><button class="${pk?"primary":""}" data-i="${i}">${pk?"선택됨":"이 시놉시스로 진행"}</button>${S.tab==="mine"&&s.script?`<button class="ghost" data-edit="${i}">입력 칸으로 가져와 고치기</button>`:""}</div></article>`}).join(""):`<p class="hint">아직 만든 시놉시스가 없습니다. "주제 맞춤 추천 9선"을 누르거나 내 시나리오를 넣어 시작하세요.</p>`;
+  $("synList").querySelectorAll("button[data-edit]").forEach(b=>b.onclick=()=>{const s=(S.syn.mine||[])[+b.dataset.edit];if(!s)return;S.form.myScript=s.script;$("myScript").value=s.script;save();$("mineBox").open=true;$("myScript").scrollIntoView({behavior:"smooth",block:"center"});toast("입력 칸에 넣었습니다. 고친 뒤 다시 다듬기를 누르세요");});
+  $("synList").querySelectorAll("button[data-i]").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(S.picked&&S.picked.k===S.tab&&S.picked.i===i)return;S.picked={k:S.tab,i};S.plan=null;S.narr=null;S.music=null;save();render();$("s3").scrollIntoView({behavior:"smooth",block:"start"});});
+
+  // picked
+  const p=pickedSyn();
+  $("pickedBox").innerHTML=p?`<div class="panel"><span class="tag">선택한 시놉시스 · ${cName(S.picked.k)}${p.fit&&p.fit.total?" · 적합도 "+esc(p.fit.total):""}</span><h3 style="margin:2px 0 4px;font-family:var(--display);font-weight:400;font-size:22px">${esc(p.title)}</h3><p class="hint" style="color:var(--ink)">${esc(p.logline)}</p><p class="meta" style="margin:6px 0 0">${sceneCount()}개 장면 · ${S.form.length}초 · ${esc(S.form.ratio)} · ${esc(S.form.imgTool)} / ${esc(S.form.vidTool)}</p></div>`:`<p class="hint">STEP 02에서 시놉시스를 하나 고르면 장면 설계를 시작할 수 있습니다.</p>`;
+  const hasVid=S.plan&&S.plan.scenes.some(x=>x.video_prompt);
+  $("btnScenes").disabled=!p||!sample||busy;
+  $("btnScenes").textContent=S.plan?"이미지 프롬프트 다시 만들기":"장면별 이미지 프롬프트 만들기";
+  $("btnScenes").className=S.plan?"":"primary";
+  $("btnVideo").disabled=!S.plan||!sample||busy;
+  $("btnVideo").className=S.plan&&!hasVid?"primary":"";
+  $("btnVideo").textContent=hasVid?"영상 프롬프트 다시 만들기":"영상 프롬프트 만들기";
+  $("btnNarr").disabled=!S.plan||!sample||busy;
+  $("btnNarr").className=hasVid&&!S.narr?"primary":"";
+  $("btnNarr").textContent=S.narr?"내레이션 다시 만들기":"내레이션 만들기";
+  $("btnAuto").disabled=!p||!sample||busy;
+  $("btnAuto").className=!S.plan?"primary":"";
+  if(!S.plan)$("btnScenes").className="";
+
+  // bible
+  const P=S.plan,FX=fixed();
+  $("bible").innerHTML=P?`<div class="panel">${field("plan:style",`공통 비주얼 스타일 ${S.example?'<span class="example">예시</span>':""}`,"img","prompt")}</div>
+    <div class="panel" style="display:flex;flex-direction:column;gap:10px"><h4>등장인물 외형 (모든 프롬프트에 동일하게)</h4>
+      ${(P.characters||[]).map((c,i)=>`<div class="char" style="display:flex;flex-direction:column;gap:6px"><strong>${esc(c.name)}</strong>${field("ch:"+i,"외형 묘사","img","prompt")}${FX?`<div class="pblock"><div class="pblock-h"><span class="plabel img">레퍼런스 시트 프롬프트</span><button class="ghost" data-copy="${esc(sheetPrompt(c))}">복사</button></div><pre class="prompt">${esc(sheetPrompt(c))}</pre></div>`:""}</div>`).join("")||'<p class="hint">등장인물 없음</p>'}
+    </div>
+    ${FX?`<div class="panel fixguide" style="grid-column:1/-1"><strong>고정 캐릭터 사용 안내</strong>
+      <ol>
+        <li>위의 <b>레퍼런스 시트 프롬프트</b>로 인물마다 기준 이미지를 1장씩 먼저 만들고, 마음에 드는 한 장을 고정 이미지로 정하세요.</li>
+        <li>장면 이미지를 만들 때마다 그 기준 이미지를 함께 넣으세요. ${esc(S.form.imgTool)}: ${esc(imgTip())}</li>
+        <li>영상은 ${esc(S.form.vidTool)}: ${esc(vidTip())}</li>
+        <li>외형 묘사 문구는 모든 프롬프트에서 글자 하나 바꾸지 말고 그대로 쓰세요. 고칠 때는 위 외형 묘사를 수정한 뒤 장면 프롬프트를 다시 만드세요.</li>
+      </ol>
+      <p class="ko">툴 버전에 따라 메뉴 이름이 다를 수 있습니다. 고정 캐릭터를 쓰지 않으려면 STEP 01의 캐릭터 고정을 "사용 안 함"으로 바꾸세요.</p></div>`:""}`:"";
+
+  // scenes
+  const N=S.narr;
+  $("scenes").innerHTML=P?P.scenes.map((sc,si)=>{const li=N?(N.lines||[]).findIndex(l=>+l.no===+sc.no):-1;const nl=li>=0?N.lines[li]:null;const cs=FX?charsOf(sc):[];
+    const imgNote=cs.length?`<p class="fixnote"><b>고정 캐릭터 · ${esc(cs.join(", "))}</b> 기준 이미지를 함께 넣고 생성하세요. ${esc(imgTip())}</p>`:"";
+    const vidNote=cs.length?`<p class="fixnote"><b>고정 캐릭터 · ${esc(cs.join(", "))}</b> ${esc(vidTip())}</p>`:"";
+    return`<article class="scene">
+    <div class="scene-top"><span class="tc">${esc(sc.time)}</span><h3>#${sc.no} ${esc(sc.title)}</h3></div>
+    <div class="scene-body">
+      <p class="act">${esc(sc.action)}</p>
+      ${field("sc:"+si+":image_prompt",`이미지 프롬프트 · ${esc(S.form.imgTool)}`,"img","prompt",{extra:`<p class="ko">${esc(sc.image_ko)}</p>${imgNote}`})}
+      ${sc.video_prompt?field("sc:"+si+":video_prompt",`영상 프롬프트 · ${esc(S.form.vidTool)} · ${esc(sc.duration)}초`,"vid","prompt",{extra:`<p class="ko">카메라 · ${esc(sc.camera)}</p>${vidNote}`}):""}
+      ${nl?field("nl:"+li+":text","내레이션","nar","narr",{extra:nl.sfx?`<p class="ko">효과음 · ${esc(nl.sfx)}</p>`:""}):""}
+    </div></article>`}).join(""):"";
+
+  $("audio").innerHTML=N?`<div class="panel">${field("nr:voice","내레이션 목소리","nar","text")}</div><div class="panel">${field("nr:bgm","배경음악","nar","text")}</div><div class="panel">${field("nr:closing","엔딩 문구","nar","title")}</div>`:"";
+
+  const inst=(S.form.musicType||"").startsWith("배경음악");
+  $("vocal").disabled=inst;$("lyricLang").disabled=inst;
+  const M=S.music;
+  $("btnMusic").disabled=!p||!sample||busy;
+  $("btnMusic").textContent=M?"Suno 음악 전체 다시 만들기":"Suno 음악 프롬프트 만들기";
+  $("music").innerHTML=M?`<div class="suno-grid">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      ${field("mu:title",`Song Title ${S.example?'<span class="example">예시</span>':""}`,"mus","title",{panel:1,regen:1})}
+      ${field("mu:style","Style of Music","mus","prompt",{panel:1,regen:1,extra:`<p class="ko">${esc([M.len?M.len+"초":"",M.bpm?M.bpm+" BPM":""].filter(Boolean).join(" · "))}</p>`})}
+      ${field("mu:exclude","Exclude Styles","mus","prompt",{panel:1,regen:1})}
+      <div class="panel"><h4 style="margin:0 0 4px;font-size:13px;color:var(--muted);font-weight:500">영상 싱크 구성</h4><p style="margin:0;font-size:14px">${esc(M.structure)}</p>${M.tip?`<p class="ko" style="margin-top:8px">${esc(M.tip)}</p>`:""}</div>
+    </div>
+    ${field("mu:lyrics","Lyrics","mus","lyrics",{panel:1,regen:1,pre:M.inst?`<p class="ko">배경음악(가사 없음)으로 만들어 구조 태그만 있습니다. 가사가 필요하면 음악 용도를 바꿔 전체를 다시 만드세요.</p>`:""})}
+  </div>`:"";
+  wireFields();
+
+  document.querySelectorAll("[data-copy]").forEach(b=>b.onclick=()=>copy(b.dataset.copy));
+  $("btnCopyAll").disabled=!p;
+}
+
+function fileName(){const t=(pickedSyn()||{}).title||"기획서";return `공모전기획_${t.replace(/[\\/:*?"<>|\s]+/g,"_").slice(0,40)}.txt`;}
+function exportText(){
+  const f=S.form,p=pickedSyn(),P=S.plan,N=S.narr;const out=[];
+  out.push(`■ ${f.contest||"AI 영상 공모전"} 출품 기획서`,`주제: ${f.topic}`,`길이 ${f.length}초 · 비율 ${f.ratio} · 이미지 ${f.imgTool} · 영상 ${f.vidTool}`);
+  if(f.notes)out.push(`심사 기준·조건: ${f.notes}`);
+  if(p)out.push("",`■ 시놉시스 (${cName(S.picked.k)})`,`제목: ${p.title}`,`로그라인: ${p.logline}`,p.synopsis,`입상 포인트: ${p.hook}`,`톤: ${p.tone}`,p.fit&&p.fit.total?`적합도: ${p.fit.total}점 (${(p.fit.scores||[]).map(c=>c.name+" "+c.score).join(", ")})`:"");
+  if(S.analysis)out.splice(f.notes?4:3,0,"",`■ 주제 분석`,`키워드: ${(S.analysis.keywords||[]).join(", ")}`,`주최 측 의도: ${S.analysis.intent}`,`심사 포인트: ${S.analysis.judges}`,`피할 표현: ${S.analysis.avoid}`);
+  if(p&&p.script)out.push("","■ 전체 시나리오",p.script);
+  if(P){out.push("","■ 공통 스타일",P.style,"","■ 등장인물");(P.characters||[]).forEach(c=>out.push(`- ${c.name}: ${c.look}`));
+    out.push("","■ 장면");P.scenes.forEach(sc=>{const nl=N&&(N.lines||[]).find(l=>+l.no===+sc.no);
+      out.push("",`#${sc.no} [${sc.time}] ${sc.title}`,sc.action,`[이미지] ${sc.image_prompt}`);
+      if(sc.video_prompt)out.push(`[영상 ${sc.duration}초] ${sc.video_prompt}`,`[카메라] ${sc.camera}`);
+      if(nl)out.push(`[내레이션] ${nl.text}`,nl.sfx?`[효과음] ${nl.sfx}`:"");});}
+  if(N)out.push("","■ 사운드",`목소리: ${N.voice}`,`배경음악: ${N.bgm}`,`엔딩 문구: ${N.closing}`);
+  const M=S.music;if(M)out.push("","■ Suno 음악",`제목: ${M.title}`,M.len?`곡 길이: ${M.len}초`:"",`Style of Music: ${M.style}`,M.exclude?`Exclude Styles: ${M.exclude}`:"",`구성: ${M.structure}`,"[Lyrics]",M.lyrics);
+  return out.filter(x=>x!==undefined).join("\n");
+}
+
+render();
+})();
+</script>
+
+</body></html>

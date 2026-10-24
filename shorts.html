@@ -1,0 +1,1088 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body><div style="background:#0D0E11;color:#EEEBE4;font:13px/1.6 'Nanum Gothic','Apple SD Gothic Neo','Malgun Gothic',sans-serif;padding:10px max(16px,env(safe-area-inset-left,0px));display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between;border-bottom:1px solid #33363E"><span><b>데모 화면</b> · 이 도구는 Claude 안에서 AI가 글·대본·프롬프트를 생성합니다. 여기서는 예시 화면과 구성만 볼 수 있습니다.</span><span style="display:flex;gap:16px;flex-wrap:wrap"><a href="https://claude.ai/artifact/8xN6pz1gmHj6FKE6LYvkAS" target="_blank" rel="noopener" style="color:#D6B676;font-weight:700;text-decoration:none;white-space:nowrap">Claude에서 실행 ↗</a><a href="./" style="color:#EEEBE4;text-decoration:none;white-space:nowrap">← 포트폴리오로</a></span></div>
+<title>쇼핑쇼츠 제작실</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: 상단 탭(제작 / 바이럴 탐색 / 내 대본함). 제작 탭은 왼쪽 투입 패널 + 오른쪽 콘티 큐시트, 큐시트 옆에 9:16 미리보기 */
+:root{
+  --bg:#eef1f4; --paper:#ffffff; --ink:#151b26; --muted:#5d6878; --line:#d6dce4;
+  --accent:#0f6b6b; --accent-ink:#ffffff; --hook:#ffe08a; --hook-ink:#3d2e00;
+  --warn:#a3480e; --warn-bg:#fdf0e6; --chip:#e3e8ee;
+  --f-display:"Black Han Sans","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f141b; --paper:#171e28; --ink:#e7ecf2; --muted:#9aa6b6; --line:#2a3442;
+  --accent:#4cc3bf; --accent-ink:#06201f; --hook:#5a4612; --hook-ink:#ffe7a6;
+  --warn:#f0a36f; --warn-bg:#2e1f14; --chip:#232c38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --paper:#171e28; --ink:#e7ecf2; --muted:#9aa6b6; --line:#2a3442;
+  --accent:#4cc3bf; --accent-ink:#06201f; --hook:#5a4612; --hook-ink:#ffe7a6;
+  --warn:#f0a36f; --warn-bg:#2e1f14; --chip:#232c38; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;padding-inline:16px;padding-block:20px 48px}
+header.top{max-width:1240px;margin:0 auto 14px;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:flex-end;justify-content:space-between}
+h1{font-family:var(--f-display);font-weight:400;font-size:30px;letter-spacing:.5px;margin:0;line-height:1.2}
+.sub{color:var(--muted);font-size:14px;margin:0}
+nav.tabs{max-width:1240px;margin:0 auto 18px;display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto}
+nav.tabs button{font:inherit;font-weight:700;font-size:14px;padding:9px 16px;border:0;background:transparent;color:var(--muted);border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+nav.tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--accent)}
+.view{max-width:1240px;margin:0 auto}
+.wrap{display:grid;grid-template-columns:340px minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px;display:grid;gap:14px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+@media (max-width:900px){.panel{position:static}}
+label,.lbl{font-size:13px;font-weight:700;display:block;margin-bottom:5px}
+.hint{font-size:12px;color:var(--muted);margin-top:4px}
+input[type=text],input[type=url]{width:100%;font:inherit;padding:9px 11px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--ink)}
+input:focus-visible,textarea:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1;font:inherit;font-size:13px;padding:7px 4px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:7px;cursor:pointer;min-width:0}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.seg.style button{display:grid;gap:1px;text-align:center}
+.seg.style small{font-size:11px;opacity:.75}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{font:inherit;font-size:12.5px;padding:4px 10px;border-radius:99px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer}
+.chips button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.drop{border:1.5px dashed var(--line);border-radius:8px;padding:12px;text-align:center;font-size:13px;color:var(--muted);cursor:pointer;display:grid;gap:8px;justify-items:center}
+.drop.has{border-style:solid;border-color:var(--accent);color:var(--ink)}
+.drop.off{cursor:default;opacity:.7}
+.drop img{max-height:110px;border-radius:6px}
+.chk{display:flex;gap:9px;align-items:flex-start;font-size:13px}
+.chk input{margin-top:4px;accent-color:var(--accent)}
+.go{font:inherit;font-weight:700;font-size:16px;padding:12px;border:0;border-radius:8px;background:var(--accent);color:var(--accent-ink);cursor:pointer}
+.go:disabled{opacity:.55;cursor:default}
+.ghost{font:inherit;font-size:13px;padding:6px 11px;border:1px solid var(--line);border-radius:6px;background:transparent;color:var(--ink);cursor:pointer;white-space:nowrap}
+.ghost.sm{font-size:12px;padding:3px 9px}
+.ghost.danger{color:var(--warn);border-color:var(--warn)}
+.zhRow{display:flex;align-items:center;gap:8px;margin-top:6px;padding:7px 10px;border:1px dashed var(--line);border-radius:7px;background:var(--paper);min-width:0}
+.zhLbl{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.04em;flex:none}
+.zhOut{flex:1;min-width:0;font-size:14px;overflow-wrap:anywhere;color:var(--ink)}
+.zhOut.idle{color:var(--muted);font-size:12px}
+.status{font-size:13px;color:var(--muted);min-height:1.2em}
+.status.err{color:var(--warn)}
+.steps{display:flex;gap:6px;flex-wrap:wrap;font-size:12px}
+.steps span{padding:3px 9px;border-radius:99px;border:1px solid var(--line);color:var(--muted)}
+.steps span.on{border-color:var(--accent);color:var(--accent);font-weight:700}
+.steps span.done{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+main.out{display:grid;gap:18px;min-width:0}
+.sheet{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:20px;min-width:0}
+.sheet h2{font-family:var(--f-display);font-weight:400;font-size:21px;margin:0 0 12px;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;text-wrap:balance}
+.tag{font-family:var(--f-body);font-size:11px;letter-spacing:.06em;padding:2px 8px;border-radius:4px;background:var(--warn-bg);color:var(--warn);font-weight:700}
+.kv{display:grid;grid-template-columns:110px minmax(0,1fr);gap:6px 14px;font-size:14px;margin:0}
+.kv dt{color:var(--muted)} .kv dd{margin:0}
+.flag{margin-top:12px;font-size:13px;background:var(--warn-bg);color:var(--warn);padding:9px 12px;border-radius:7px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:620px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:700}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.angles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.angle{border:1px solid var(--line);border-radius:8px;padding:14px;display:grid;gap:8px;align-content:start;background:var(--bg)}
+.angle.cur{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.angle .nm{font-weight:700}
+.angle .hk{background:var(--hook);color:var(--hook-ink);padding:6px 9px;border-radius:5px;font-size:14px}
+.angle .why{font-size:13px;color:var(--muted)}
+.badge{font-size:11px;font-weight:700;color:var(--accent)}
+.angle button{justify-self:start}
+.scriptGrid{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:22px;align-items:start}
+@media (max-width:1100px){.scriptGrid{grid-template-columns:minmax(0,1fr)}}
+.row{display:grid;grid-template-columns:84px minmax(0,1fr) minmax(0,1.3fr) minmax(0,.8fr);gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px;cursor:pointer}
+.row.head{font-size:12px;color:var(--muted);font-weight:700;padding-top:0;cursor:default}
+.row.playing{background:linear-gradient(90deg,var(--hook) 0 4px,transparent 4px)}
+.row .t{font-family:var(--f-mono);font-size:12.5px;color:var(--accent);font-variant-numeric:tabular-nums}
+.row .sc{color:var(--muted);font-size:13px}
+.row .cap{font-weight:700}
+.row.first .na{background:var(--hook);color:var(--hook-ink);padding:2px 6px;border-radius:4px;justify-self:start}
+@media (max-width:640px){.row{grid-template-columns:70px minmax(0,1fr)}.row .sc,.row .cap{grid-column:2}.row.head{display:none}}
+.full{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:14px;font-size:15px;line-height:1.8;white-space:pre-wrap}
+.meta{display:flex;gap:10px;align-items:center;font-size:12px;color:var(--muted);margin-top:8px;flex-wrap:wrap}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+/* 9:16 미리보기 */
+.pv{display:grid;gap:10px;justify-items:center}
+.phone{width:100%;max-width:250px;aspect-ratio:9/16;border-radius:22px;overflow:hidden;position:relative;background:#111;border:6px solid #0b0d10;container-type:inline-size}
+.phone .bgimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.9}
+.phone .bgfill{position:absolute;inset:0;background:repeating-linear-gradient(135deg,#2a313b 0 14px,#262c35 14px 28px)}
+.phone .bgnote{position:absolute;inset:40% 10% auto;text-align:center;color:#8e98a6;font-size:6cqi}
+.ov{position:absolute;left:0;right:0;text-align:center;padding:0 6cqi;font-family:var(--f-display);line-height:1.18;word-break:keep-all}
+.ov.top{top:0;padding-top:9cqi;padding-bottom:5cqi;font-size:8.6cqi}
+.ov.center{top:42%;transform:translateY(-50%);font-size:9.6cqi}
+.ov.sub{bottom:22%;font-family:var(--f-body);font-weight:700;font-size:6.6cqi}
+.ov.bottom{bottom:0;padding-bottom:8cqi;padding-top:4cqi;font-family:var(--f-body);font-weight:700;font-size:5.4cqi}
+.ov .ln2{display:block}
+/* 템플릿 3종 (영상 위 고정 색, 테마 무관) */
+.tp-black .top{background:#000;color:#fff} .tp-black .top .ln2{color:#ffd400}
+.tp-black .center{color:#fff;text-shadow:0 0 3px #000,0 0 8px #000}
+.tp-black .sub span{background:rgba(0,0,0,.72);color:#fff;padding:1cqi 2.4cqi;border-radius:1.5cqi;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.tp-black .bottom{background:#000;color:#fff}
+.tp-white .top{background:#fff;color:#111} .tp-white .top .ln2{color:#e0245e}
+.tp-white .center{color:#111;background:rgba(255,255,255,.9);margin:0 6cqi;border-radius:3cqi;padding:3cqi}
+.tp-white .sub span{background:#fff;color:#111;padding:1cqi 2.4cqi;border-radius:1.5cqi;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.tp-white .bottom{background:#fff;color:#111}
+.tp-yellow .top{background:#ffd400;color:#111} .tp-yellow .top .ln2{color:#c4001a}
+.tp-yellow .center{color:#ffd400;-webkit-text-stroke:.6cqi #000;paint-order:stroke fill}
+.tp-yellow .sub span{color:#fff;-webkit-text-stroke:.5cqi #000;paint-order:stroke fill}
+.tp-yellow .bottom{background:#ffd400;color:#111}
+.prog{width:100%;max-width:250px;height:4px;background:var(--line);border-radius:2px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--accent)}
+.pvctl{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;align-items:center}
+.pvtime{font-family:var(--f-mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+/* 문구 세트 */
+.screenSet{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.cell{border:1px solid var(--line);border-radius:8px;padding:12px;display:grid;gap:6px;background:var(--bg);align-content:start}
+.cell h3{font-size:12px;color:var(--muted);margin:0;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.cell .v{font-weight:700;white-space:pre-wrap}
+.ptabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.blk{display:grid;gap:6px;margin-bottom:14px}
+.blk h3{font-size:13px;margin:0;color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.box{background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:10px 12px;white-space:pre-wrap;font-size:14px;overflow-wrap:anywhere}
+ol.titles{margin:0;padding-left:20px;display:grid;gap:4px}
+.example{font-size:12px;color:var(--warn);font-weight:700;margin:0 0 10px}
+.live{white-space:pre-wrap;font-family:var(--f-mono);font-size:12px;color:var(--muted);max-height:160px;overflow:auto;background:var(--bg);border-radius:7px;padding:10px;margin-bottom:10px}
+.busy main.out .sheet.res{opacity:.45}
+/* 탐색 / 대본함 */
+.searchBar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.searchBar input{flex:1 1 220px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.vcard{background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:14px;display:grid;gap:7px;align-content:start;min-width:0}
+.vcard .plat{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.04em}
+.vcard .ttl{font-weight:700;overflow-wrap:anywhere}
+.vcard .st{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.vcard .hk{font-size:13px;background:var(--hook);color:var(--hook-ink);padding:5px 8px;border-radius:5px}
+.vcard .btns{display:flex;gap:6px;flex-wrap:wrap}
+.vcard a{color:var(--accent)}
+.empty{background:var(--paper);border:1px dashed var(--line);border-radius:10px;padding:28px;text-align:center;color:var(--muted)}
+.lib{display:grid;gap:8px}
+.kitCtl{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.kitCtl .seg{flex:0 0 auto}
+.kitCtl .seg button{flex:0 0 auto;padding:7px 14px}
+.kits{display:grid;gap:10px}
+details.kit{border:1px solid var(--line);border-radius:9px;background:var(--bg);min-width:0}
+details.kit>summary{list-style:none;cursor:pointer;padding:12px 14px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 12px;align-items:center}
+details.kit>summary::-webkit-details-marker{display:none}
+details.kit[open]>summary{border-bottom:1px solid var(--line)}
+.kfmt{font-size:11px;font-weight:700;letter-spacing:.03em;padding:3px 8px;border-radius:4px;background:var(--ink);color:var(--paper);white-space:nowrap}
+.ksum{min-width:0}
+.ksum .kt{font-weight:700;overflow-wrap:anywhere}
+.ksum .kc{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.kchev{color:var(--muted);font-size:12px}
+details.kit[open] .kchev{transform:rotate(180deg)}
+.kbody{padding:14px;display:grid;gap:4px;min-width:0}
+.kpair{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:10px}
+.kpair .cell .v{font-size:16px}
+.kscript{white-space:pre-wrap;line-height:1.85}
+.vp{font-family:var(--f-mono);font-size:12px;line-height:1.6}
+details.vpd{margin-top:4px}
+details.vpd>summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--accent);padding:4px 0}
+.libItem{background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:12px 14px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;align-items:center}
+.libItem .nm{font-weight:700;overflow-wrap:anywhere}
+.libItem .sm{font-size:12px;color:var(--muted)}
+.libItem .btns{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+@media (prefers-reduced-motion:no-preference){.sheet{transition:opacity .2s}}
+</style>
+
+<header class="top">
+  <div>
+    <h1>쇼핑쇼츠 제작실</h1>
+    <p class="sub">상품 투입 → 소재 발굴 → 내레이션 대본 → 자막·문구. 영상 편집은 CapCut·Vrew에서.</p>
+  </div>
+  <div class="steps" id="steps"><span data-s="1">① 상품</span><span data-s="2">② 소재</span><span data-s="3">③ 대본</span><span data-s="4">④ 자막·문구</span></div>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button role="tab" aria-selected="true" data-tab="make" id="tab-make">제작</button>
+  <button role="tab" aria-selected="false" data-tab="explore" id="tab-explore">바이럴 탐색</button>
+  <button role="tab" aria-selected="false" data-tab="lib" id="tab-lib">내 대본함</button>
+</nav>
+
+<!-- 제작 -->
+<section class="view" id="view-make">
+<div class="wrap">
+  <form class="panel" id="form" autocomplete="off">
+    <div>
+      <label for="link">상품 링크</label>
+      <input type="url" id="link" placeholder="https://link.coupang.com/a/...">
+      <div class="hint" id="shopHint">쿠팡·토스 링크. 업로드 문구에 그대로 들어갑니다.</div>
+    </div>
+    <div>
+      <label for="pname">상품명 (필수)</label>
+      <input type="text" id="pname" placeholder="예: 실리콘 싱크대 물막이">
+      <div class="zhRow">
+        <span class="zhLbl">中文</span>
+        <output id="pnameZh" class="zhOut" aria-live="polite">상품명을 입력하면 간체로 자동 번역됩니다</output>
+        <button type="button" class="ghost sm" id="zhCopy" hidden>복사</button>
+      </div>
+    </div>
+    <div>
+      <label for="pinfo">가격·특징 메모</label>
+      <input type="text" id="pinfo" placeholder="예: 8,900원, 55% 할인, 로켓배송">
+    </div>
+    <div>
+      <span class="lbl">상품 캡처 (권장)</span>
+      <div class="drop" id="drop" tabindex="0" role="button" aria-label="캡처 이미지 선택">
+        <span id="dropTxt">끌어다 놓기 · 눌러서 선택 · Ctrl+V</span>
+        <img id="dropImg" alt="" hidden>
+      </div>
+      <input type="file" id="cap" accept="image/png,image/jpeg,image/webp" hidden>
+    </div>
+    <div>
+      <span class="lbl">대본 스타일</span>
+      <div class="seg style" id="styleSeg">
+        <button type="button" data-v="honey" aria-pressed="true">꿀템형<small>몰랐지?</small></button>
+        <button type="button" data-v="twist" aria-pressed="false">충격반전형<small>의심→반전</small></button>
+        <button type="button" data-v="honest" aria-pressed="false">솔직리뷰형<small>써보니</small></button>
+      </div>
+    </div>
+    <div>
+      <span class="lbl">타깃층</span>
+      <div class="chips" id="targetChips"></div>
+      <input type="text" id="targetEtc" placeholder="직접 입력 (선택)" style="margin-top:6px">
+    </div>
+    <div>
+      <span class="lbl">영상 길이</span>
+      <div class="seg" id="lenSeg">
+        <button type="button" data-v="15" aria-pressed="false">15초</button>
+        <button type="button" data-v="30" aria-pressed="true">30초</button>
+        <button type="button" data-v="45" aria-pressed="false">45초</button>
+      </div>
+    </div>
+    <div>
+      <label for="refLink">레퍼런스 영상 링크 (선택)</label>
+      <input type="url" id="refLink" placeholder="터진 영상 링크">
+      <div class="hint">유튜브 링크는 vidIQ로 대사를 읽어 구조를 분석합니다(5크레딧). 틱톡·인스타는 링크만 참고합니다.</div>
+    </div>
+    <div>
+      <label for="refText">레퍼런스 내용 붙여넣기 (선택)</label>
+      <textarea id="refText" rows="3" placeholder="샤오홍슈·도우인 영상 제목, 자막, 설명 (중국어 그대로 OK)" style="width:100%;font:inherit;font-size:13px;padding:9px 11px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--ink);resize:vertical"></textarea>
+    </div>
+    <label class="chk" id="vidiqWrap" hidden>
+      <input type="checkbox" id="useVidiq" checked>
+      <span>vidIQ로 실제 터진 영상 찾기<br><span class="hint">틱톡·릴스·유튜브 검색, 약 10크레딧</span></span>
+    </label>
+    <button class="go" id="go" type="submit">소재 발굴 + 대본 만들기</button>
+    <div class="status" id="status" role="status"></div>
+  </form>
+  <main class="out" id="out" aria-live="polite"></main>
+</div>
+</section>
+
+<!-- 탐색 -->
+<section class="view" id="view-explore" hidden>
+  <div class="sheet" style="margin-bottom:18px">
+    <h2>중국 숏폼 찾기 · 샤오홍슈 / 도우인</h2>
+    <p class="hint" style="margin:0 0 10px">상품명을 넣으면 현지에서 실제로 쓰는 간체 검색어로 바꿔 드립니다. 버튼을 누르면 해당 앱 검색 결과가 새 탭으로 열립니다. 마음에 드는 영상의 제목·자막을 복사해 제작 탭 '레퍼런스 내용'에 붙이면 구조를 분석해 대본에 반영합니다.</p>
+    <form class="searchBar" id="cnForm" style="margin-bottom:10px">
+      <input type="text" id="cnQ" placeholder="상품명 (예: 실리콘 싱크대 물막이)">
+      <button class="go" type="submit" id="cnGo" style="padding:9px 18px;font-size:14px">중국어로 찾기</button>
+    </form>
+    <div class="status" id="cnStatus"></div>
+    <div class="cards" id="cnCards"></div>
+  </div>
+  <h2 style="font-family:var(--f-display);font-weight:400;font-size:21px;margin:0 0 10px">vidIQ 바이럴 탐색 · 유튜브 / 틱톡 / 릴스</h2>
+  <form class="searchBar" id="exForm">
+    <input type="text" id="exQ" placeholder="카테고리나 키워드 (예: 주방 꿀템, 다이소, 자취템)">
+    <button class="go" type="submit" id="exGo" style="padding:9px 18px;font-size:14px">찾기</button>
+  </form>
+  <div class="status" id="exStatus"></div>
+  <div class="cards" id="exCards"></div>
+</section>
+
+<!-- 대본함 -->
+<section class="view" id="view-lib" hidden>
+  <div class="status" id="libStatus"></div>
+  <div class="lib" id="lib"></div>
+</section>
+
+<script>
+(() => {
+"use strict";
+const $ = s => document.querySelector(s);
+const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+
+const DISCLOSE = {
+  coupang: "이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.",
+  toss: "이 영상의 링크를 통해 구매 시 일정 수수료를 받을 수 있습니다.",
+  other: "이 영상의 링크를 통해 구매 시 일정 수수료를 받을 수 있습니다."
+};
+const STYLES = {
+  honey: { name: "꿀템형", desc: "'이거 모르면 손해' 발견·정보 톤. 생활 속 불편 → 이 템 하나로 해결, 신기함과 편리함을 강조." },
+  twist: { name: "충격반전형", desc: "처음엔 의심하거나 실패템을 보여준 뒤 반전으로 효과를 드러내는 구조. '광고템인 줄 알았는데', '이게 된다고?' 톤." },
+  honest: { name: "솔직리뷰형", desc: "직접 써본 사람 1인칭 후기 톤. 아쉬운 점 1개를 솔직히 인정한 뒤 그래도 사는 이유를 말해 신뢰를 얻는다." }
+};
+const FORMATS = {
+  review:   { name: "내돈내산 솔직리뷰", vibe: "'내 돈 주고 산' 신뢰형. 장단점·솔직 평가, 단점 하나 인정 후 그래도 쓰는 이유.", framing: "제품을 든 손과 제품 클로즈업이 주, 얼굴은 판정 리액션 1~2초만", seeds: "손으로 돌려보며 마감·재질 클로즈업 / 스펙 라벨 매크로→실제 작동으로 검증 / 비슷한 제품과 나란히 놓고 비교 / 한 달 쓴 사용감→재구매 각 / 단점 하나 짚고 그래도 쓰는 이유", style: "handheld real footage, natural daylight, hands holding and turning the product, honest review mood" },
+  unboxing: { name: "언박싱 / 하울", vibe: "택배 뜯는 순간의 설렘. 손과 포장이 전부.", framing: "얼굴 없이 손만, 탑다운 앵글", seeds: "탑다운으로 테이프 가르고 상자 여는 전 과정 / 완충재 걷자 제품이 드러나는 슬로우 리빌 / 구성품을 하나씩 꺼내 정렬 / 개봉 직후 표면을 쓸어보는 손", style: "top-down unboxing, hands only, parcel opening excitement, soft natural light" },
+  value:    { name: "가성비 비교 / 사용 시연", vibe: "'이 가격 실화?' 또는 비포&애프터. 제품이 실제로 일하는 장면.", framing: "인물 거의 없음, 같은 앵글 고정으로 변화 강조, 목소리만 얹어도 됨", seeds: "사용 전→작동→사용 후(앵글 고정) / 작동 부위 익스트림 클로즈업 / 손가락 하나로 누르자 반응하는 순간 / 가격표와 나란히 성능 시연", style: "fixed-angle before-and-after demo, product working in action, extreme close-up on the working part, minimal human presence" },
+  pick:     { name: "꿀템 추천 / 생활 속 배치", vibe: "'이건 진짜 사야 해' 추천템. 일상 공간에 제품이 놓인 그림.", framing: "공간과 제품이 주, 인물은 스쳐 지나가거나 손만", seeds: "방 전경 와이드→제품 줌인 / 일상 루틴 속 제품 쓰는 손 / '이거 뭐냐면' 손으로 가리키기 / 제품 있는 공간 vs 없는 공간 대비 / 선물 포장 클로즈업", style: "lifestyle shot in a Korean home, wide to close zoom on the product, hands only, warm natural light" },
+  asmr:     { name: "ASMR 언박싱 / 작동음", vibe: "소리 주도 클로즈업. 인물 등장 없음이 기본, 대사 없음.", framing: "손 외에는 사람 없음, 매크로", seeds: "테이프 뜯는 소리+상자 개봉 / 포장 비닐·에어캡 소리 / 전원·작동음 / 표면 탭핑·회전 소리 / 제품 고유 작동음, 무음악", style: "intimate macro close-up ASMR, no music, product sounds only, hands only" }
+};
+const FORMAT_ORDER = ["review", "unboxing", "value", "pick", "asmr"];
+const TARGETS = ["주부", "자취생", "신혼부부", "직장인", "아이 부모", "2030 여성", "4050", "시니어"];
+
+// ---------- 예시 (실제 테스트: 실리콘 싱크대 물막이) ----------
+const EXAMPLE = {
+  example: true,
+  input: { link: "https://link.coupang.com/a/hv8uLjhj6y", shop: "coupang", name: "달팽이리빙 퀴진드마망 실리콘 싱크대 물막이", len: 30, style: "honey", targets: ["주부", "자취생", "신혼부부"] },
+  product: { oneLine: "싱크대 가장자리에 세워 설거지 물튀김을 막는 실리콘 물막이", features: ["말랑한 실리콘 소재", "52.5×7cm, 크림화이트", "세워두기만 하면 끝"], pain: "설거지할 때마다 조리대로 물이 튀어 매번 행주로 닦아야 함", price: "8,900원 (정가 20,000원, 55% 할인), 로켓배송", target: "매일 손설거지하는 주부, 자취생, 신혼부부", unverified: ["흡착판 유무", "정확한 평점·리뷰 수"] },
+  references: [
+    { platform: "인스타", who: "@megsdailyfinds", views: "350만", hook: "싱크대가 애들보다 더 어지른다", structure: "설치 → 시연", url: "" },
+    { platform: "틱톡", who: "@dukaanza.store", views: "310만", hook: "왜 모든 싱크대에 이게 없지? + 광고템인 줄 알았는데", structure: "의심 → 반전 → 시연 (내레이션)", url: "https://www.tiktok.com/@dukaanza.store/video/7683616660908985601" },
+    { platform: "유튜브", who: "살림설렘", views: "25만", hook: "5천원 퀄리티 실화야?", structure: "저가 반전 → 사용", url: "https://www.youtube.com/watch?v=n8F4OKBeCqk" }
+  ],
+  pattern: "크게 터진 영상은 모두 '짜증나는 상황 → 해결' 구조. 내레이션형은 '왜 이걸 이제 알았지' 계열 후킹이 공통.",
+  angles: [
+    { name: "왜 이제 알았지형", hook: "설거지할 때마다 옷 앞자락 젖는 분, 이거 보세요.", why: "해외 300만대 영상 2개의 공통 구조" },
+    { name: "만 원 이하 반전형", hook: "9천 원도 안 되는데 주방 스트레스가 사라짐.", why: "국내 다이소템 쇼츠에서 검증된 가격 반전" },
+    { name: "자취·신혼 필수템형", hook: "자취방 주방에 제일 먼저 사야 할 거.", why: "꿀템 묶음형 쇼츠에서 반응 좋은 포맷" }
+  ],
+  recommended: 0, recReason: "같은 카테고리에서 가장 크게 터진 구조",
+  script: { angle: 0, rows: [
+    { scene: "설거지 중 물이 조리대로 튀는 클로즈업", narration: "설거지할 때마다 옷 앞자락 젖는 분, 이거 보세요.", caption: "옷 다 젖는 분 🙋‍♀️" },
+    { scene: "물 고인 조리대를 행주로 닦는 손", narration: "설거지 한 번 하면 조리대는 물바다, 행주로 또 닦고. 매일 반복이죠.", caption: "매일 물바다 😩" },
+    { scene: "물막이를 싱크대 가장자리에 세우는 장면", narration: "그래서 싱크대 가장자리에 이 실리콘 물막이 하나 세워봤어요.", caption: "이거 하나 세우면" },
+    { scene: "같은 각도로 설거지, 물이 막히는 슬로우 / 마른 조리대", narration: "튀던 물이 여기서 딱 막히고, 조리대는 그대로 뽀송해요.", caption: "조리대 그대로 뽀송 ✨" },
+    { scene: "물막이를 행주로 쓱 닦는 장면 + 주방 전체 샷", narration: "말랑한 실리콘이라 쓱 닦으면 끝이고, 크림 화이트라 주방도 깔끔해 보여요. 가격은 만 원도 안 해요.", caption: "만 원 이하" },
+    { scene: "상품 정면 샷 + 손가락으로 아래 가리키기", narration: "왜 이제 알았나 싶은 템, 고정댓글 링크 확인하세요.", caption: "링크는 고정댓글 👇" }
+  ], shootTip: "물 튀는 장면과 막히는 장면을 같은 각도로 찍어 비포·애프터를 보여주는 게 핵심." },
+  screen: { topTitle: ["설거지할 때 옷 젖는 분", "이거 하나면 끝"], centerHook: "아직도 행주로 닦아요?", bottomText: "링크는 고정댓글 👇", thumbnail: ["조리대 물바다", "9천원으로 끝"] },
+  kits: [
+    { format: "review", concept: "한 달 써보고 단점 하나 인정하는 솔직 후기", thumbnail: "9천원으로 행주 졸업", title: "한 달 써본 물막이 후기", script: "(조리대 물바다를 보며 한숨) 남편이 설거지만 하면 조리대가 물바다였거든요. 행주 들고 따라다니다가 이거 하나 세웠어요. (튀는 물이 막히는 걸 손가락으로 가리키며) 한 달 써보니 단점은 하나, 가끔 위치를 다시 잡아줘야 해요. 그래도 행주 들 일이 없어졌어요. 궁금하면 아래에서 확인해보세요.", ytDesc: "설거지할 때마다 조리대로 튀는 물, 싱크대 물막이 하나로 정리했어요.\n실리콘 싱크대 물막이 한 달 사용 후기, 좋은 점과 아쉬운 점 솔직하게 담았어요.\n싱크대 물막이 고민 중이면 참고해 보세요.\n#주방꿀템 #싱크대물막이 #살림템 #내돈내산 #주방용품", seoTags: ["싱크대물막이", "주방꿀템", "살림템", "내돈내산", "설거지꿀팁", "실리콘물막이", "주방용품추천", "자취템", "신혼살림", "물튀김방지"], tiktok: "조리대 물바다 끝낸 9천원템 💧 링크는 프로필에!", instagram: "설거지만 하면 조리대 물바다였던 분 🙋‍♀️\n한 달 써본 솔직 후기 남겨요.\n제품 링크는 프로필 링크에 있어요 🔗", sceneEn: "Hands turn a cream-white silicone sink splash guard to show its soft texture, then place it on the sink edge as water from dish washing splashes against it and the countertop stays dry.", setting: "Kitchen", spokenKo: "한 달 써보니 행주 들 일이 없어졌어요." }
+  ],
+  platforms: {
+    youtube: { titles: ["설거지할 때 옷 젖는 분, 이거 하나면 끝", "왜 이걸 이제 알았지? 9천원 주방템", "조리대 물바다 끝내준 실리콘 물막이"], description: "설거지할 때 조리대로 튀는 물, 이제 신경 안 써도 돼요 💧\n싱크대 가장자리에 세우기만 하면 끝!", hashtags: ["#주방꿀템", "#싱크대물막이", "#살림꿀템", "#설거지꿀팁", "#자취꿀템", "#shorts"], pinned: "영상 속 싱크대 물막이는 여기 있어요" },
+    instagram: { caption: "설거지만 하면 조리대 물바다 되는 분 🙋‍♀️\n싱크대에 이거 하나 세웠더니 행주 들 일이 없어졌어요.\n\n제품 링크는 프로필 링크에 있어요 🔗", hashtags: ["#주방꿀템", "#살림템", "#싱크대물막이", "#주방인테리어", "#신혼살림", "#자취템"] },
+    tiktok: { caption: "왜 이걸 이제 알았지 😭 설거지 물튀김 끝", hashtags: ["#주방꿀템", "#살림꿀팁", "#틱톡쇼핑", "#자취템"] }
+  }
+};
+
+// ---------- state ----------
+const state = { len: 30, style: "honey", targets: new Set(["주부"]), file: null, fileUrl: "", result: null, busy: false, docId: null };
+let sampleFn = null, mcp = null, imagesOK = false, downloads = null, db = null, userCol = null;
+
+const shopOf = link => /coupang\.com/i.test(link) ? "coupang" : /toss\./i.test(link) ? "toss" : "other";
+const ytId = u => { const m = String(u || "").match(/(?:youtu\.be\/|v=|shorts\/)([\w-]{11})/); return m ? m[1] : null; };
+function setStatus(msg, err, id = "#status") { const s = $(id); s.textContent = msg || ""; s.classList.toggle("err", !!err); }
+function setStep(n, doneUpto) { for (const s of document.querySelectorAll("#steps span")) { const k = Number(s.dataset.s); s.className = k <= doneUpto ? "done" : k === n ? "on" : ""; } }
+function errCopy(code) {
+  return ({ not_granted: "Claude 사용 허용이 필요합니다. 페이지를 새로 열고 허용을 눌러주세요.", sampling_disabled: "이 계정에서는 페이지 안에서 Claude를 쓸 수 없습니다.", rate_limited: "요청이 많습니다. 잠시 뒤 다시 눌러주세요.", session_expired: "로그인이 만료됐습니다. 다시 로그인해주세요.", image_rejected: "캡처를 읽지 못했습니다. PNG나 JPG로 다시 넣어주세요.", invalid_json: "결과 형식이 깨졌습니다. 한 번 더 눌러주세요.", refused: "이 내용으로는 대본을 만들 수 없었습니다. 상품명을 바꿔 다시 시도해주세요.", prompt_too_large: "입력이 너무 깁니다. 메모를 줄여주세요." })[code] || "일시적인 오류입니다. 다시 눌러주세요.";
+}
+
+// ---------- tabs ----------
+document.querySelector("nav.tabs").addEventListener("click", e => {
+  const b = e.target.closest("button[data-tab]"); if (!b) return; showTab(b.dataset.tab);
+});
+function showTab(t) {
+  for (const b of document.querySelectorAll("nav.tabs button")) b.setAttribute("aria-selected", b.dataset.tab === t ? "true" : "false");
+  for (const v of ["make", "explore", "lib"]) $("#view-" + v).hidden = v !== t;
+}
+
+// ---------- form wiring ----------
+function segWire(id, key, num) {
+  $(id).addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    state[key] = num ? Number(b.dataset.v) : b.dataset.v;
+    for (const x of $(id).children) x.setAttribute("aria-pressed", x === b ? "true" : "false");
+  });
+}
+segWire("#lenSeg", "len", true); segWire("#styleSeg", "style", false);
+TARGETS.forEach(t => { const b = el("button", null, t); b.type = "button"; b.setAttribute("aria-pressed", state.targets.has(t) ? "true" : "false"); b.onclick = () => { state.targets.has(t) ? state.targets.delete(t) : state.targets.add(t); b.setAttribute("aria-pressed", state.targets.has(t) ? "true" : "false"); }; $("#targetChips").append(b); });
+$("#link").addEventListener("input", () => {
+  const s = shopOf($("#link").value);
+  $("#shopHint").textContent = s === "coupang" ? "쿠팡 링크 확인. 파트너스 고지문이 자동으로 붙습니다." : s === "toss" ? "토스 링크 확인. 앱 전용이라 캡처를 꼭 같이 주세요." : "쿠팡·토스 링크. 업로드 문구에 그대로 들어갑니다.";
+});
+const drop = $("#drop"), fileIn = $("#cap");
+drop.addEventListener("click", () => { if (!drop.classList.contains("off")) fileIn.click(); });
+drop.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && !drop.classList.contains("off")) { e.preventDefault(); fileIn.click(); } });
+drop.addEventListener("dragover", e => e.preventDefault());
+drop.addEventListener("drop", e => { e.preventDefault(); if (e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]); });
+fileIn.addEventListener("change", () => { if (fileIn.files[0]) setFile(fileIn.files[0]); });
+document.addEventListener("paste", e => { const f = [...(e.clipboardData?.files || [])].find(f => f.type.startsWith("image/")); if (f) setFile(f); });
+function setFile(f) {
+  state.file = f; if (state.fileUrl) URL.revokeObjectURL(state.fileUrl); state.fileUrl = URL.createObjectURL(f);
+  $("#dropImg").src = state.fileUrl; $("#dropImg").hidden = false; drop.classList.add("has");
+  $("#dropTxt").textContent = f.name + " · 다시 누르면 교체";
+  if (state.result) renderPreviewBg();
+}
+
+// ---------- capabilities ----------
+(async () => {
+  try { sampleFn = await window.claude?.use?.("sample"); if (sampleFn) { const lim = await sampleFn.limits().catch(() => null); imagesOK = !!lim?.images; } } catch (e) { sampleFn = null; }
+  if (!sampleFn) { $("#go").disabled = true; $("#exGo").disabled = true; $("#cnGo").disabled = true; setStatus("이 화면에서는 Claude를 부를 수 없습니다. claude.ai에서 열어주세요.", true); }
+  if (sampleFn && !imagesOK) { $("#dropTxt").textContent = "이 화면에서는 캡처 분석이 안 됩니다. 메모를 채워주세요."; drop.classList.add("off"); }
+})();
+(async () => {
+  try { mcp = await window.claude?.use?.("mcp"); } catch (e) { mcp = null; }
+  if (mcp) $("#vidiqWrap").hidden = false;
+  renderExploreEmpty();
+})();
+(async () => { try { downloads = await window.claude?.use?.("downloads"); } catch (e) { downloads = null; } if (state.result) render(state.result); })();
+(async () => {
+  try {
+    db = await window.claude?.use?.("db");
+    const user = await window.claude?.use?.("user");
+    const uid = user ? await user.id() : null;
+    if (db && uid) userCol = db.collection("data/users/" + uid);
+  } catch (e) { userCol = null; }
+  startLibrary();
+})();
+
+// ---------- timing ----------
+const syl = s => String(s || "").replace(/[\s.,!?…~'"“”‘’()\-·:;]/g, "").replace(/\p{Extended_Pictographic}/gu, "").length;
+function timeline(rows, len) {
+  const w = rows.map(r => Math.max(3, syl(r.narration)));
+  const sum = w.reduce((a, b) => a + b, 0) || 1;
+  let t = 0;
+  return rows.map((r, i) => { const s = t; t += len * w[i] / sum; return { ...r, start: s, end: i === rows.length - 1 ? len : t }; });
+}
+function splitChunks(text) {
+  const out = [];
+  String(text || "").split(/(?<=[.!?…])\s+/).forEach(sent => {
+    sent = sent.trim(); if (!sent) return;
+    if (sent.length <= 22) { out.push(sent); return; }
+    const parts = sent.split(/(?<=,)\s+/);
+    let cur = "";
+    parts.forEach(p => {
+      if (!cur) cur = p; else if ((cur + " " + p).length <= 22) cur += " " + p; else { out.push(cur); cur = p; }
+    });
+    if (cur) {
+      while (cur.length > 26) { const mid = cur.lastIndexOf(" ", 20) > 6 ? cur.lastIndexOf(" ", 20) : cur.indexOf(" ", 12); if (mid < 0) break; out.push(cur.slice(0, mid)); cur = cur.slice(mid + 1); }
+      out.push(cur);
+    }
+  });
+  return out;
+}
+function subtitleCues(rows) {
+  const cues = [];
+  rows.forEach(r => {
+    const ch = splitChunks(r.narration); const w = ch.map(c => Math.max(2, syl(c))); const sum = w.reduce((a, b) => a + b, 0) || 1;
+    let t = r.start; ch.forEach((c, i) => { const d = (r.end - r.start) * w[i] / sum; cues.push({ start: t, end: t + d, text: c }); t += d; });
+  });
+  return cues;
+}
+const fmt = s => { const v = Math.max(0, s); return (v < 10 ? "" : "") + v.toFixed(1).replace(/\.0$/, "") + "초"; };
+const srtTime = s => { const ms = Math.round(s * 1000); const h = Math.floor(ms / 3600000), m = Math.floor(ms / 60000) % 60, sec = Math.floor(ms / 1000) % 60, r = ms % 1000; const p = (n, l = 2) => String(n).padStart(l, "0"); return `${p(h)}:${p(m)}:${p(sec)},${p(r, 3)}`; };
+const toSRT = cues => cues.map((c, i) => `${i + 1}\n${srtTime(c.start)} --> ${srtTime(Math.max(c.start + .3, c.end - .02))}\n${c.text}\n`).join("\n");
+
+// ---------- vidIQ ----------
+function mcpNote(e) {
+  const c = e?.code;
+  if (c === "server_not_connected" || c === "not_in_manifest") return "vidIQ 연결이 없어 실제 영상 검색을 건너뛰었습니다 (claude.ai 설정 → 커넥터에서 vidIQ 추가).";
+  if (c === "needs_reauth") return "vidIQ 재연결이 필요합니다 (claude.ai 설정 → 커넥터).";
+  if (c === "tool_error") return "vidIQ 오류: " + String(e.message || "").slice(0, 120);
+  return "vidIQ 호출을 완료하지 못했습니다.";
+}
+async function searchQueries(name) {
+  try {
+    return await sampleFn.json(`쇼핑 상품/키워드: "${name}"\n틱톡·릴스·유튜브에서 이 상품(또는 같은 불편을 해결하는 상품)의 바이럴 영상을 찾을 검색어를 만들어라.\nJSON만: {"en":"영어 컨셉 문장 (예: silicone sink splash guard stops water splashing on counter)","ko":"한국어 짧은 검색어 2~3단어"}`, { modelTier: "quick" });
+  } catch (e) { if (e.code === "not_granted") throw e; return { en: name, ko: name }; }
+}
+async function outlierRaw(en) {
+  const r = await mcp.callTool("vidIQ", "vidiq_instagram_tiktok_outlier_search", { query: String(en).slice(0, 400), audienceQuery: "Culture/Region: Global; Global: true; Demographics: home and lifestyle shoppers 20-50 interested in useful gadgets;", resultsPerPlatform: 5 });
+  return typeof r.payload === "string" ? r.payload : JSON.stringify(r.payload ?? r.content);
+}
+async function ytRaw(ko) {
+  const since = new Date(Date.now() - 180 * 864e5).toISOString().slice(0, 19) + "Z";
+  const r = await mcp.callTool("vidIQ", "vidiq_youtube_search", { query: String(ko).slice(0, 100), regionCode: "KR", order: "viewCount", type: ["video"], videoDuration: "short", limit: 10, publishedAfter: since });
+  const p = r.payload;
+  return (p && Array.isArray(p.results)) ? p.results.map(v => ({ title: v.title, channel: v.channelTitle, views: v.viewCount, url: v.id ? "https://www.youtube.com/watch?v=" + v.id : "", desc: String(v.description || "").slice(0, 160) })) : [];
+}
+async function findVirals(name) {
+  const notes = []; const q = await searchQueries(name); let out = "";
+  try { out += "[틱톡·인스타 아웃라이어]\n" + (await outlierRaw(q.en || name)).slice(0, 7000) + "\n\n"; } catch (e) { notes.push(mcpNote(e)); }
+  try { out += "[유튜브 쇼츠 조회수순]\n" + JSON.stringify(await ytRaw(q.ko || name)).slice(0, 4000); } catch (e) { notes.push(mcpNote(e)); }
+  return { data: out.trim(), notes: [...new Set(notes)] };
+}
+async function refAnalysis(url) {
+  if (!url) return { text: "", note: "" };
+  const id = ytId(url);
+  if (id && mcp) {
+    try {
+      const r = await mcp.callTool("vidIQ", "vidiq_video_transcript", { videoId: id });
+      const t = typeof r.payload === "string" ? r.payload : JSON.stringify(r.payload ?? r.content);
+      return { text: `[레퍼런스 영상 대사 — ${url}]\n${t.slice(0, 3500)}`, note: "" };
+    } catch (e) { return { text: `[레퍼런스 영상 링크: ${url} — 대사 확인 실패]`, note: "레퍼런스 대사를 가져오지 못해 링크만 참고했습니다." }; }
+  }
+  return { text: `[레퍼런스 영상 링크: ${url} — 내용은 확인 불가, 플랫폼 특성만 참고]`, note: id ? "" : "틱톡·인스타 레퍼런스는 대사를 읽을 수 없어 링크만 참고했습니다." };
+}
+
+// ---------- prompts ----------
+const RULES = `너는 대한민국 상위 0.1% 쇼핑 숏폼 기획자·카피라이터·퍼포먼스 마케터다(쿠팡파트너스·토스 제휴). 조회수·시청지속시간·구매전환율을 극대화한다.
+문체: AI가 아니라 실제 사람이 친구에게 추천하듯 자연스러운 구어체. 광고 티, 번역투, 불필요한 접속사, 밋밋한 나열체 금지.
+제품 우선: 쇼핑 쇼츠의 주인공은 제품이다. 화면의 70% 이상이 제품(작동·설치·변화·비포애프터)이고, 사람은 손·부분 신체·목소리로만 최소 등장, 얼굴은 리액션 1~2초만. 매크로·클로즈업 적극 활용. 장면 지시(scene)는 이 원칙으로 쓴다.
+IP: 제3자 브랜드·로고·캐릭터·쇼핑몰 UI를 장면이나 문구에 넣지 않는다.
+금지: 확인 안 된 수치·평점·효능 지어내기, "최저가/역대급" 단정, 식품·건강·화장품의 질병 치료/예방 표현, 참고 영상 대사 베끼기(구조와 심리만 차용).
+확인 안 된 정보는 product.unverified에 넣고 대본·문구에는 쓰지 않는다.`;
+function spec(inp) {
+  const chars = inp.len === 15 ? "100~120자" : inp.len === 45 ? "300~350자" : "200~240자";
+  const st = STYLES[inp.style] || STYLES.honey;
+  return `대본 스타일: ${st.name} — ${st.desc}
+타깃층: ${inp.targets.join(", ") || "일반"}. 타깃이 실제로 겪는 상황과 말투로 써라.
+대본 규칙: ${inp.len}초, 내레이션 전체 ${chars}(공백 제외, 초당 7~8음절). 친근한 구어체, 짧은 문장, 문장 끝에 마침표·물음표.
+구조: 후킹(첫 3초) → 공감 → 해결(시연 포인트 2~3개) → 근거(확인된 정보만) → CTA("고정댓글 링크 확인" 류).
+script.rows 5~7개. scene=촬영·편집 지시, narration=읽을 대사, caption=화면 강조 키워드(이모지 1개까지).
+screen: topTitle=영상 상단 고정 제목 2줄(각 12자 이내, 2번째 줄이 강조), centerHook=첫 3초 화면 중앙 큰 문구(14자 이내), bottomText=영상 하단 고정 문구(16자 이내, 구매 유도), thumbnail=썸네일 문구 2줄(각 10자 이내).
+platforms: youtube{titles 3개(40자 이내 후킹형), description 2~3줄, hashtags 8~10개(마지막 #shorts), pinned 고정댓글 첫 문장}, instagram{caption 3~5줄(링크 클릭 안 되므로 "프로필 링크" 안내), hashtags 8~12개}, tiktok{caption 1~2줄 짧게, hashtags 4~6개}. 링크와 광고 고지문은 넣지 마라(페이지가 붙인다).`;
+}
+const SCRIPT_JSON = `"script":{"rows":[{"scene":"","narration":"","caption":""}],"shootTip":"촬영 핵심 1~2문장"},
+"screen":{"topTitle":["",""],"centerHook":"","bottomText":"","thumbnail":["",""]},
+"platforms":{"youtube":{"titles":["","",""],"description":"","hashtags":[""],"pinned":""},"instagram":{"caption":"","hashtags":[""]},"tiktok":{"caption":"","hashtags":[""]}}`;
+function kitPrompt(r, count) {
+  const per = Math.floor(count / 5), rem = count % 5;
+  const plan = FORMAT_ORDER.map((k, i) => `- ${k} = ${FORMATS[k].name} ×${per + (i < rem ? 1 : 0)}: ${FORMATS[k].vibe} 프레이밍: ${FORMATS[k].framing}. 컨셉 시드: ${FORMATS[k].seeds}`).join("\n");
+  const refHooks = (r.references || []).map(x => `${x.platform} ${x.views}: ${x.hook} (${x.structure})`).join(" / ");
+  return `${RULES}
+
+[상품]
+상품명: ${r.input.name}
+상품 정보: ${JSON.stringify(r.product)}
+타깃층: ${(r.input.targets || []).join(", ") || "일반"}
+바이럴 공통 패턴: ${r.pattern || "(없음)"}
+참고 영상 후킹: ${refHooks || "(없음)"}
+
+[한국 쇼핑 쇼츠 5종 포맷 — 총 ${count}개, 이 개수대로]
+${plan}
+같은 포맷이 2개 이상이면 컨셉 시드·상황·인물을 바꿔 스크립트가 겹치지 않게.
+
+[킷 규칙 — 영상 1개당 아래 순서]
+thumbnail: 썸네일 문구 10~12자, 숫자·금액으로 클릭 유도(가격은 상품 정보에 확인된 것만, 없으면 다른 숫자).
+title: 제목 10~12자, 강한 궁금증.
+script: 12~15초 쇼츠 스크립트(공백 제외 85~110자). 실제 사용자 후기 같은 구어체. 첫 3초 후킹은 호기심·문제·결과를 동시에. 구조: 현실적 상황→갈등→해결→혜택→CTA. 남편·아내·아이·친구·부모님·회사동료·자취생·신혼부부 등 현실 인물을 활용하고 행동·표정은 괄호로 짧게. 마지막 문장은 자연스러운 구매 유도 CTA(기본: "궁금하면 아래에서 확인해보세요."). ASMR 포맷은 대사 대신 [소리] 위주로 짧게.
+ytDesc: 유튜브 설명 2~4줄, 상품 키워드를 2~3회 자연스럽게, 끝 줄에 해시태그 5개.
+seoTags: SEO 태그 10개(# 없이 단어만), 상품·카테고리·니치 기반.
+tiktok: 짧은 후킹 문구+CTA 1~2줄(링크는 "프로필 링크" 류로 안내).
+instagram: 짧은 후킹 문구+CTA 2~3줄(링크는 "프로필 링크" 류로 안내).
+영상 생성용(대표님이 Higgsfield·Flow에 넣을 값):
+ sceneEn: 영어 1~2문장 장면 묘사. 제품 중심, 손·부분 신체만, 한국 집 공간, 이 포맷 컨셉 시드 반영, 제품이 작동·변화하는 순간 포함. 브랜드명·로고·글자 언급 금지.
+ setting: Kitchen | Living Room | Bedroom | Bathroom | Window 중 하나.
+ spokenKo: 영상 속 실제 발화 한국어 1~2문장 25~40자(가장 강한 한 문장). ASMR은 "".
+금지: 확인 안 된 수치·평점·효능, "최저가/역대급" 단정, 식품·건강·화장품 질병 치료/예방 표현, 타사 브랜드명. 광고 고지문은 넣지 마라(페이지가 붙인다).
+
+JSON만 출력: {"kits":[{"format":"review|unboxing|value|pick|asmr","concept":"이 영상의 컨셉 한 줄","thumbnail":"","title":"","script":"","ytDesc":"","seoTags":[""],"tiktok":"","instagram":"","sceneEn":"","setting":"","spokenKo":""}]}`;
+}
+function videoPrompt(k, r) {
+  const f = FORMATS[k.format] || FORMATS.value;
+  const asmr = k.format === "asmr" || !k.spokenKo;
+  const lines = [
+    String(k.sceneEn || "").trim(),
+    "Format: vertical 9:16, 1080p, 12-15 seconds.",
+    "Framing: PRODUCT-FOCUSED shot. The product fills most of the frame. Camera stays on the product — its surface, mechanism, motion, before/after change. Human presence is minimal: hands only / partial body / over-the-shoulder / off-frame. Use macro and extreme close-up on the product's working part. AVOID talking-head framing, person centered in frame, face filling the shot.",
+    `People/background: Korean person (hands or partial body only), Korean home interior — ${k.setting || "Korean apartment"}.`,
+    asmr ? "Audio: no dialogue, no music. Product sounds only (ASMR)." : `Voice: The character speaks KOREAN ONLY, in a natural native Korean accent.\nSpoken line (Korean, verbatim): "${k.spokenKo}"\nDo NOT speak English. Do NOT translate the line.`,
+    `Product: ${r.product?.oneLine || r.input?.name || ""}.`,
+    `Style: ${f.style}.`,
+    "Negative: no text overlay, no captions, no subtitles, no on-screen text, no watermarks, no lower-third, no graphic typography, no brand callout banners, no third-party logos, " + (asmr ? "no speech, no music, " : "no English speech, no English dialogue, no foreign language voiceover, no non-Korean accent, ") + "no talking head, no face-centered framing, no person dominating the frame, no influencer-style presentation shot. Clean image only. Product is the subject."
+  ];
+  return lines.filter(Boolean).join("\n");
+}
+function kitText(k, r) {
+  const link = r.input?.link || ""; const disc = DISCLOSE[r.input?.shop || "coupang"];
+  return [`[${(FORMATS[k.format] || {}).name || k.format}] ${k.concept || ""}`,
+    `① 썸네일: ${k.thumbnail}`, `② 제목: ${k.title}`, `③ 쇼츠 스크립트:\n${k.script}`,
+    `④ 유튜브 설명:\n${k.ytDesc}${link ? "\n🛒 " + link : ""}\n${disc}`,
+    `⑤ SEO 태그: ${(k.seoTags || []).join(", ")}`,
+    `⑥ 틱톡: ${k.tiktok}\n#광고`, `⑦ 인스타그램: ${k.instagram}\n#광고 ${disc}`,
+    `■ 영상 생성 프롬프트:\n${videoPrompt(k, r)}`].join("\n\n");
+}
+function mainPrompt(inp, viral, ref) {
+  return `${RULES}
+
+[상품]
+상품명: ${inp.name}
+쇼핑몰: ${inp.shop === "coupang" ? "쿠팡" : inp.shop === "toss" ? "토스쇼핑" : "기타"}
+메모: ${inp.info || "(없음)"}
+${inp.hasImage ? "첨부 이미지는 상품 페이지 캡처다. 상품명·가격·할인율·배송·특징을 여기서 읽어라." : "캡처 없음: 상품명·메모·일반 상식으로만 파악하고 구체 수치는 unverified로."}
+
+[바이럴 참고 데이터]
+${viral || "(실제 검색 데이터 없음. references는 빈 배열, pattern에는 이 카테고리 쇼핑쇼츠에서 흔히 먹히는 구조를 '일반 패턴'이라고 밝혀서 써라.)"}
+${ref ? "\n[대표님이 지정한 레퍼런스 — 벤치마킹 모드]\n" + ref + "\n벤치마킹 규칙: 레퍼런스의 구조(훅 방식, 장면 순서, 컷 리듬, 설득 흐름: 문제→해결→혜택→CTA 위치, 문장 길이·말투 결)를 그대로 따르고 문장은 우리 상품에 맞게 새로 쓴다. 원문 대사·자막 재사용 금지. 레퍼런스가 얼굴 위주면 우리 버전은 손·제품 클로즈업으로 치환하고 제품 작동 구간을 더 길게. 추천 앵글(recommended)은 레퍼런스 구조를 따른 앵글로 하라." : ""}
+
+할 일: 1) 상품 파악 2) 참고 데이터에서 같은/유사 상품 영상 3~5개(데이터에 있는 것만, 조회수·URL 지어내기 금지) 3) 앵글 3개 + 추천 1개 4) 추천 앵글로 대본 5) 화면 문구 6) 플랫폼별 문구.
+${spec(inp)}
+
+JSON만 출력:
+{"product":{"oneLine":"","features":[""],"pain":"","price":"","target":"","unverified":[""]},
+"references":[{"platform":"틱톡|인스타|유튜브","who":"","views":"예: 310만","hook":"","structure":"","url":""}],
+"pattern":"","angles":[{"name":"","hook":"후킹 첫 문장","why":"근거 1줄"}],"recommended":0,"recReason":"",
+${SCRIPT_JSON}}`;
+}
+function anglePrompt(r, idx) {
+  const a = r.angles[idx];
+  return `${RULES}
+
+상품: ${r.input.name}
+상품 정보: ${JSON.stringify(r.product)}
+바이럴 공통 패턴: ${r.pattern || ""}
+선택 앵글: ${a.name} / 후킹: ${a.hook} / 근거: ${a.why}
+이 앵글로 대본·화면 문구·플랫폼 문구를 새로 써라.
+${spec(r.input)}
+JSON만 출력: {${SCRIPT_JSON}}`;
+}
+
+// ---------- run ----------
+let ctl = null;
+$("#form").addEventListener("submit", async e => {
+  e.preventDefault();
+  if (state.busy || !sampleFn) return;
+  const name = $("#pname").value.trim();
+  if (!name) { setStatus("상품명을 넣어주세요. 쿠팡·토스는 링크만으로 상품을 읽을 수 없습니다.", true); $("#pname").focus(); return; }
+  const link = $("#link").value.trim();
+  const targets = [...state.targets]; const etc = $("#targetEtc").value.trim(); if (etc) targets.push(etc);
+  const inp = { link, shop: shopOf(link), name, info: $("#pinfo").value.trim(), len: state.len, style: state.style, targets, refLink: $("#refLink").value.trim(), refText: $("#refText").value.trim().slice(0, 3000), hasImage: !!(state.file && imagesOK) };
+  state.busy = true; document.body.classList.add("busy"); $("#go").disabled = true;
+  let viral = "", notes = [], ref = "";
+  try {
+    setStep(1, 0);
+    if (mcp && $("#useVidiq").checked) { setStep(2, 1); setStatus("vidIQ에서 실제 터진 영상 찾는 중…"); const v = await findVirals(name); viral = v.data; notes = v.notes; }
+    if (inp.refLink) { setStatus("레퍼런스 영상 분석 중…"); const a = await refAnalysis(inp.refLink); ref = a.text; if (a.note) notes.push(a.note); }
+    if (inp.refText) ref += (ref ? "\n\n" : "") + "[대표님이 붙여넣은 레퍼런스 내용 — 중국어면 번역해 이해하고, 전개 구조·후킹 방식만 차용하라(문장 직역 금지)]\n" + inp.refText;
+    setStep(3, 2);
+    setStatus("상품 분석 + 앵글 + 대본 + 문구 작성 중… (보통 30초~1분)");
+    showLive();
+    ctl = new AbortController();
+    const opts = { signal: ctl.signal, cache: false, onText: ({ text }) => updateLive(text) };
+    if (inp.hasImage) opts.images = state.file;
+    const r = await sampleFn.json(mainPrompt(inp, viral, ref), opts);
+    if (!r || !Array.isArray(r.angles) || !r.script?.rows?.length) throw { code: "invalid_json" };
+    r.input = inp; r.notes = notes; r.script.angle = Number(r.recommended) || 0; r.createdAt = Date.now();
+    state.result = r; state.docId = null;
+    setStep(0, 4);
+    render(r);
+    const saved = await saveToLib(r);
+    setStatus("완료." + (saved ? " 내 대본함에 저장했습니다." : "") + " 다른 앵글은 앵글 카드에서 바로 바꿀 수 있습니다.");
+  } catch (err) {
+    setStatus(err?.code === "cancelled" ? "중단했습니다." : errCopy(err?.code), err?.code !== "cancelled");
+    setStep(0, 0); render(state.result || EXAMPLE);
+  } finally { state.busy = false; document.body.classList.remove("busy"); $("#go").disabled = !sampleFn; }
+});
+
+async function switchAngle(idx) {
+  const r = state.result; if (!r || r.example || state.busy || !sampleFn) return;
+  state.busy = true; document.body.classList.add("busy");
+  setStatus(`'${r.angles[idx].name}' 앵글로 다시 쓰는 중…`);
+  try {
+    const n = await sampleFn.json(anglePrompt(r, idx), { cache: false });
+    if (!n?.script?.rows?.length) throw { code: "invalid_json" };
+    r.script = { ...n.script, angle: idx }; if (n.screen) r.screen = n.screen; if (n.platforms) r.platforms = n.platforms;
+    render(r); await saveToLib(r); setStatus("대본을 바꿨습니다.");
+  } catch (err) { setStatus(errCopy(err?.code), true); }
+  finally { state.busy = false; document.body.classList.remove("busy"); }
+}
+
+// ---------- live ----------
+function showLive() {
+  stopPlay(); const out = $("#out"); out.textContent = "";
+  const s = el("section", "sheet"); s.append(el("h2", null, "작성 중"));
+  const m = el("div", "meta", "Claude가 생각하는 중입니다…"); m.id = "liveMeta";
+  const p = el("div", "live"); p.id = "live";
+  const stop = el("button", "ghost", "중단"); stop.type = "button"; stop.onclick = () => ctl?.abort();
+  s.append(m, p, stop); out.append(s);
+}
+function updateLive(text) { const p = $("#live"), m = $("#liveMeta"); if (p) { p.textContent = text.slice(-1200); p.scrollTop = p.scrollHeight; } if (m) m.textContent = `받는 중… ${text.length.toLocaleString()}자`; }
+
+// ---------- helpers ----------
+function copyBtn(getText, label = "복사", sm) {
+  const b = el("button", "ghost" + (sm ? " sm" : ""), label); b.type = "button";
+  b.addEventListener("click", async () => {
+    const t = getText();
+    try { await navigator.clipboard.writeText(t); b.textContent = "복사됨"; }
+    catch (e) { const ta = el("textarea"); ta.value = t; ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.append(ta); ta.select(); let ok = false; try { ok = document.execCommand("copy"); } catch (x) {} ta.remove(); b.textContent = ok ? "복사됨" : "직접 선택해 복사"; }
+    setTimeout(() => { b.textContent = label; }, 1600);
+  });
+  return b;
+}
+function saveBtn(label, filename, getData) {
+  const b = el("button", "ghost", label); b.type = "button";
+  if (!downloads) { b.disabled = true; b.title = "이 화면에서는 파일 저장이 안 됩니다. 복사를 써주세요."; }
+  b.addEventListener("click", async () => {
+    if (!downloads) return;
+    try { await downloads.save({ filename, data: getData() }); b.textContent = "저장됨"; setTimeout(() => b.textContent = label, 1600); }
+    catch (e) { if (e?.code === "declined") return; setStatus(e?.code === "rate_limited" ? "저장 창이 이미 열려 있습니다." : "파일 저장이 안 됩니다. 복사 버튼을 써주세요.", true); }
+  });
+  return b;
+}
+const safeName = s => String(s || "쇼츠").replace(/[\\/:*?"<>|]/g, "").slice(0, 40).trim() || "쇼츠";
+
+// ---------- render ----------
+let play = { raf: 0, t0: 0, t: 0, playing: false };
+let cur = { rows: [], cues: [], len: 30 };
+
+function render(r) {
+  stopPlay();
+  const out = $("#out"); out.textContent = "";
+  const inp = r.input || {}; const shop = inp.shop || "coupang"; const link = inp.link || ""; const disc = DISCLOSE[shop];
+  const len = inp.len || 30;
+  const rows = timeline((r.script?.rows || []).filter(x => x && x.narration), len);
+  cur = { rows, cues: subtitleCues(rows), len };
+
+  // ① 상품
+  const s1 = el("section", "sheet res");
+  const h1 = el("h2", null, "① 상품 요약"); if (r.example) h1.append(el("span", "tag", "예시 결과")); s1.append(h1);
+  if (r.example) s1.append(el("p", "example", "실리콘 싱크대 물막이로 돌린 예시입니다. 왼쪽에 상품을 넣으면 대표님 상품으로 바뀝니다."));
+  const p = r.product || {}; const dl = el("dl", "kv");
+  [["상품", inp.name], ["한 줄 정의", p.oneLine], ["핵심 기능", (p.features || []).join(" · ")], ["해결하는 불편", p.pain], ["가격", p.price], ["타겟", p.target], ["스타일", (STYLES[inp.style] || {}).name]].forEach(([k, v]) => { if (v) dl.append(el("dt", null, k), el("dd", null, v)); });
+  s1.append(dl);
+  const unv = (p.unverified || []).filter(Boolean); if (unv.length) s1.append(el("div", "flag", "확인 필요 (대본에서 뺐음): " + unv.join(", ")));
+  (r.notes || []).forEach(n => s1.append(el("div", "flag", n)));
+  out.append(s1);
+
+  // ② 소재
+  const s2 = el("section", "sheet res"); s2.append(el("h2", null, "② 바이럴 소재"));
+  const refs = r.references || [];
+  if (refs.length) {
+    const wrap = el("div", "tbl"), t = el("table"), hr = el("tr"); ["플랫폼", "계정", "조회수", "첫 3초 후킹", "전개"].forEach(h => hr.append(el("th", null, h))); t.append(hr);
+    refs.forEach(x => { const tr = el("tr"); tr.append(el("td", null, x.platform)); const w = el("td"); if (x.url && /^https:\/\//.test(x.url)) { const a = el("a", null, x.who); a.href = x.url; a.target = "_blank"; a.rel = "noopener"; w.append(a); } else w.textContent = x.who; tr.append(w, el("td", "mono", x.views), el("td", null, x.hook), el("td", null, x.structure)); t.append(tr); });
+    wrap.append(t); s2.append(wrap);
+  } else s2.append(el("p", "hint", "실제 영상 검색 데이터 없이 일반 패턴으로 기획했습니다. vidIQ를 켜면 실제 터진 영상을 근거로 씁니다."));
+  if (r.pattern) s2.append(el("p", null, "공통 패턴: " + r.pattern));
+  const ag = el("div", "angles");
+  (r.angles || []).forEach((a, i) => {
+    const c = el("div", "angle" + (i === r.script?.angle ? " cur" : ""));
+    if (i === Number(r.recommended)) c.append(el("span", "badge", "추천" + (r.recReason ? " · " + r.recReason : "")));
+    c.append(el("div", "nm", `${i + 1}. ${a.name}`), el("div", "hk", a.hook), el("div", "why", a.why));
+    if (i === r.script?.angle) c.append(el("span", "badge", "현재 대본"));
+    else if (!r.example) { const b = el("button", "ghost", "이 앵글로 다시 쓰기"); b.type = "button"; b.onclick = () => switchAngle(i); c.append(b); }
+    ag.append(c);
+  });
+  s2.append(ag); out.append(s2);
+
+  // ③ 대본 + 미리보기
+  const fullText = rows.map(x => x.narration).join(" ");
+  const s3 = el("section", "sheet res"); s3.append(el("h2", null, `③ 내레이션 대본 · ${len}초`));
+  const grid = el("div", "scriptGrid"); const left = el("div"); left.style.minWidth = "0";
+  const hd = el("div", "row head"); ["시간", "화면 구성", "내레이션", "자막 강조"].forEach(x => hd.append(el("div", null, x))); left.append(hd);
+  rows.forEach((x, i) => {
+    const row = el("div", "row" + (i === 0 ? " first" : "")); row.dataset.i = i; row.tabIndex = 0;
+    row.append(el("div", "t", `${x.start.toFixed(1)}~${x.end.toFixed(1)}초`), el("div", "sc", x.scene), el("div", "na", x.narration), el("div", "cap", x.caption));
+    row.onclick = () => seek(x.start); row.onkeydown = e => { if (e.key === "Enter") seek(x.start); };
+    left.append(row);
+  });
+  const fb = el("div", "blk"); fb.style.marginTop = "16px";
+  const fh = el("h3", null, "내레이션 전문 (AI 보이스 복붙용)"); fh.append(copyBtn(() => fullText)); fb.append(fh, el("div", "full", fullText));
+  fb.append(el("div", "meta", `${syl(fullText)}음절 · 시간은 대사 길이로 자동 배분 (행을 누르면 미리보기가 그 장면으로 이동)`));
+  left.append(fb);
+  if (r.script?.shootTip) left.append(el("p", "hint", "촬영 포인트: " + r.script.shootTip));
+  const srt = toSRT(cur.cues);
+  const act = el("div", "actions");
+  act.append(saveBtn("자막 SRT 저장", safeName(inp.name) + "_자막.srt.txt", () => srt), copyBtn(() => srt, "SRT 복사"), saveBtn("대본 TXT 저장", safeName(inp.name) + "_대본.txt", () => scriptTxt(r, rows)));
+  left.append(act);
+  left.append(el("p", "hint", "SRT 파일은 저장 후 이름 끝의 .txt를 지우면 CapCut·Vrew 자막 불러오기에 바로 들어갑니다."));
+  grid.append(left, buildPreview(r));
+  s3.append(grid); out.append(s3);
+
+  // ④ 화면 문구
+  const sc = r.screen || {};
+  const s4 = el("section", "sheet res"); s4.append(el("h2", null, "④ 화면 문구 세트"));
+  const set = el("div", "screenSet");
+  [["상단 제목 (2줄)", (sc.topTitle || []).join("\n")], ["첫 3초 중앙 후킹", sc.centerHook], ["하단 고정 문구", sc.bottomText], ["썸네일 문구", (sc.thumbnail || []).join("\n")]].forEach(([k, v]) => {
+    if (!v) return; const c = el("div", "cell"); const h = el("h3", null, k); h.append(copyBtn(() => v, "복사", true)); c.append(h, el("div", "v", v)); set.append(c);
+  });
+  s4.append(set); out.append(s4);
+
+  // ⑤ 플랫폼별
+  const pf = r.platforms || {};
+  const s5 = el("section", "sheet res"); s5.append(el("h2", null, "⑤ 업로드 문구"));
+  const tabs = el("div", "ptabs seg"); const body = el("div");
+  const linkLine = link ? link : "";
+  const P = {
+    youtube: () => {
+      const y = pf.youtube || {}; const d = el("div");
+      const tb = el("div", "blk"); tb.append(el("h3", null, "제목 3안")); const ol = el("ol", "titles");
+      (y.titles || []).forEach(t => { const li = el("li", null, t + " "); li.append(copyBtn(() => t, "복사", true)); ol.append(li); }); tb.append(ol); d.append(tb);
+      const desc = [y.description, linkLine ? "🛒 " + linkLine : ""].filter(Boolean).join("\n") + "\n\n" + (y.hashtags || []).join(" ") + "\n\n" + disc;
+      const pin = (y.pinned || "제품 링크는 여기 있어요") + (linkLine ? " 👉 " + linkLine : "") + "\n" + disc;
+      d.append(blk("설명란", desc), blk("고정댓글", pin)); return d;
+    },
+    instagram: () => { const g = pf.instagram || {}; const t = (g.caption || "") + "\n\n" + (g.hashtags || []).join(" ") + "\n\n#광고 " + disc; const d = el("div"); d.append(blk("캡션", t)); if (linkLine) d.append(blk("프로필 링크에 넣을 주소", linkLine)); return d; },
+    tiktok: () => { const g = pf.tiktok || {}; const t = (g.caption || "") + " " + (g.hashtags || []).join(" ") + "\n#광고 " + disc; const d = el("div"); d.append(blk("캡션", t)); if (linkLine) d.append(blk("프로필·쇼핑 링크", linkLine)); return d; }
+  };
+  [["youtube", "유튜브 쇼츠"], ["instagram", "인스타 릴스"], ["tiktok", "틱톡"]].forEach(([k, n], i) => {
+    const b = el("button", null, n); b.type = "button"; b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+    b.onclick = () => { for (const x of tabs.children) x.setAttribute("aria-pressed", x === b ? "true" : "false"); body.textContent = ""; body.append(P[k]()); };
+    tabs.append(b);
+  });
+  body.append(P.youtube());
+  s5.append(tabs, body);
+  if (!link) s5.append(el("div", "flag", "상품 링크가 비어 있어 문구에 링크를 넣지 못했습니다."));
+  out.append(s5);
+  out.append(kitSection(r));
+  seek(0);
+}
+let kitCount = 5, kitBusy = false;
+function kitSection(r) {
+  const s = el("section", "sheet res"); s.id = "kitSheet";
+  const h = el("h2", null, "⑥ 5종 포맷 카피 킷"); if (r.example) h.append(el("span", "tag", "예시"));
+  s.append(h);
+  s.append(el("p", "hint", "내돈내산 리뷰 · 언박싱/하울 · 가성비 시연 · 꿀템 추천 · ASMR, 5가지 포맷에 균등하게 나눠 영상별 7단 카피(썸네일→제목→12~15초 스크립트→유튜브 설명→SEO 태그→틱톡→인스타)와 영상 생성 프롬프트를 만듭니다."));
+  const ctl = el("div", "kitCtl");
+  const seg = el("div", "seg");
+  [5, 10].forEach(n => { const b = el("button", null, n + "개"); b.type = "button"; b.setAttribute("aria-pressed", n === kitCount ? "true" : "false"); b.onclick = () => { kitCount = n; for (const x of seg.children) x.setAttribute("aria-pressed", x === b ? "true" : "false"); }; seg.append(b); });
+  const go = el("button", "go", (r.kits?.length && !r.example) ? "킷 다시 만들기" : "5종 킷 만들기"); go.type = "button"; go.style.padding = "8px 18px"; go.style.fontSize = "14px";
+  go.disabled = !!r.example || !sampleFn;
+  go.onclick = () => makeKits(r);
+  ctl.append(seg, go);
+  if (r.kits?.length) ctl.append(saveBtn("킷 전체 TXT 저장", safeName(r.input?.name) + "_5종킷.txt", () => r.kits.map(k => kitText(k, r)).join("\n\n" + "─".repeat(24) + "\n\n")));
+  s.append(ctl);
+  const st = el("div", "status"); st.id = "kitStatus";
+  if (r.example) st.textContent = "예시 킷 1개입니다. 대표님 상품으로 실행한 뒤 버튼을 누르면 5개 또는 10개가 만들어집니다.";
+  s.append(st);
+  const list = el("div", "kits"); list.id = "kitList";
+  (r.kits || []).forEach((k, i) => list.append(kitCard(k, r, i)));
+  s.append(list);
+  return s;
+}
+function kitCard(k, r, i) {
+  const d = el("details", "kit"); if (i === 0) d.open = true;
+  const sm = el("summary");
+  const sum = el("div", "ksum"); sum.append(el("div", "kt", `${k.thumbnail || ""} · ${k.title || ""}`), el("div", "kc", k.concept || ""));
+  sm.append(el("span", "kfmt", `${i + 1}. ${(FORMATS[k.format] || {}).name || k.format}`), sum, el("span", "kchev", "▼"));
+  d.append(sm);
+  const b = el("div", "kbody");
+  const pair = el("div", "kpair");
+  [["① 썸네일 문구", k.thumbnail], ["② 제목", k.title]].forEach(([t, v]) => { const c = el("div", "cell"); const hh = el("h3", null, t); hh.append(copyBtn(() => v || "", "복사", true)); c.append(hh, el("div", "v", v || "")); pair.append(c); });
+  b.append(pair);
+  const link = r.input?.link || ""; const disc = DISCLOSE[r.input?.shop || "coupang"];
+  const sc = blk("③ 쇼츠 스크립트 (12~15초)", k.script || ""); sc.querySelector(".box").classList.add("kscript"); b.append(sc);
+  b.append(blk("④ 유튜브 설명", (k.ytDesc || "") + (link ? "\n🛒 " + link : "") + "\n\n" + disc));
+  b.append(blk("⑤ SEO 태그 10개", (k.seoTags || []).join(", ")));
+  b.append(blk("⑥ 틱톡", (k.tiktok || "") + "\n#광고"));
+  b.append(blk("⑦ 인스타그램", (k.instagram || "") + "\n\n#광고 " + disc));
+  const vp = el("details", "vpd"); vp.append(el("summary", null, "영상 생성 프롬프트 (Higgsfield·Flow에 붙여넣기)"));
+  const vpb = blk("9:16 · 12~15초 · 제품 중심 · 한국어 대사 고정", videoPrompt(k, r)); vpb.querySelector(".box").classList.add("vp"); vp.append(vpb);
+  b.append(vp);
+  const all = el("div", "actions"); all.append(copyBtn(() => kitText(k, r), "이 킷 전체 복사")); b.append(all);
+  d.append(b);
+  return d;
+}
+async function makeKits(r) {
+  if (kitBusy || !sampleFn || r.example) return;
+  kitBusy = true; const st = $("#kitStatus");
+  const gos = document.querySelectorAll("#kitSheet .go"); gos.forEach(g => g.disabled = true);
+  st.classList.remove("err"); st.textContent = `${kitCount}개 킷 쓰는 중… (보통 40초~1분 30초)`;
+  try {
+    const res = await sampleFn.json(kitPrompt(r, kitCount), { cache: false, onText: ({ text }) => { st.textContent = `${kitCount}개 킷 쓰는 중… ${text.length.toLocaleString()}자 받음`; } });
+    const kits = (res?.kits || []).filter(k => k && k.script && k.title);
+    if (!kits.length) throw { code: "invalid_json" };
+    kits.forEach(k => { if (!FORMATS[k.format]) k.format = "value"; k.seoTags = (k.seoTags || []).map(t => String(t).replace(/^#/, "")).slice(0, 10); });
+    kits.sort((a, b) => FORMAT_ORDER.indexOf(a.format) - FORMAT_ORDER.indexOf(b.format));
+    r.kits = kits;
+    const old = $("#kitSheet"); old.replaceWith(kitSection(r));
+    const saved = await saveToLib(r);
+    $("#kitStatus").textContent = `${kits.length}개 킷을 만들었습니다.` + (saved ? " 내 대본함에도 저장했습니다." : "");
+  } catch (e) {
+    st.classList.add("err"); st.textContent = errCopy(e?.code);
+  } finally { kitBusy = false; document.querySelectorAll("#kitSheet .go").forEach(g => g.disabled = !sampleFn || !!r.example); }
+}
+function blk(title, text) { const b = el("div", "blk"); const h = el("h3", null, title); h.append(copyBtn(() => text)); b.append(h, el("div", "box", text)); return b; }
+function scriptTxt(r, rows) {
+  const sc = r.screen || {};
+  return [`[${r.input?.name}] ${r.input?.len || 30}초 · ${(STYLES[r.input?.style] || {}).name || ""}`, "",
+    "■ 장면별 대본", ...rows.map(x => `${x.start.toFixed(1)}~${x.end.toFixed(1)}초 | ${x.scene}\n  대사: ${x.narration}\n  자막: ${x.caption}`), "",
+    "■ 내레이션 전문", rows.map(x => x.narration).join(" "), "",
+    "■ 화면 문구", `상단 제목: ${(sc.topTitle || []).join(" / ")}`, `중앙 후킹: ${sc.centerHook || ""}`, `하단 문구: ${sc.bottomText || ""}`, `썸네일: ${(sc.thumbnail || []).join(" / ")}`].join("\n");
+}
+
+// ---------- 9:16 preview ----------
+let tpl = "tp-black";
+function buildPreview(r) {
+  const sc = r.screen || {};
+  const wrap = el("div", "pv");
+  const ph = el("div", "phone " + tpl); ph.id = "phone";
+  const bgHost = el("div"); bgHost.id = "pvbg"; ph.append(bgHost);
+  const top = el("div", "ov top"); const t1 = el("span", "ln1", (sc.topTitle || [])[0] || ""), t2 = el("span", "ln2", (sc.topTitle || [])[1] || ""); top.append(t1, t2);
+  const center = el("div", "ov center", sc.centerHook || ""); center.id = "pvHook";
+  const sub = el("div", "ov sub"); const subSpan = el("span"); subSpan.id = "pvSub"; sub.append(subSpan);
+  const bottom = el("div", "ov bottom", sc.bottomText || "");
+  ph.append(top, center, sub, bottom);
+  const prog = el("div", "prog"); const bar = el("i"); bar.id = "pvBar"; prog.append(bar);
+  const ctlRow = el("div", "pvctl");
+  const pb = el("button", "ghost", "▶ 재생"); pb.type = "button"; pb.id = "pvPlay"; pb.onclick = () => play.playing ? stopPlay() : startPlay();
+  const tm = el("span", "pvtime", "0.0 / " + cur.len + "초"); tm.id = "pvTime";
+  ctlRow.append(pb, tm);
+  const tset = el("div", "seg"); tset.style.maxWidth = "250px"; tset.style.width = "100%";
+  [["tp-black", "블랙"], ["tp-white", "화이트"], ["tp-yellow", "옐로"]].forEach(([k, n]) => { const b = el("button", null, n); b.type = "button"; b.setAttribute("aria-pressed", k === tpl ? "true" : "false"); b.onclick = () => { tpl = k; ph.className = "phone " + k; for (const x of tset.children) x.setAttribute("aria-pressed", x === b ? "true" : "false"); }; tset.append(b); });
+  wrap.append(ph, prog, ctlRow, tset, el("p", "hint", "자막 위치·느낌 확인용 미리보기입니다. 실제 영상 위에 얹은 모습은 편집 앱에서 확인하세요."));
+  setTimeout(renderPreviewBg, 0);
+  return wrap;
+}
+function renderPreviewBg() {
+  const host = $("#pvbg"); if (!host) return; host.textContent = "";
+  if (state.fileUrl) { const im = el("img", "bgimg"); im.src = state.fileUrl; im.alt = ""; host.append(im); }
+  else { host.append(el("div", "bgfill"), el("div", "bgnote", "영상 화면 자리")); }
+}
+function drawAt(t) {
+  const cue = cur.cues.find(c => t >= c.start && t < c.end) || (t >= cur.len ? cur.cues[cur.cues.length - 1] : null);
+  const s = $("#pvSub"); if (s) s.textContent = cue ? cue.text : "";
+  const h = $("#pvHook"); if (h) h.hidden = t >= 3;
+  const bar = $("#pvBar"); if (bar) bar.style.width = Math.min(100, t / cur.len * 100) + "%";
+  const tm = $("#pvTime"); if (tm) tm.textContent = t.toFixed(1) + " / " + cur.len + "초";
+  for (const row of document.querySelectorAll(".row[data-i]")) { const x = cur.rows[Number(row.dataset.i)]; row.classList.toggle("playing", !!x && t >= x.start && t < x.end); }
+}
+function seek(t) { play.t = t; if (play.playing) play.t0 = performance.now() - t * 1000; drawAt(t); }
+function startPlay() {
+  if (play.t >= cur.len - .05) play.t = 0;
+  play.playing = true; play.t0 = performance.now() - play.t * 1000; const b = $("#pvPlay"); if (b) b.textContent = "❚❚ 정지";
+  const step = now => { if (!play.playing) return; play.t = (now - play.t0) / 1000; if (play.t >= cur.len) { play.t = cur.len; drawAt(cur.len); stopPlay(); return; } drawAt(play.t); play.raf = requestAnimationFrame(step); };
+  play.raf = requestAnimationFrame(step);
+}
+function stopPlay() { play.playing = false; cancelAnimationFrame(play.raf); const b = $("#pvPlay"); if (b) b.textContent = "▶ 재생"; }
+
+// ---------- 바이럴 탐색 ----------
+function renderExploreEmpty() {
+  const c = $("#exCards"); c.textContent = "";
+  const e = el("div", "empty");
+  e.textContent = mcp ? "카테고리나 키워드를 넣으면 최근 6개월 조회수 높은 유튜브 쇼츠와 틱톡·릴스 아웃라이어를 모아 보여줍니다. 한 번에 약 10크레딧." : "바이럴 탐색은 vidIQ 연결이 필요합니다. claude.ai 설정 → 커넥터에서 vidIQ를 추가한 뒤 다시 열어주세요.";
+  c.append(e); $("#exGo").disabled = !mcp || !sampleFn;
+}
+function parseOutliers(text) {
+  const items = [];
+  const blocks = String(text).split(/\n(?=\*\*@)/);
+  blocks.forEach(b => {
+    const m = b.match(/\*\*@([^*]+)\*\*\s+—\s+"([^"]*)/); if (!m) return;
+    const views = (b.match(/([\d.,]+[KMB]?) views/) || [])[1] || "";
+    const mult = (b.match(/\(([\d.,]+x) their median/) || [])[1] || "";
+    const reel = (b.match(/reel:(\S+)/) || [])[1];
+    const tt = (b.match(/(https:\/\/www\.tiktok\.com\/\S+)/) || [])[1];
+    const hook = (b.match(/text:\s*([^\n]+)/) || [])[1] || (b.match(/visual:\s*([^\n]+)/) || [])[1] || "";
+    items.push({ platform: tt ? "틱톡" : "인스타", who: "@" + m[1], title: m[2].replace(/\.\.\.$/, "…"), views: views + (mult ? ` · 평소의 ${mult}` : ""), hook, url: tt || (reel ? "https://www.instagram.com/reel/" + reel + "/" : "") });
+  });
+  return items;
+}
+$("#exForm").addEventListener("submit", async e => {
+  e.preventDefault(); const q = $("#exQ").value.trim(); if (!q || !mcp || !sampleFn) return;
+  $("#exGo").disabled = true; setStatus("검색 중… (20초 안팎)", false, "#exStatus");
+  const c = $("#exCards"); c.textContent = "";
+  const notes = []; let items = [];
+  try {
+    const qq = await searchQueries(q);
+    const [ot, yt] = await Promise.allSettled([outlierRaw(qq.en || q), ytRaw(qq.ko || q)]);
+    if (yt.status === "fulfilled") items.push(...yt.value.map(v => ({ platform: "유튜브", who: v.channel, title: v.title, views: Number(v.views || 0).toLocaleString() + "회", hook: "", url: v.url }))); else notes.push(mcpNote(yt.reason));
+    if (ot.status === "fulfilled") items.push(...parseOutliers(ot.value)); else notes.push(mcpNote(ot.reason));
+  } catch (err) { notes.push(errCopy(err?.code)); }
+  setStatus([...new Set(notes)].join(" ") || `${items.length}개 찾았습니다. '이 영상으로 제작'을 누르면 레퍼런스로 들어갑니다.`, notes.length > 0, "#exStatus");
+  if (!items.length) { renderExploreEmpty(); } else items.forEach(v => {
+    const card = el("div", "vcard"); card.append(el("div", "plat", v.platform + " · " + (v.who || "")), el("div", "ttl", v.title || "(제목 없음)"), el("div", "st", v.views));
+    if (v.hook) card.append(el("div", "hk", v.hook));
+    const btns = el("div", "btns");
+    if (v.url) { const a = el("a", "ghost sm", "영상 열기"); a.href = v.url; a.target = "_blank"; a.rel = "noopener"; a.style.textDecoration = "none"; btns.append(a); }
+    const use = el("button", "ghost sm", "이 영상으로 제작"); use.type = "button";
+    use.onclick = () => { $("#refLink").value = v.url || ""; showTab("make"); $("#pname").focus(); setStatus("레퍼런스를 넣었습니다. 상품명과 링크를 채워 실행하세요."); };
+    btns.append(use); card.append(btns); c.append(card);
+  });
+  $("#exGo").disabled = false;
+});
+
+// ---------- 상품명 간체 자동 번역 ----------
+(() => {
+  const inp = $("#pname"), out = $("#pnameZh"), cp = $("#zhCopy");
+  out.classList.add("idle");
+  let timer = 0, lastQ = "", zh = "", ctlZh = null;
+  const idle = msg => { out.textContent = msg; out.classList.add("idle"); cp.hidden = true; zh = ""; };
+  cp.addEventListener("click", async () => {
+    if (!zh) return;
+    try { await navigator.clipboard.writeText(zh); cp.textContent = "복사됨"; }
+    catch (e) { const r = document.createRange(); r.selectNodeContents(out); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); cp.textContent = "선택됨"; }
+    setTimeout(() => cp.textContent = "복사", 1500);
+  });
+  async function run() {
+    const q = inp.value.trim();
+    if (q === lastQ) return;
+    lastQ = q;
+    ctlZh?.abort();
+    if (q.length < 2) { idle("상품명을 입력하면 간체로 자동 번역됩니다"); return; }
+    if (!sampleFn) { idle("이 화면에서는 번역할 수 없습니다"); return; }
+    out.textContent = "번역 중…"; out.classList.add("idle"); cp.hidden = true;
+    ctlZh = new AbortController();
+    try {
+      const r = await sampleFn.json(`한국 쇼핑 상품명을 중국어 간체로 옮겨라. 샤오홍슈·도우인 검색창에 바로 넣을 수 있게, 직역보다 중국 현지에서 이 상품을 부르는 자연스러운 이름으로. 브랜드명은 빼라.
+상품명: "${q}"
+JSON만: {"zh":"간체 상품명"}`, { modelTier: "quick", signal: ctlZh.signal, cache: { gcTime: 86400000 } });
+      if (inp.value.trim() !== q) return;
+      zh = String(r?.zh || "").trim();
+      if (!zh) throw { code: "invalid_json" };
+      out.textContent = zh; out.classList.remove("idle"); cp.hidden = false;
+    } catch (e) {
+      if (e?.code === "cancelled") return;
+      lastQ = "";
+      idle(e?.code === "not_granted" ? "Claude 사용을 허용해야 번역됩니다" : "번역하지 못했습니다. 상품명을 조금 고치면 다시 시도합니다");
+    }
+  }
+  inp.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(run, 900); });
+  inp.addEventListener("blur", () => { clearTimeout(timer); run(); });
+})();
+
+// ---------- 중국 숏폼 ----------
+$("#cnForm").addEventListener("submit", async e => {
+  e.preventDefault(); const q = $("#cnQ").value.trim(); if (!q || !sampleFn) return;
+  $("#cnGo").disabled = true; setStatus("간체 검색어 만드는 중…", false, "#cnStatus");
+  const box = $("#cnCards"); box.textContent = "";
+  try {
+    const r = await sampleFn.json(`한국 쇼핑 상품명: "${q}"
+샤오홍슈(小红书)·도우인(抖音)에서 이 상품의 인기 숏폼을 찾기 위한 중국어 간체 검색어 5개를 만들어라.
+직역보다 중국 현지 사용자가 실제로 쓰는 표현을 우선한다: ①정식 상품명 ②흔한 별칭/구어 ③용도·불편 해결형 ④'好物/神器/推荐' 같은 쇼핑 추천형 ⑤가성비·리뷰형.
+JSON만: {"keywords":[{"zh":"간체 검색어","ko":"한국어 뜻","type":"정식명|별칭|용도형|추천형|리뷰형"}]}`, { modelTier: "quick" });
+    const kws = (r?.keywords || []).filter(k => k && k.zh).slice(0, 6);
+    if (!kws.length) throw { code: "invalid_json" };
+    kws.forEach(k => {
+      const c = el("div", "vcard");
+      c.append(el("div", "plat", k.type || "검색어"), el("div", "ttl", k.zh), el("div", "st", k.ko || ""));
+      const btns = el("div", "btns");
+      const enc = encodeURIComponent(k.zh);
+      [["샤오홍슈", "https://www.xiaohongshu.com/search_result?keyword=" + enc], ["도우인", "https://www.douyin.com/search/" + enc]].forEach(([n, u]) => { const a = el("a", "ghost sm", n + " 검색 ↗"); a.href = u; a.target = "_blank"; a.rel = "noopener"; a.style.textDecoration = "none"; btns.append(a); });
+      btns.append(copyBtn(() => k.zh, "복사", true));
+      c.append(btns); box.append(c);
+    });
+    setStatus("버튼이 새 탭으로 열립니다. 샤오홍슈는 웹에서 로그인해야 결과가 보이고, 앱에서 찾으실 땐 '복사' 후 검색창에 붙여넣으세요.", false, "#cnStatus");
+  } catch (err) { setStatus(errCopy(err?.code), true, "#cnStatus"); }
+  finally { $("#cnGo").disabled = !sampleFn; }
+});
+
+// ---------- 내 대본함 ----------
+let libItems = [];
+function startLibrary() {
+  if (!userCol) { renderLib(); return; }
+  userCol.orderBy("createdAt", "desc").limit(100).onSnapshot(snap => { libItems = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderLib(); }, () => { setStatus("대본함을 불러오지 못했습니다. 새로고침해 주세요.", true, "#libStatus"); });
+}
+async function saveToLib(r) {
+  if (!userCol) return false;
+  const doc = { name: r.input?.name || "", link: r.input?.link || "", style: r.input?.style || "", len: r.input?.len || 30, angle: r.angles?.[r.script?.angle]?.name || "", createdAt: r.createdAt || Date.now(), updatedAt: Date.now(), result: JSON.parse(JSON.stringify(r)) };
+  try {
+    if (state.docId) await userCol.doc(state.docId).set(doc);
+    else { const ref = userCol.doc(); state.docId = ref.id; await ref.set(doc); }
+    return true;
+  } catch (e) { setStatus(e?.code === "quota_exceeded" ? "대본함이 가득 찼습니다. 오래된 대본을 지워주세요." : "대본함 저장에 실패했습니다.", true, "#libStatus"); return false; }
+}
+function renderLib() {
+  const box = $("#lib"); box.textContent = "";
+  if (!userCol) { box.append(el("div", "empty", "이 화면에서는 대본함을 쓸 수 없습니다. claude.ai에 로그인한 상태로 열어주세요.")); return; }
+  if (!libItems.length) { box.append(el("div", "empty", "아직 저장된 대본이 없습니다. 제작 탭에서 대본을 만들면 자동으로 여기에 쌓입니다.")); return; }
+  libItems.forEach(it => {
+    const row = el("div", "libItem"); const info = el("div");
+    const d = new Date(it.updatedAt || it.createdAt);
+    info.append(el("div", "nm", it.name || "(이름 없음)"), el("div", "sm", `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")} · ${it.len}초 · ${(STYLES[it.style] || {}).name || ""} · ${it.angle || ""}`));
+    const btns = el("div", "btns");
+    const open = el("button", "ghost sm", "열기"); open.type = "button";
+    open.onclick = () => { if (!it.result) return; state.result = it.result; state.docId = it.id; fillForm(it.result.input); render(it.result); setStep(0, 4); showTab("make"); setStatus("대본함에서 불러왔습니다."); };
+    const del = el("button", "ghost sm danger", "삭제"); del.type = "button";
+    del.onclick = async () => {
+      if (del.dataset.armed !== "1") { del.dataset.armed = "1"; del.textContent = "정말 삭제"; setTimeout(() => { del.dataset.armed = ""; del.textContent = "삭제"; }, 3000); return; }
+      try { await userCol.doc(it.id).delete(); if (state.docId === it.id) state.docId = null; } catch (e) { setStatus("삭제하지 못했습니다.", true, "#libStatus"); }
+    };
+    btns.append(open, del); row.append(info, btns); box.append(row);
+  });
+}
+function fillForm(inp) {
+  if (!inp) return;
+  $("#link").value = inp.link || ""; $("#pname").value = inp.name || ""; $("#pinfo").value = inp.info || ""; $("#refLink").value = inp.refLink || ""; $("#refText").value = inp.refText || "";
+  state.len = inp.len || 30; for (const x of $("#lenSeg").children) x.setAttribute("aria-pressed", Number(x.dataset.v) === state.len ? "true" : "false");
+  state.style = inp.style || "honey"; for (const x of $("#styleSeg").children) x.setAttribute("aria-pressed", x.dataset.v === state.style ? "true" : "false");
+  state.targets = new Set((inp.targets || []).filter(t => TARGETS.includes(t)));
+  for (const x of $("#targetChips").children) x.setAttribute("aria-pressed", state.targets.has(x.textContent) ? "true" : "false");
+  $("#targetEtc").value = (inp.targets || []).filter(t => !TARGETS.includes(t)).join(", ");
+}
+
+render(EXAMPLE);
+})();
+</script>
+
+</body></html>

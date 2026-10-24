@@ -1,0 +1,546 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body><div style="background:#0D0E11;color:#EEEBE4;font:13px/1.6 'Nanum Gothic','Apple SD Gothic Neo','Malgun Gothic',sans-serif;padding:10px max(16px,env(safe-area-inset-left,0px));display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between;border-bottom:1px solid #33363E"><span><b>실제 작동 버전</b> · 칸을 채우면 오른쪽 문서가 바로 완성됩니다. 바이브코딩으로 직접 만들었습니다.</span><span style="display:flex;gap:16px;flex-wrap:wrap"><a href="./" style="color:#EEEBE4;text-decoration:none;white-space:nowrap">← 포트폴리오로</a></span></div>
+<title>서식공방 TOP 10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: 순위 목록 | 입력 패널 | A4 미리보기 — 작성과 결과를 한 화면에서 */
+:root{
+  --bg:#f3f5f8; --surface:#ffffff; --ink:#1b2232; --muted:#5b6476; --line:#dde2ea;
+  --accent:#23408f; --accent-soft:#e7ecf8; --seal:#c62f28; --warn-bg:#fff4e0; --warn-ink:#8a5200;
+  --doc-bg:#ffffff; --doc-ink:#14171f; --doc-line:#3a3f4b; --doc-soft:#f2f3f5;
+  --ui:"IBM Plex Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --doc:"Gowun Batang","Nanum Myeongjo","AppleMyungjo",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#11141b; --surface:#191e28; --ink:#e5e8ee; --muted:#9aa2b1; --line:#2b3240;
+  --accent:#8ea6ef; --accent-soft:#222c44; --seal:#e85a50; --warn-bg:#3a2c12; --warn-ink:#f2c47a;
+  --doc-bg:#f4f4f2; --doc-ink:#14171f; --doc-line:#3a3f4b; --doc-soft:#e6e7e9; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11141b; --surface:#191e28; --ink:#e5e8ee; --muted:#9aa2b1; --line:#2b3240;
+  --accent:#8ea6ef; --accent-soft:#222c44; --seal:#e85a50; --warn-bg:#3a2c12; --warn-ink:#f2c47a;
+  --doc-bg:#f4f4f2; --doc-ink:#14171f; --doc-line:#3a3f4b; --doc-soft:#e6e7e9; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:14px;line-height:1.55}
+.wrap{max-width:1440px;margin:0 auto;padding-inline:16px;padding-block:20px 40px}
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 24px;margin-bottom:18px}
+header.top h1{font-size:22px;margin:0;letter-spacing:-.01em}
+header.top h1 span{color:var(--seal)}
+header.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.src{font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:210px minmax(0,380px) minmax(0,1fr);gap:18px;align-items:start}
+nav.rank{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+nav.rank .cap{font-size:11px;letter-spacing:.08em;color:var(--muted);padding:6px 8px 8px;font-weight:600}
+nav.rank button{all:unset;box-sizing:border-box;display:flex;gap:10px;align-items:center;width:100%;padding:8px;border-radius:7px;cursor:pointer;font-size:14px}
+nav.rank button:hover{background:var(--accent-soft)}
+nav.rank button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+nav.rank button[aria-current="true"]{background:var(--accent);color:#fff}
+:root[data-theme="dark"] nav.rank button[aria-current="true"]{color:#11141b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) nav.rank button[aria-current="true"]{color:#11141b}}
+.no{font-variant-numeric:tabular-nums;font-weight:700;width:22px;text-align:right;opacity:.75;font-size:12px}
+.tag{margin-left:auto;font-size:10px;opacity:.7}
+section.editor{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;min-width:0}
+.ed-head{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:4px}
+.ed-head h2{font-size:17px;margin:0}
+.ed-desc{color:var(--muted);font-size:13px;margin:0 0 12px}
+.btns{display:flex;gap:6px;flex-wrap:wrap}
+.btn{font:inherit;font-size:12.5px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 10px;border-radius:6px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.fields{display:grid;gap:10px}
+.grp{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--accent);margin-top:8px;padding-top:10px;border-top:1px dashed var(--line)}
+.grp:first-child{border-top:0;margin-top:0;padding-top:0}
+label.f{display:grid;gap:4px;font-size:12.5px;color:var(--muted)}
+label.f input,label.f select,label.f textarea,.items input{font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 9px;width:100%;min-width:0}
+label.f textarea{min-height:84px;resize:vertical}
+label.f input:focus,label.f select:focus,label.f textarea:focus,.items input:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+.hint{font-size:11.5px;color:var(--muted)}
+.count{font-size:11.5px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.warn{background:var(--warn-bg);color:var(--warn-ink);font-size:12.5px;padding:8px 10px;border-radius:6px}
+.items{display:grid;gap:6px}
+.irow{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) 54px minmax(0,1fr) 28px;gap:4px}
+.irow input{padding:6px 7px;font-size:13px}
+.irow .x{all:unset;cursor:pointer;text-align:center;color:var(--muted);font-size:16px}
+.ihead{font-size:11px;color:var(--muted)}
+.note{margin-top:14px;font-size:11.5px;color:var(--muted);line-height:1.6}
+section.preview{min-width:0}
+.pv-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.pv-bar span{font-size:12px;color:var(--muted)}
+.paper{background:var(--doc-bg);color:var(--doc-ink);font-family:var(--doc);max-width:794px;margin:0 auto;padding:56px 60px;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.08),0 8px 28px rgba(20,30,60,.10);font-size:14.5px;line-height:1.85;min-height:900px}
+.paper h3{font-size:26px;text-align:center;letter-spacing:.5em;margin:0 0 28px;padding-left:.5em;font-weight:700}
+.paper h3.sm{letter-spacing:.15em}
+.paper table{width:100%;border-collapse:collapse;margin:10px 0 16px;font-size:13.5px}
+.paper th,.paper td{border:1px solid var(--doc-line);padding:6px 8px;vertical-align:top;text-align:left}
+.paper th{background:var(--doc-soft);font-weight:700;white-space:nowrap;width:1%}
+.paper td.r,.paper th.r{text-align:right;font-variant-numeric:tabular-nums}
+.paper td.c,.paper th.c{text-align:center}
+.paper p{margin:0 0 10px}
+.paper .art{margin:0 0 9px}
+.paper .art b{margin-right:6px}
+.paper .date{text-align:center;margin:30px 0 22px;font-size:15px}
+.paper .sign{margin-left:auto;width:max-content;max-width:100%;display:grid;gap:6px}
+.paper .sign div{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.seal{display:inline-grid;place-items:center;width:30px;height:30px;border:2px solid var(--seal);color:var(--seal);border-radius:50%;font-size:12px;font-weight:700;font-family:var(--doc);transform:rotate(-6deg)}
+.paper .big{font-size:16px;font-weight:700;text-align:center;margin:8px 0 18px}
+.paper .to{font-size:17px;font-weight:700;text-align:center;margin-top:24px}
+.paper .sec{font-weight:700;margin:18px 0 6px;font-size:15px}
+.paper .para{white-space:pre-wrap}
+.empty{color:#9097a3}
+.tblwrap{overflow-x:auto}
+@media (max-width:1100px){
+  .grid{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)}
+  nav.rank{grid-column:1/-1;position:static;display:flex;gap:4px;overflow-x:auto;padding:6px}
+  nav.rank .cap{display:none}
+  nav.rank button{width:auto;white-space:nowrap;flex:0 0 auto}
+  nav.rank .tag{display:none}
+}
+@media (max-width:760px){
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .paper{padding:28px 20px;min-height:0;font-size:13.5px}
+  .paper h3{font-size:21px;letter-spacing:.3em}
+}
+@media (prefers-reduced-motion:no-preference){.paper{transition:box-shadow .2s}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>서식공방 <span>TOP 10</span></h1>
+      <p>국내 서식 플랫폼 인기 검색어 상위 10개를 바로 작성하는 양식으로 만들었습니다. 왼쪽에서 고르고, 입력하면 오른쪽 문서가 바로 바뀝니다.</p>
+    </div>
+    <div class="src">순위 기준: 예스폼 메인 인기 키워드 (2026.10.08 확인)</div>
+  </header>
+
+  <div class="grid">
+    <nav class="rank" id="rank" aria-label="인기 서식 순위"><div class="cap">인기 검색 순위</div></nav>
+
+    <section class="editor" aria-label="입력">
+      <div class="ed-head">
+        <h2 id="edTitle"></h2>
+        <div class="btns">
+          <button class="btn" id="btnSample" type="button">예시 채우기</button>
+          <button class="btn" id="btnClear" type="button">비우기</button>
+        </div>
+      </div>
+      <p class="ed-desc" id="edDesc"></p>
+      <div class="fields" id="fields"></div>
+      <p class="note">작성 내용은 이 브라우저에만 임시 저장됩니다. 계약서·차용증 등 법률 문서는 참고용 양식이며, 중요한 거래는 전문가 검토를 받으세요.</p>
+    </section>
+
+    <section class="preview" aria-label="미리보기">
+      <div class="pv-bar">
+        <span id="pvInfo">A4 미리보기</span>
+        <div class="btns">
+          <button class="btn primary" id="btnCopy" type="button">문서 내용 복사</button>
+        </div>
+      </div>
+      <article class="paper" id="paper"></article>
+    </section>
+  </div>
+</div>
+
+<script>
+(function(){
+const MINWAGE_2026 = 10320; // 2026년 최저시급(원)
+const pad = n => String(n).padStart(2,'0');
+const iso = d => d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const plus = (days) => { const d=new Date(); d.setDate(d.getDate()+days); return iso(d); };
+const plusY = (y) => { const d=new Date(); d.setFullYear(d.getFullYear()+y); return iso(d); };
+const TODAY = iso(new Date());
+const e = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const v = (s,ph) => (s && String(s).trim()) ? e(s) : '<span class="empty">'+(ph||'　　　　')+'</span>';
+const fd = s => { if(!s) return '<span class="empty">　년　월　일</span>'; const [y,m,d]=s.split('-'); return `${y}년 ${+m}월 ${+d}일`; };
+const num = s => { const n = Number(String(s||'').replace(/[^\d.]/g,'')); return isFinite(n)?n:0; };
+const won = n => Math.round(n).toLocaleString('ko-KR');
+function hangul(n){
+  n = Math.floor(n); if(!n) return '영';
+  const dg='　일이삼사오육칠팔구'.split(''), su=['','십','백','천'], bu=['','만','억','조'];
+  let out='', b=0;
+  while(n>0){
+    const chunk=n%10000; n=Math.floor(n/10000);
+    if(chunk){ let s='', c=chunk, i=0;
+      while(c>0){ const d=c%10; if(d) s=(d===1&&i>0?'':dg[d])+su[i]+s; c=Math.floor(c/10); i++; }
+      out=s+bu[b]+out; }
+    b++;
+  }
+  return out;
+}
+const amt = n => n ? `일금 ${hangul(n)}원정 (₩${won(n)})` : '<span class="empty">일금　　　　원정 (₩　　　)</span>';
+const lines = s => String(s||'').split('\n').map(x=>x.trim()).filter(Boolean);
+const seal = '<span class="seal">인</span>';
+const signBlock = rows => '<div class="sign">'+rows.map(r=>`<div><span>${r[0]}</span><b>${r[1]}</b>${r[2]===false?'':seal}</div>`).join('')+'</div>';
+
+/* ---------- 서식 정의 ---------- */
+const FORMS = [
+{ id:'resume', rank:1, name:'이력서', tag:'취업',
+  desc:'인적사항·학력·경력·자격을 표로 정리하는 기본 이력서입니다. 한 줄에 하나씩, 칸은 | 로 나눠 입력하세요.',
+  fields:[
+    {g:'인적사항'},
+    {id:'name',l:'성명',s:'김하늘'},{id:'birth',l:'생년월일',t:'date',s:'1995-04-12'},
+    {id:'phone',l:'연락처',s:'010-1234-5678'},{id:'email',l:'이메일',s:'haneul.kim@example.com'},
+    {id:'addr',l:'주소',s:'광주광역시 서구 상무중앙로 00'},
+    {g:'학력 · 경력 · 자격'},
+    {id:'edu',l:'학력 (기간 | 학교 | 전공·구분)',t:'area',s:'2014.03 ~ 2020.02 | 전남대학교 | 경영학과 졸업\n2011.03 ~ 2014.02 | 광주고등학교 | 졸업'},
+    {id:'career',l:'경력 (기간 | 회사 | 직위·업무)',t:'area',s:'2022.03 ~ 현재 | (주)한빛유통 | 대리 · 온라인 판매 기획\n2020.03 ~ 2022.02 | 다온마케팅 | 사원 · SNS 광고 운영'},
+    {id:'cert',l:'자격·면허 (취득일 | 자격명 | 발행처)',t:'area',s:'2021.06 | 컴퓨터활용능력 1급 | 대한상공회의소\n2019.11 | 운전면허 2종 보통 | 경찰청'},
+  ],
+  render(x){
+    const rows=(s,n)=>{const L=lines(s); if(!L.length) return `<tr><td colspan="${n}" class="c"><span class="empty">입력한 내용이 여기에 표시됩니다</span></td></tr>`;
+      return L.map(l=>{const c=l.split('|').map(t=>t.trim()); while(c.length<n)c.push(''); return '<tr>'+c.slice(0,n).map((t,i)=>`<td${i===0?' style="white-space:nowrap"':''}>${e(t)}</td>`).join('')+'</tr>';}).join('');};
+    return `<h3>이 력 서</h3>
+    <div class="tblwrap"><table><tr><th>성 명</th><td>${v(x.name)}</td><th>생년월일</th><td>${x.birth?fd(x.birth):v('')}</td></tr>
+    <tr><th>연락처</th><td>${v(x.phone)}</td><th>이메일</th><td>${v(x.email)}</td></tr>
+    <tr><th>주 소</th><td colspan="3">${v(x.addr)}</td></tr></table></div>
+    <div class="sec">학력사항</div><div class="tblwrap"><table><tr><th>기간</th><th>학교명</th><th>전공 · 구분</th></tr>${rows(x.edu,3)}</table></div>
+    <div class="sec">경력사항</div><div class="tblwrap"><table><tr><th>기간</th><th>회사명</th><th>직위 · 담당업무</th></tr>${rows(x.career,3)}</table></div>
+    <div class="sec">자격 · 면허</div><div class="tblwrap"><table><tr><th>취득일</th><th>자격명</th><th>발행처</th></tr>${rows(x.cert,3)}</table></div>
+    <p style="text-align:center;margin-top:26px">위의 기재 사항은 사실과 틀림없음을 확인합니다.</p>
+    <div class="date">${fd(TODAY)}</div>${signBlock([['작성자',v(x.name)]])}`;
+  }},
+
+{ id:'loan', rank:2, name:'차용증', tag:'생활',
+  desc:'개인 간 금전 대여 사실과 변제 조건을 남기는 차용증입니다. 금액은 숫자로 넣으면 한글 금액이 자동으로 써집니다.',
+  fields:[
+    {g:'빌린 돈'},
+    {id:'amount',l:'차용 금액 (원)',t:'num',s:'5000000'},
+    {id:'date',l:'차용일',t:'date',s:TODAY},{id:'due',l:'변제기일',t:'date',s:plus(180)},
+    {id:'rate',l:'이자율 (연 %, 무이자는 0)',t:'num',s:'5'},
+    {id:'pay',l:'변제 방법',s:'채권자 명의 계좌(○○은행 000-0000-0000)로 이체'},
+    {g:'채권자 (빌려준 사람)'},
+    {id:'cName',l:'성명',s:'박정민'},{id:'cAddr',l:'주소',s:'광주광역시 북구 용봉로 00'},
+    {g:'채무자 (빌린 사람)'},
+    {id:'dName',l:'성명',s:'이서준'},{id:'dAddr',l:'주소',s:'광주광역시 남구 봉선로 00'},{id:'dPhone',l:'연락처',s:'010-9876-5432'},
+    {g:'특약'},
+    {id:'extra',l:'특약 사항 (선택)',t:'area',s:'채무자가 변제기일까지 갚지 못한 경우, 지연 기간에 대하여 연 12%의 지연손해금을 더하여 지급한다.'},
+  ],
+  warn(x){ return num(x.rate)>20 ? '이자율이 연 20%를 넘습니다. 법정 최고이자율(연 20%)을 초과하는 부분은 무효가 될 수 있습니다.' : ''; },
+  render(x){
+    const r=num(x.rate);
+    return `<h3>차 용 증</h3>
+    <div class="big">${amt(num(x.amount))}</div>
+    <p>채무자는 위 금액을 채권자로부터 아래 조건으로 정히 빌렸음을 확인하며, 다음 사항을 지킬 것을 약속합니다.</p>
+    <div class="art"><b>1. 차용일</b>${fd(x.date)}</div>
+    <div class="art"><b>2. 변제기일</b>${fd(x.due)}까지 원금 전액을 갚는다.</div>
+    <div class="art"><b>3. 이자</b>${r?`연 ${e(x.rate)}%로 하며, 매월 말일에 지급한다.`:'이자는 없는 것으로 한다.'}</div>
+    <div class="art"><b>4. 변제 방법</b>${v(x.pay)}</div>
+    <div class="art"><b>5. 기한이익 상실</b>채무자가 이자 지급을 2회 이상 미루거나 다른 채권자로부터 압류 등을 받은 경우, 채권자의 청구가 있으면 기한 전이라도 즉시 전액을 갚는다.</div>
+    ${x.extra&&x.extra.trim()?`<div class="art"><b>6. 특약</b><span class="para">${e(x.extra)}</span></div>`:''}
+    <div class="date">${fd(x.date||TODAY)}</div>
+    <div class="tblwrap"><table>
+      <tr><th rowspan="2">채권자</th><th>성명</th><td>${v(x.cName)} ${seal}</td></tr><tr><th>주소</th><td>${v(x.cAddr)}</td></tr>
+      <tr><th rowspan="3">채무자</th><th>성명</th><td>${v(x.dName)} ${seal}</td></tr><tr><th>주소</th><td>${v(x.dAddr)}</td></tr><tr><th>연락처</th><td>${v(x.dPhone)}</td></tr>
+    </table></div>`;
+  }},
+
+{ id:'speech', rank:3, name:'스피치·인사말', tag:'인사말',
+  desc:'상황을 고르고 몇 가지만 채우면 바로 읽을 수 있는 인사말 원고가 만들어집니다. 마음에 들게 고쳐 쓰세요.',
+  fields:[
+    {id:'kind',l:'상황',t:'sel',o:['송년회 인사','창립기념일 인사','신년 시무식','신입사원 환영사','정년퇴임 축사','결혼식 축사'],s:'송년회 인사'},
+    {id:'org',l:'모임·회사 이름',s:'(주)한빛유통'},
+    {id:'who',l:'말하는 사람 (직함 + 이름)',s:'대표 김민수'},
+    {id:'target',l:'주인공 이름 (환영·퇴임·결혼일 때)',s:'',h:'환영사·퇴임·결혼식 축사에서만 쓰입니다.'},
+    {id:'win',l:'올해 함께 이룬 일 · 기억할 일',s:'신규 매장 3곳 개점과 온라인 매출 두 배 성장'},
+    {id:'wish',l:'앞으로의 바람 한마디',s:'내년에도 서로를 믿고 한 걸음씩 함께 나아가자'},
+  ],
+  render(x){
+    const org=x.org||'우리 회사', who=x.who||'', tg=x.target||'○○○', win=x.win||'여러 성과', wish=x.wish||'함께 더 크게 성장하자';
+    const T = {
+      '송년회 인사':[`안녕하십니까. ${org} ${who}입니다.`,`한 해를 마무리하는 이 자리에 함께해 주신 모든 분께 진심으로 감사드립니다.`,`올해 우리는 ${win}이라는 결실을 거두었습니다. 이 성과는 누구 한 사람의 몫이 아니라, 각자의 자리에서 묵묵히 애써 주신 여러분 모두의 것입니다.`,`힘든 순간도 있었지만 서로 손을 놓지 않았기에 오늘 웃으며 이 자리에 설 수 있었습니다.`,`오늘만큼은 업무는 잠시 내려놓고 마음껏 즐기시길 바랍니다. 그리고 ${wish}는 다짐으로 새해를 맞이했으면 합니다.`,`한 해 동안 정말 수고 많으셨습니다. 감사합니다.`],
+      '창립기념일 인사':[`안녕하십니까. ${org} ${who}입니다.`,`오늘은 ${org}가 첫걸음을 뗀 뜻깊은 날입니다. 이 자리를 함께해 주신 임직원과 내빈 여러분께 깊이 감사드립니다.`,`작은 출발이었지만 우리는 ${win}을 이루며 여기까지 왔습니다. 그 바탕에는 고객의 신뢰와 여러분의 헌신이 있었습니다.`,`창립의 마음을 다시 새기며, ${wish}는 약속을 드립니다.`,`앞으로도 변함없는 관심과 응원 부탁드립니다. 감사합니다.`],
+      '신년 시무식':[`새해 복 많이 받으십시오. ${org} ${who}입니다.`,`지난해 우리는 ${win}을 해냈습니다. 여러분의 땀과 노력에 다시 한번 감사드립니다.`,`올해는 그 성과를 발판 삼아 한 단계 더 도약하는 해로 만들고자 합니다. 쉽지 않은 환경이지만, 우리가 함께라면 충분히 해낼 수 있다고 믿습니다.`,`${wish}는 마음으로 올 한 해를 힘차게 시작합시다.`,`여러분과 가정에 건강과 행복이 가득하길 바랍니다. 감사합니다.`],
+      '신입사원 환영사':[`안녕하십니까. ${org} ${who}입니다.`,`${tg} 님, ${org}의 새 가족이 된 것을 진심으로 환영합니다.`,`우리 회사는 ${win}을 이루며 성장해 왔고, 이제 그 다음 장을 여러분과 함께 써 나가려 합니다.`,`처음에는 모든 것이 낯설고 어렵겠지만, 모르는 것은 언제든 묻고 선배들에게 기대도 좋습니다. 질문하는 사람이 가장 빨리 성장합니다.`,`${wish}는 바람으로 여러분을 맞이합니다. 다시 한번 환영합니다.`],
+      '정년퇴임 축사':[`안녕하십니까. ${org} ${who}입니다.`,`오늘 우리는 오랜 시간 ${org}와 함께해 주신 ${tg} 님의 정년퇴임을 축하하기 위해 모였습니다.`,`${tg} 님은 ${win}의 중심에서 언제나 묵묵히 자리를 지켜 주셨습니다. 그 성실함은 후배들에게 가장 좋은 본보기였습니다.`,`이제 새로운 인생의 장을 여시는 ${tg} 님께 ${wish}는 마음을 담아 응원을 보냅니다.`,`그동안 정말 고생 많으셨습니다. 늘 건강하시고 행복하십시오. 감사합니다.`],
+      '결혼식 축사':[`안녕하십니까. 신랑·신부와 오랜 인연을 맺어 온 ${who}입니다.`,`먼저 귀한 자리에 축사를 맡겨 주신 두 집안 어른들께 감사드립니다.`,`오늘 새 출발을 하는 ${tg} 두 분은 ${win}을 함께 겪으며 서로를 깊이 알아 온 사이입니다.`,`결혼은 서로 다른 두 사람이 한 방향을 바라보며 걷는 긴 여행이라고 합니다. 기쁠 때는 두 배로 웃고, 힘들 때는 반씩 나누는 부부가 되시길 바랍니다.`,`${wish}는 바람을 담아, 두 분의 앞날을 진심으로 축복합니다. 감사합니다.`]
+    }[x.kind] || [];
+    const chars = T.join(' ').length;
+    return `<h3 class="sm">${e(x.kind||'인사말')}</h3>
+    <p style="text-align:right;color:#666;font-size:12.5px">예상 낭독 시간 약 ${Math.max(1,Math.round(chars/300))}분 · ${chars.toLocaleString()}자</p>
+    ${T.map(s=>`<p style="text-indent:1em">${e(s)}</p>`).join('')}`;
+  }},
+
+{ id:'quote', rank:4, name:'견적서', tag:'회사',
+  desc:'품목만 넣으면 공급가액·부가세·합계와 한글 금액이 자동 계산됩니다.',
+  fields:[
+    {g:'견적 정보'},
+    {id:'to',l:'수신 (받는 곳)',s:'(주)다온인테리어 귀중'},
+    {id:'date',l:'견적일',t:'date',s:TODAY},{id:'valid',l:'유효기간',s:'견적일로부터 30일'},
+    {id:'vat',l:'부가세',t:'sel',o:['별도 (단가에 미포함)','포함 (단가에 포함)'],s:'별도 (단가에 미포함)'},
+    {g:'품목'},
+    {id:'items',t:'items',s:[['사무용 책상','1600×800',4,320000],['회의용 의자','메쉬형',8,145000],['설치·배송비','광주 시내',1,150000]]},
+    {g:'공급자'},
+    {id:'co',l:'상호',s:'스타본부 컨설팅'},{id:'ceo',l:'대표자',s:'홍길동'},
+    {id:'bizno',l:'사업자등록번호',s:'000-00-00000'},{id:'tel',l:'연락처',s:'062-000-0000'},
+    {id:'memo',l:'비고 (선택)',t:'area',s:'계약금 30%, 납품 후 잔금 70% 지급 조건입니다.'},
+  ],
+  render(x){
+    const it=(x.items||[]).filter(r=>r.some(c=>String(c).trim()));
+    let sum=0; const rows=it.map((r,i)=>{const q=num(r[2]),p=num(r[3]),a=q*p; sum+=a; return `<tr><td class="c">${i+1}</td><td>${e(r[0])}</td><td>${e(r[1])}</td><td class="r">${q?won(q):''}</td><td class="r">${p?won(p):''}</td><td class="r">${a?won(a):''}</td></tr>`;}).join('');
+    const incl=String(x.vat).startsWith('포함');
+    const supply=incl?Math.round(sum/1.1):sum, tax=incl?sum-supply:Math.round(sum*0.1), total=supply+tax;
+    return `<h3>견 적 서</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:flex-start">
+      <div style="min-width:0;flex:1 1 220px"><p style="font-size:17px;font-weight:700;border-bottom:1px solid var(--doc-line);padding-bottom:4px">${v(x.to)}</p>
+      <p>견적일 : ${fd(x.date)}<br>유효기간 : ${v(x.valid)}<br>아래와 같이 견적합니다.</p></div>
+      <div class="tblwrap" style="flex:1 1 280px;min-width:0"><table style="margin:0"><tr><th>상호</th><td>${v(x.co)}</td></tr><tr><th>대표자</th><td>${v(x.ceo)} ${seal}</td></tr><tr><th>사업자번호</th><td>${v(x.bizno)}</td></tr><tr><th>연락처</th><td>${v(x.tel)}</td></tr></table></div>
+    </div>
+    <div class="big" style="margin-top:16px">합계금액 ${amt(total)} <span style="font-size:12.5px;font-weight:400">(부가세 포함)</span></div>
+    <div class="tblwrap"><table><tr><th class="c">No</th><th>품명</th><th>규격</th><th class="r">수량</th><th class="r">단가</th><th class="r">금액</th></tr>
+    ${rows||'<tr><td colspan="6" class="c"><span class="empty">품목을 추가하세요</span></td></tr>'}
+    <tr><th colspan="5" class="r">공급가액</th><td class="r">${won(supply)}</td></tr>
+    <tr><th colspan="5" class="r">부가세 (10%)</th><td class="r">${won(tax)}</td></tr>
+    <tr><th colspan="5" class="r">합계</th><td class="r"><b>${won(total)}</b></td></tr></table></div>
+    ${x.memo&&x.memo.trim()?`<div class="sec">비고</div><p class="para">${e(x.memo)}</p>`:''}`;
+  }},
+
+{ id:'labor', rank:5, name:'근로계약서', tag:'계약',
+  desc:'고용노동부 표준근로계약서 항목(기간의 정함이 없는 경우)을 따른 양식입니다. 시급이 최저임금보다 낮으면 경고가 뜹니다.',
+  fields:[
+    {g:'사업주'},
+    {id:'co',l:'사업체명',s:'한빛베이커리'},{id:'ceo',l:'대표자',s:'최유진'},{id:'coAddr',l:'사업장 주소',s:'광주광역시 서구 치평로 00'},{id:'coTel',l:'전화',s:'062-111-2222'},
+    {g:'근로자'},
+    {id:'name',l:'성명',s:'정다은'},{id:'addr',l:'주소',s:'광주광역시 광산구 수완로 00'},{id:'phone',l:'연락처',s:'010-2222-3333'},
+    {g:'근로 조건'},
+    {id:'start',l:'근로개시일',t:'date',s:plus(7)},
+    {id:'place',l:'근무 장소',s:'본점 매장'},{id:'job',l:'업무 내용',s:'제빵 보조 및 매장 판매'},
+    {id:'tStart',l:'시업 시각',t:'time',s:'09:00'},{id:'tEnd',l:'종업 시각',t:'time',s:'18:00'},
+    {id:'rest',l:'휴게시간',s:'12:00 ~ 13:00 (1시간)'},
+    {id:'days',l:'근무일 / 주휴일',s:'매주 월~금 (주 5일) / 주휴일 매주 일요일'},
+    {id:'wType',l:'임금 형태',t:'sel',o:['월급','시급'],s:'월급'},
+    {id:'wage',l:'임금액 (원)',t:'num',s:'2250000'},
+    {id:'payday',l:'임금 지급일',s:'매월 10일 (휴일이면 전일 지급)'},
+    {id:'payWay',l:'지급 방법',t:'sel',o:['근로자 명의 예금통장에 입금','근로자에게 직접 지급'],s:'근로자 명의 예금통장에 입금'},
+  ],
+  warn(x){
+    const w=num(x.wage); if(!w) return '';
+    const hourly = x.wType==='시급'? w : w/209;
+    return hourly < MINWAGE_2026 ? `환산 시급이 약 ${won(hourly)}원으로 2026년 최저시급 ${won(MINWAGE_2026)}원보다 낮습니다. (월급은 주 40시간 기준 209시간으로 나눠 계산)` : '';
+  },
+  render(x){
+    const w=num(x.wage);
+    return `<h3 class="sm">표준근로계약서</h3>
+    <p>${v(x.co)}(이하 "사업주"라 함)과(와) ${v(x.name)}(이하 "근로자"라 함)은 다음과 같이 근로계약을 체결한다.</p>
+    <div class="art"><b>1. 근로개시일</b>${fd(x.start)}부터</div>
+    <div class="art"><b>2. 근무 장소</b>${v(x.place)}</div>
+    <div class="art"><b>3. 업무의 내용</b>${v(x.job)}</div>
+    <div class="art"><b>4. 소정근로시간</b>${v(x.tStart)}부터 ${v(x.tEnd)}까지 (휴게시간 : ${v(x.rest)})</div>
+    <div class="art"><b>5. 근무일 / 휴일</b>${v(x.days)}</div>
+    <div class="art"><b>6. 임금</b><br>
+      - ${e(x.wType||'월급')} : ${w?won(w)+'원':v('')}<br>
+      - 상여금 : 있음 (　　　　원) / 없음 (　)<br>
+      - 임금 지급일 : ${v(x.payday)}<br>
+      - 지급 방법 : ${v(x.payWay)}</div>
+    <div class="art"><b>7. 연차유급휴가</b>근로기준법에서 정하는 바에 따라 부여한다.</div>
+    <div class="art"><b>8. 사회보험 적용</b>고용보험 · 산재보험 · 국민연금 · 건강보험</div>
+    <div class="art"><b>9. 근로계약서 교부</b>사업주는 근로계약을 체결함과 동시에 본 계약서를 사본하여 근로자의 교부 요구와 관계없이 근로자에게 교부한다.</div>
+    <div class="art"><b>10. 기타</b>이 계약에 정함이 없는 사항은 근로기준법령에 의한다.</div>
+    <div class="date">${fd(TODAY)}</div>
+    <div class="tblwrap"><table>
+      <tr><th rowspan="3">사업주</th><th>사업체명</th><td>${v(x.co)}</td><th>전화</th><td>${v(x.coTel)}</td></tr>
+      <tr><th>주소</th><td colspan="3">${v(x.coAddr)}</td></tr><tr><th>대표자</th><td colspan="3">${v(x.ceo)} ${seal}</td></tr>
+      <tr><th rowspan="3">근로자</th><th>주소</th><td colspan="3">${v(x.addr)}</td></tr>
+      <tr><th>연락처</th><td colspan="3">${v(x.phone)}</td></tr><tr><th>성명</th><td colspan="3">${v(x.name)} ${seal}</td></tr>
+    </table></div>`;
+  }},
+
+{ id:'resign', rank:6, name:'사직서', tag:'회사',
+  desc:'회사에 제출하는 일반 사직서입니다. 사유는 고르거나 직접 쓸 수 있습니다.',
+  fields:[
+    {id:'dept',l:'소속 부서',s:'영업팀'},{id:'pos',l:'직위',s:'대리'},{id:'name',l:'성명',s:'김하늘'},
+    {id:'joined',l:'입사일',t:'date',s:'2022-03-02'},{id:'leave',l:'퇴사 예정일',t:'date',s:plus(30)},
+    {id:'reason',l:'사직 사유',t:'sel',o:['일신상의 사유','학업 및 자기계발','이직','건강상의 사유','가정 사정','직접 입력'],s:'일신상의 사유'},
+    {id:'reasonTxt',l:'직접 입력한 사유 (선택)',s:'',h:'"직접 입력"을 골랐을 때 쓰입니다.'},
+    {id:'to',l:'수신',s:'(주)한빛유통 대표이사 귀하'},
+  ],
+  render(x){
+    const r = x.reason==='직접 입력' ? (x.reasonTxt||'') : x.reason;
+    return `<h3>사 직 서</h3>
+    <div class="tblwrap"><table><tr><th>소 속</th><td>${v(x.dept)}</td><th>직 위</th><td>${v(x.pos)}</td></tr>
+    <tr><th>성 명</th><td colspan="3">${v(x.name)}</td></tr>
+    <tr><th>입사일</th><td>${fd(x.joined)}</td><th>퇴사 예정일</th><td>${fd(x.leave)}</td></tr>
+    <tr><th>사 유</th><td colspan="3">${v(r)}</td></tr></table></div>
+    <p style="margin-top:26px;text-indent:1em">본인은 위와 같은 사유로 ${fd(x.leave)}부로 사직하고자 하오니 허락하여 주시기 바랍니다. 재직 기간 동안 베풀어 주신 배려에 깊이 감사드리며, 퇴사일까지 맡은 업무의 인수인계를 성실히 마치겠습니다.</p>
+    <div class="date">${fd(TODAY)}</div>${signBlock([['신청인',v(x.name)]])}
+    <div class="to">${v(x.to)}</div>`;
+  }},
+
+{ id:'intro', rank:7, name:'자기소개서', tag:'취업',
+  desc:'가장 많이 쓰는 4개 항목 구성입니다. 항목마다 공백 포함·제외 글자 수를 세어 줍니다.',
+  fields:[
+    {id:'name',l:'성명',s:'김하늘'},{id:'company',l:'지원 회사',s:'(주)스마트커머스'},{id:'role',l:'지원 직무',s:'온라인 마케팅'},
+    {id:'q1',l:'성장 과정',t:'area',cnt:1,s:'작은 가게를 하시던 부모님 곁에서 손님 한 분 한 분을 기억하는 법을 배웠습니다. 단골의 취향을 메모해 두었다가 다음 방문 때 먼저 권하던 경험은, 지금도 고객 데이터를 볼 때 "이 숫자 뒤에 어떤 사람이 있는가"를 먼저 생각하게 만듭니다.'},
+    {id:'q2',l:'성격의 장단점',t:'area',cnt:1,s:'끝까지 원인을 파고드는 집요함이 장점입니다. 광고 성과가 떨어졌을 때 시간대·소재·연령별로 나눠 분석해 클릭률을 1.8배 올렸습니다. 다만 혼자 해결하려는 습관이 있어, 지금은 막히는 지점을 하루 안에 팀과 공유하는 원칙을 지키고 있습니다.'},
+    {id:'q3',l:'지원 동기',t:'area',cnt:1,s:'귀사가 소상공인 판매자의 성장을 돕는 플랫폼이라는 점에 끌렸습니다. 제가 SNS 광고 운영으로 쌓은 경험을 판매자 성장 프로그램에 연결해, 작은 가게도 데이터로 성장할 수 있다는 것을 보여 주고 싶습니다.'},
+    {id:'q4',l:'입사 후 포부',t:'area',cnt:1,s:'입사 1년 안에 판매자 대상 광고 운영 가이드를 만들고, 3년 안에 신규 판매자의 첫 달 매출을 높이는 온보딩 프로그램을 기획하겠습니다.'},
+  ],
+  render(x){
+    const sec=(t,s)=>`<div class="sec">${t}</div><p class="para" style="text-indent:1em">${s&&s.trim()?e(s):'<span class="empty">내용을 입력하세요</span>'}</p>`;
+    return `<h3>자기소개서</h3>
+    <div class="tblwrap"><table><tr><th>성 명</th><td>${v(x.name)}</td><th>지원 회사</th><td>${v(x.company)}</td><th>직무</th><td>${v(x.role)}</td></tr></table></div>
+    ${sec('1. 성장 과정',x.q1)}${sec('2. 성격의 장단점',x.q2)}${sec('3. 지원 동기',x.q3)}${sec('4. 입사 후 포부',x.q4)}`;
+  }},
+
+{ id:'proxy', rank:8, name:'위임장', tag:'생활',
+  desc:'관공서·은행 등에서 서류 발급이나 업무를 대신 맡길 때 쓰는 위임장입니다.',
+  fields:[
+    {g:'위임받는 사람 (대리인)'},
+    {id:'aName',l:'성명',s:'이서준'},{id:'aBirth',l:'생년월일',t:'date',s:'1990-08-21'},
+    {id:'aAddr',l:'주소',s:'광주광역시 남구 봉선로 00'},{id:'aRel',l:'위임인과의 관계',s:'배우자'},{id:'aPhone',l:'연락처',s:'010-9876-5432'},
+    {g:'위임 내용'},
+    {id:'task',l:'위임 사항',t:'area',s:'본인 명의의 주민등록등본 및 가족관계증명서 각 1통 발급 신청과 수령에 관한 일체의 권한'},
+    {id:'where',l:'제출처',s:'광주광역시 남구청 민원실'},
+    {g:'위임하는 사람 (본인)'},
+    {id:'pName',l:'성명',s:'김하늘'},{id:'pBirth',l:'생년월일',t:'date',s:'1995-04-12'},
+    {id:'pAddr',l:'주소',s:'광주광역시 서구 상무중앙로 00'},{id:'pPhone',l:'연락처',s:'010-1234-5678'},
+  ],
+  render(x){
+    return `<h3>위 임 장</h3>
+    <div class="sec">수임인 (대리인)</div>
+    <div class="tblwrap"><table><tr><th>성 명</th><td>${v(x.aName)}</td><th>생년월일</th><td>${x.aBirth?fd(x.aBirth):v('')}</td></tr>
+    <tr><th>주 소</th><td colspan="3">${v(x.aAddr)}</td></tr><tr><th>관 계</th><td>${v(x.aRel)}</td><th>연락처</th><td>${v(x.aPhone)}</td></tr></table></div>
+    <p style="margin:18px 0 6px;text-indent:1em">본인은 위 사람을 대리인으로 정하고 다음 사항에 관한 권한을 위임합니다.</p>
+    <div class="tblwrap"><table><tr><th>위임 사항</th><td class="para">${v(x.task)}</td></tr><tr><th>제 출 처</th><td>${v(x.where)}</td></tr></table></div>
+    <div class="date">${fd(TODAY)}</div>
+    <div class="sec">위임인 (본인)</div>
+    <div class="tblwrap"><table><tr><th>성 명</th><td>${v(x.pName)} ${seal}</td><th>생년월일</th><td>${x.pBirth?fd(x.pBirth):v('')}</td></tr>
+    <tr><th>주 소</th><td colspan="3">${v(x.pAddr)}</td></tr><tr><th>연락처</th><td colspan="3">${v(x.pPhone)}</td></tr></table></div>
+    <p style="font-size:12.5px;margin-top:14px">※ 위임인의 신분증 사본을 함께 첨부하세요.</p>`;
+  }},
+
+{ id:'lease', rank:9, name:'부동산 임대차계약서', tag:'계약 · 9·10위 통합',
+  desc:'인기 9위 "부동산임대차계약서"와 10위 "임대차계약서"를 하나로 묶었습니다. 전세·월세 모두 쓸 수 있고, 금액은 한글로 자동 표기됩니다.',
+  fields:[
+    {g:'부동산'},
+    {id:'loc',l:'소재지',s:'광주광역시 서구 상무대로 00, 101동 1203호'},
+    {id:'kind',l:'건물 종류 · 면적',s:'아파트 · 전용 84.9㎡'},
+    {id:'type',l:'계약 종류',t:'sel',o:['월세','전세'],s:'월세'},
+    {g:'금액'},
+    {id:'deposit',l:'보증금 (원)',t:'num',s:'30000000'},
+    {id:'down',l:'계약금 (원)',t:'num',s:'3000000'},
+    {id:'rent',l:'월 차임 (원, 전세는 비움)',t:'num',s:'700000'},
+    {id:'rentDay',l:'차임 지급일',s:'매월 25일'},
+    {g:'기간'},
+    {id:'from',l:'인도일 (입주일)',t:'date',s:plus(30)},{id:'to',l:'만료일',t:'date',s:plusY(2)},
+    {g:'임대인'},
+    {id:'lName',l:'성명',s:'박정민'},{id:'lAddr',l:'주소',s:'광주광역시 북구 용봉로 00'},{id:'lPhone',l:'연락처',s:'010-3333-4444'},
+    {g:'임차인'},
+    {id:'tName',l:'성명',s:'정다은'},{id:'tAddr',l:'주소',s:'광주광역시 광산구 수완로 00'},{id:'tPhone',l:'연락처',s:'010-2222-3333'},
+    {g:'특약'},
+    {id:'extra',l:'특약 사항',t:'area',s:'1. 임대인은 잔금 지급일 다음 날까지 현 상태의 근저당 등 권리관계를 변동시키지 않는다.\n2. 입주 전 도배·장판은 임대인 부담으로 교체한다.\n3. 반려동물 사육은 임대인과 협의한다.'},
+  ],
+  render(x){
+    const dep=num(x.deposit), down=num(x.down), rent=num(x.rent), bal=Math.max(0,dep-down), monthly=x.type==='월세';
+    return `<h3 class="sm">부동산(${e(x.type||'월세')}) 임대차계약서</h3>
+    <p>임대인과 임차인은 아래 표시 부동산에 관하여 다음과 같이 임대차계약을 체결한다.</p>
+    <div class="sec">1. 부동산의 표시</div>
+    <div class="tblwrap"><table><tr><th>소재지</th><td>${v(x.loc)}</td></tr><tr><th>종류·면적</th><td>${v(x.kind)}</td></tr></table></div>
+    <div class="sec">2. 계약 내용</div>
+    <div class="tblwrap"><table>
+      <tr><th>보증금</th><td>${amt(dep)}</td></tr>
+      <tr><th>계약금</th><td>${amt(down)} 은 계약 시 지급하고 영수함.</td></tr>
+      <tr><th>잔금</th><td>${amt(bal)} 은 ${fd(x.from)}에 지급한다.</td></tr>
+      ${monthly?`<tr><th>차임(월세)</th><td>${amt(rent)} 은 ${v(x.rentDay)}에 지급한다.</td></tr>`:''}
+    </table></div>
+    <div class="art"><b>제1조 (존속기간)</b>임대인은 위 부동산을 ${fd(x.from)}까지 임차인에게 인도하며, 임대차 기간은 인도일로부터 ${fd(x.to)}까지로 한다.</div>
+    <div class="art"><b>제2조 (용도 변경 및 전대)</b>임차인은 임대인의 동의 없이 위 부동산의 용도나 구조를 바꾸거나 전대·양도할 수 없다.</div>
+    <div class="art"><b>제3조 (계약의 해지)</b>임차인의 차임 연체액이 2기의 차임액에 이르거나 제2조를 위반한 경우, 임대인은 즉시 계약을 해지할 수 있다.</div>
+    <div class="art"><b>제4조 (계약의 종료)</b>계약이 종료되면 임차인은 위 부동산을 원상으로 회복하여 반환하고, 임대인은 보증금을 임차인에게 돌려준다.</div>
+    <div class="art"><b>제5조 (계약의 해제)</b>임차인이 잔금을 지급하기 전까지 임대인은 계약금의 두 배를 돌려주고, 임차인은 계약금을 포기하고 이 계약을 해제할 수 있다.</div>
+    <div class="art"><b>제6조 (채무불이행)</b>어느 한쪽이 계약 내용을 이행하지 않으면 상대방은 서면으로 이행을 요구한 뒤 계약을 해제하고 손해배상을 청구할 수 있다.</div>
+    ${x.extra&&x.extra.trim()?`<div class="sec">특약 사항</div><p class="para">${e(x.extra)}</p>`:''}
+    <p style="margin-top:14px">이 계약을 증명하기 위하여 계약 당사자가 이의 없음을 확인하고 각각 서명·날인한다.</p>
+    <div class="date">${fd(TODAY)}</div>
+    <div class="tblwrap"><table>
+      <tr><th rowspan="2">임대인</th><th>주소</th><td colspan="3">${v(x.lAddr)}</td></tr><tr><th>성명</th><td>${v(x.lName)} ${seal}</td><th>전화</th><td>${v(x.lPhone)}</td></tr>
+      <tr><th rowspan="2">임차인</th><th>주소</th><td colspan="3">${v(x.tAddr)}</td></tr><tr><th>성명</th><td>${v(x.tName)} ${seal}</td><th>전화</th><td>${v(x.tPhone)}</td></tr>
+    </table></div>
+    <p style="font-size:12.5px">※ 주택은 계약 후 전입신고와 확정일자를 꼭 받으세요. 공인중개사를 통한 거래라면 중개사 정보란을 추가하세요.</p>`;
+  }},
+];
+
+/* ---------- 상태 ---------- */
+const KEY='seogong-v1';
+let store={}; try{ store=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(_){ store={}; }
+const save=()=>{ try{ localStorage.setItem(KEY,JSON.stringify(store)); }catch(_){} };
+const sample = f => { const o={}; f.fields.forEach(d=>{ if(d.id) o[d.id]=Array.isArray(d.s)?d.s.map(r=>r.slice()):(d.s??''); }); return o; };
+const blank = f => { const o={}; f.fields.forEach(d=>{ if(d.id) o[d.id]= d.t==='items'?[['','','','']]: d.t==='sel'?d.o[0]:''; }); return o; };
+let cur = FORMS[0].id;
+try{ const h=location.hash.slice(1); if(FORMS.some(f=>f.id===h)) cur=h; else if(store.__cur && FORMS.some(f=>f.id===store.__cur)) cur=store.__cur; }catch(_){}
+const vals = f => store[f.id] || (store[f.id]=sample(f));
+
+const $=id=>document.getElementById(id);
+const rank=$('rank');
+FORMS.forEach(f=>{
+  const b=document.createElement('button'); b.type='button'; b.dataset.id=f.id;
+  b.innerHTML=`<span class="no">${f.rank===9?'9·10':f.rank}</span><span>${f.name}</span><span class="tag">${f.tag.split(' ')[0]}</span>`;
+  b.onclick=()=>{ cur=f.id; store.__cur=cur; save(); build(); };
+  rank.appendChild(b);
+});
+
+function counts(s){ s=s||''; return `공백 포함 ${s.length.toLocaleString()}자 · 공백 제외 ${s.replace(/\s/g,'').length.toLocaleString()}자`; }
+
+function build(){
+  const f=FORMS.find(x=>x.id===cur), x=vals(f);
+  rank.querySelectorAll('button').forEach(b=>b.setAttribute('aria-current', b.dataset.id===cur?'true':'false'));
+  $('edTitle').textContent=f.name; $('edDesc').textContent=f.desc;
+  $('pvInfo').textContent=`${f.name} · A4 미리보기`;
+  const box=$('fields'); box.innerHTML='';
+  const warnEl=document.createElement('div'); warnEl.className='warn'; warnEl.hidden=true;
+  f.fields.forEach(d=>{
+    if(d.g){ const g=document.createElement('div'); g.className='grp'; g.textContent=d.g; box.appendChild(g); return; }
+    if(d.t==='items'){ box.appendChild(itemsEditor(f,x)); return; }
+    const lab=document.createElement('label'); lab.className='f'; lab.htmlFor=`f-${f.id}-${d.id}`;
+    lab.appendChild(document.createTextNode(d.l));
+    let el;
+    if(d.t==='area'){ el=document.createElement('textarea'); }
+    else if(d.t==='sel'){ el=document.createElement('select'); d.o.forEach(o=>{const op=document.createElement('option'); op.textContent=o; el.appendChild(op);}); }
+    else { el=document.createElement('input'); el.type= d.t==='date'?'date': d.t==='time'?'time':'text'; if(d.t==='num') el.inputMode='numeric'; }
+    el.id=`f-${f.id}-${d.id}`; el.value=x[d.id]??'';
+    lab.appendChild(el);
+    let cnt; if(d.cnt){ cnt=document.createElement('div'); cnt.className='count'; cnt.textContent=counts(el.value); lab.appendChild(cnt); }
+    if(d.t==='num'){ const h=document.createElement('div'); h.className='hint'; const upd=()=>{const n=num(el.value); h.textContent=n?`${won(n)}원 · ${hangul(n)}원`:'';}; upd(); lab.appendChild(h); el.addEventListener('input',upd); }
+    if(d.h){ const h=document.createElement('div'); h.className='hint'; h.textContent=d.h; lab.appendChild(h); }
+    el.addEventListener('input',()=>{ x[d.id]=el.value; if(cnt) cnt.textContent=counts(el.value); save(); paint(f,x,warnEl); });
+    box.appendChild(lab);
+  });
+  box.appendChild(warnEl);
+  paint(f,x,warnEl);
+}
+
+function itemsEditor(f,x){
+  const wrap=document.createElement('div'); wrap.className='items';
+  const draw=()=>{
+    wrap.innerHTML='<div class="irow ihead"><span>품명</span><span>규격</span><span>수량</span><span>단가</span><span></span></div>';
+    x.items.forEach((r,i)=>{
+      const row=document.createElement('div'); row.className='irow';
+      ['품명','규격','수량','단가'].forEach((ph,j)=>{ const inp=document.createElement('input'); inp.id=`it-${i}-${j}`; inp.placeholder=ph; inp.setAttribute('aria-label',`${i+1}행 ${ph}`); inp.value=r[j]??''; if(j>1) inp.inputMode='numeric';
+        inp.addEventListener('input',()=>{ r[j]=inp.value; save(); paint(f,x); }); row.appendChild(inp); });
+      const del=document.createElement('button'); del.type='button'; del.className='x'; del.textContent='×'; del.setAttribute('aria-label',`${i+1}행 삭제`);
+      del.onclick=()=>{ x.items.splice(i,1); if(!x.items.length) x.items.push(['','','','']); save(); draw(); paint(f,x); };
+      row.appendChild(del); wrap.appendChild(row);
+    });
+    const add=document.createElement('button'); add.type='button'; add.className='btn'; add.textContent='+ 품목 추가';
+    add.onclick=()=>{ x.items.push(['','','','']); save(); draw(); paint(f,x); }; wrap.appendChild(add);
+  };
+  if(!Array.isArray(x.items)) x.items=[['','','','']];
+  draw(); return wrap;
+}
+
+function paint(f,x,warnEl){
+  $('paper').innerHTML=f.render(x);
+  if(warnEl && f.warn){ const w=f.warn(x); warnEl.textContent=w; warnEl.hidden=!w; }
+}
+
+$('btnSample').onclick=()=>{ const f=FORMS.find(x=>x.id===cur); store[f.id]=sample(f); save(); build(); };
+$('btnClear').onclick=()=>{ const f=FORMS.find(x=>x.id===cur); store[f.id]=blank(f); save(); build(); };
+$('btnCopy').onclick=async()=>{
+  const btn=$('btnCopy'), txt=$('paper').innerText.replace(/\n{3,}/g,'\n\n');
+  const done=m=>{ btn.textContent=m; setTimeout(()=>btn.textContent='문서 내용 복사',1600); };
+  try{ await navigator.clipboard.writeText(txt); done('복사했습니다'); }
+  catch(_){ const r=document.createRange(); r.selectNodeContents($('paper')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); done('선택됨 · Ctrl+C로 복사'); }
+};
+build();
+})();
+</script>
+
+</body></html>
