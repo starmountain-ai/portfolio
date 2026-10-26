@@ -277,6 +277,20 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .grid-v .work.award{grid-column:span 2;grid-row:span 2}
 .grid-v .work.award .screen{aspect-ratio:auto;flex:1;min-height:0}
 .grid-v .work.award .screen .t{font-size:clamp(24px,3vw,40px)}
+
+/* 쇼릴 클릭 + 팝업 플레이어 */
+.reel-item{display:block;padding:0;font:inherit;color:inherit;text-decoration:none;cursor:pointer;transition:transform .25s,box-shadow .25s}
+.reel-item:hover{transform:translateY(-4px);box-shadow:0 0 34px -6px rgba(194,242,94,.8)}
+.reel-item:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.reel-item:hover .pl{background:var(--gold)}
+.lightbox{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.86);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:grid;place-items:center;padding:max(20px,env(safe-area-inset-top,0px)) 20px max(20px,env(safe-area-inset-bottom,0px))}
+.lightbox[hidden]{display:none}
+.lb-inner{position:relative;height:min(86vh,calc((100vw - 40px)*16/9));aspect-ratio:9/16;max-width:100%}
+.lb-box{position:absolute;inset:0;border-radius:18px;overflow:hidden;background:#000;border:2px solid rgba(194,242,94,.75);box-shadow:0 0 60px -10px rgba(194,242,94,.5)}
+.lb-box iframe{width:100%;height:100%;border:0}
+.lb-close{position:absolute;top:-14px;right:-14px;z-index:1;width:40px;height:40px;border-radius:50%;border:0;background:var(--gold);color:var(--gold-ink);font-size:18px;font-weight:800;cursor:pointer}
+.lb-close:focus-visible{outline:2px solid #fff;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.reel-item{transition:none}.reel-item:hover{transform:none}}
 </style>
 </head>
 <body>
@@ -316,7 +330,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
       <div class="stats" id="stats"></div>
     </div>
   </div>
-  <div class="reel" aria-hidden="true"><div class="reel-track" id="reel"></div></div>
+  <div class="reel"><div class="reel-track" id="reel"></div></div>
+  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="영상 재생"><div class="lb-inner"><button type="button" class="lb-close" id="lb-close" aria-label="닫기">✕</button><div class="lb-box" id="lb-box"></div></div></div>
 
   <section id="vertical">
     <div class="wrap">
@@ -510,8 +525,22 @@ function card(w){
 document.getElementById("grid-v").innerHTML=W.filter(w=>w.v).map(card).join("");
 document.getElementById("grid-h").innerHTML=W.filter(w=>!w.v).map(card).join("");
 
-const reelItems=W.filter(w=>w.v).map(w=>`<div class="reel-item" style="--h:${w.h};--h2:${w.h2}">${thumb(w.id).replace(' class="thumb"','')}<i class="pl"></i><span>${esc(w.t)}</span></div>`).join("");
-document.getElementById("reel").innerHTML=reelItems+reelItems;
+const reelItem=(w,dup)=>{
+  const inner=`${thumb(w.id).replace(' class="thumb"','')}<i class="pl"></i><span>${esc(w.t)}</span>`;
+  const attrs=`style="--h:${w.h};--h2:${w.h2}" aria-label="${esc(w.t)} 재생"${dup?' tabindex="-1" aria-hidden="true"':''}`;
+  return CAN_EMBED?`<button type="button" class="reel-item" data-play="${w.id}" ${attrs}>${inner}</button>`:`<a class="reel-item" href="${url(w)}" target="_blank" rel="noopener" ${attrs}>${inner}</a>`;
+};
+const VW=W.filter(w=>w.v);
+document.getElementById("reel").innerHTML=VW.map(w=>reelItem(w,0)).join("")+VW.map(w=>reelItem(w,1)).join("");
+// 쇼릴 클릭 → 팝업 플레이어
+const lb=document.getElementById("lightbox"),lbBox=document.getElementById("lb-box");
+let lbLast=null;
+function openLb(id,title){lbLast=document.activeElement;lbBox.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1" title="${esc(title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;lb.hidden=false;document.body.style.overflow="hidden";document.getElementById("lb-close").focus();}
+function closeLb(){lb.hidden=true;lbBox.innerHTML="";document.body.style.overflow="";if(lbLast)lbLast.focus();}
+document.getElementById("reel").addEventListener("click",e=>{const b=e.target.closest("[data-play]");if(!b)return;const w=W.find(x=>x.id===b.dataset.play);openLb(w.id,w.t);});
+document.getElementById("lb-close").addEventListener("click",closeLb);
+lb.addEventListener("click",e=>{if(e.target===lb)closeLb();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!lb.hidden)closeLb();});
 
 const orgs=new Set();W.forEach(w=>w.org.split(" · ").forEach(o=>orgs.add(o)));
 const stats=[
