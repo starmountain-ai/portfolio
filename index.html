@@ -494,6 +494,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 <script>
 const W=[
  {v:1,id:"2A1fqXvqsTQ",t:"당신의 상상이, 미래의 신세계가 되다",org:"광주신세계",tags:["기업홍보","인터뷰"],award:"2등 수상 · 상금 100만원",dur:"1일",tools:["ChatGPT","Gemini","Flow","Suno","CapCut","타입캐스트"],h:28,h2:45},
+ {v:1,id:"xhz7kFzFKWY",t:"아직도 나를 몰라?",org:"하이라이트TV",award:"우수상 수상",tags:["AI 광고","코믹 판타지"],dur:"1일",tools:["ChatGPT","Flow","Suno","CapCut","타입캐스트"],h:315,h2:55},
  {v:1,id:"2_vnGm8oROk",t:"K-비빔밥",org:"세븐일레븐",tags:["제품홍보","뮤직비디오","CM송"],dur:"1일",tools:["ChatGPT","Gemini","Seedance 2.5","Suno","CapCut"],h:8,h2:40},
  {v:1,id:"x1qzrFNO8DE",t:"딱! 삑! 바로!",org:"GS칼텍스",tags:["제품홍보","뮤직비디오","CM송"],dur:"1일",tools:["ChatGPT","Gemini","Flow","Suno","CapCut"],h:150,h2:95},
  {v:1,id:"e36xMNcmY5s",t:"스트레스 쌓일 때, 볼링! 볼링!",org:"국민체육진흥공단 · 문화체육관광부",sub:"국민체육진흥공단 공모전 출품",tags:["스포츠홍보","뮤직비디오","CM송"],dur:"1일",tools:["ChatGPT","Gemini","Flow","Suno","CapCut"],h:268,h2:310},
@@ -502,7 +503,6 @@ const W=[
  {v:1,id:"TGkUDmpgRI8",t:"나주본색(羅州本色)",org:"나주시",tags:["영산강축제 홍보","패러디"],dur:"1일",tools:["ChatGPT","MiniMax H3","Flow","Suno","CapCut"],h:0,h2:30},
  {v:1,id:"6bE-qLhw_L0",t:"과학관이 살아있다",org:"국립과천과학관",tags:["기관홍보","코믹"],dur:"1일",tools:["ChatGPT","MiniMax H3","Flow","Suno","CapCut"],h:180,h2:130},
  {v:1,id:"hC09DtlbOjQ",t:"추억을 여는 화성특례시",org:"화성특례시",tags:["도시홍보","SF·판타지"],dur:"1일",tools:["ChatGPT","MiniMax H3","Flow","Suno","CapCut"],h:285,h2:200},
- {v:1,id:"xhz7kFzFKWY",t:"아직도 나를 몰라?",org:"하이라이트TV",tags:["AI 광고","코믹 판타지"],dur:"1일",tools:["ChatGPT","Flow","Suno","CapCut","타입캐스트"],h:315,h2:55},
  {v:0,id:"LVWkZPgnv4E",t:"언제나 당신 곁엔 필요한 건 하나",org:"하나손해보험",tags:["브랜드 홍보","AI CF"],dur:"1일",tools:["ChatGPT","Seedance 2.0","Suno","CapCut","타입캐스트"],h:168,h2:190},
  {v:0,id:"hSpjMjXMY0w",t:"K-SAMCHEOK! 다시 삼척의 시대",org:"삼척시",tags:["도시홍보","뮤직비디오","CM송"],dur:"1일",tools:["ChatGPT","Flow","Suno","CapCut","타입캐스트"],h:200,h2:170},
  {v:0,id:"fFb7x3_uDkw",t:"빛으로 길이 열리는 화성",org:"화성특례시",tags:["도시홍보","AI CF"],dur:"1일",tools:["ChatGPT","MiniMax H3","Suno","CapCut","타입캐스트"],h:240,h2:45},
@@ -555,7 +555,7 @@ const stats=[
   ["100편+","숏폼 제작<br>(공모전 출품작 외)"],
   [W.length+"편","AI 영상 공모전 출품<br>(주최 "+orgs.size+"곳)"],
   ["1일","편당 제작 기간<br>(기획부터 편집까지)"],
-  ["2등","광주신세계<br>AI 영상 공모전",1]
+  ["2회","AI 영상 공모전 수상<br>(2등 · 우수상)",1]
 ];
 document.getElementById("stats").innerHTML=stats.map(s=>`<div class="stat${s[2]?" award":""}"><b>${s[0]}</b><span>${s[1]}</span></div>`).join("");
 
