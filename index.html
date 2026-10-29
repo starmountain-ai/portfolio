@@ -515,11 +515,11 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 const url=w=>w.v?`https://www.youtube.com/shorts/${w.id}`:`https://www.youtube.com/watch?v=${w.id}`;
 const thumb=id=>`<img class="thumb" src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">`;
 function card(w){
-  const tags=(w.award?`<span class="tag aw">${esc(w.award)}</span>`:"")+w.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")+(w.todo?`<span class="tag">${esc(w.todo)}</span>`:"");
+  const tags=(w.award?`<span class="tag aw">${esc(w.award)}</span>`:"")+w.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")+`<span class="tag">제작기간 ${esc(w.dur)}</span>`+(w.todo?`<span class="tag">${esc(w.todo)}</span>`:"");
   return `<article class="work${w.award?" award":""}">
     ${CAN_EMBED?`<button type="button" class="screen" data-id="${w.id}"`:`<a class="screen" href="${url(w)}" target="_blank" rel="noopener"`} style="--h:${w.h};--h2:${w.h2}" aria-label="${esc(w.t)} 재생">
       ${thumb(w.id)}
-      <div class="top">${w.award?`<span class="badge">★ ${esc(w.award.split(" · ")[0])}</span>`:`<span class="chip">${w.v?"9:16":"16:9"}</span>`}<span class="chip">제작 ${esc(w.dur)}</span></div>
+      <div class="top">${w.award?`<span class="badge">★ ${esc(w.award.split(" · ")[0])}</span>`:`<span class="chip">${w.v?"9:16":"16:9"}</span>`}</div>
       <div class="t">${esc(w.t)}</div>
       <div class="bot"><span class="org">${esc(w.org)}</span><span class="play" aria-hidden="true"></span></div>
     ${CAN_EMBED?"</button>":"</a>"}
