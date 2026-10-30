@@ -299,6 +299,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .brand{align-items:center}
 .brand .logo{width:28px;height:28px;flex:none;fill:var(--gold);filter:drop-shadow(0 0 8px rgba(194,242,94,.45))}
 .pf-list dt{color:var(--gold);font-weight:500}
+/* 가로형 6편: 2칸 x 3줄 */
+.grid-h .work:first-child{grid-column:auto}
+.grid-h .work:first-child .screen{aspect-ratio:16/9}
+.grid-h .work:first-child .screen .t{font-size:clamp(19px,1.9vw,25px)}
 </style>
 </head>
 <body>
@@ -507,6 +511,7 @@ const W=[
  {v:0,id:"hSpjMjXMY0w",t:"K-SAMCHEOK! 다시 삼척의 시대",org:"삼척시",tags:["도시홍보","뮤직비디오","CM송"],dur:"1일",tools:["ChatGPT","Flow","Suno","CapCut","타입캐스트"],h:200,h2:170},
  {v:0,id:"fFb7x3_uDkw",t:"빛으로 길이 열리는 화성",org:"화성특례시",tags:["도시홍보","AI CF"],dur:"1일",tools:["ChatGPT","MiniMax H3","Suno","CapCut","타입캐스트"],h:240,h2:45},
  {v:0,id:"v_oiCSw1Uzo",t:"천년동안, 깊이가 다른 선택",org:"해양심층수산업 고성진흥원",tags:["특산품 홍보","AI CF"],dur:"1일",tools:["ChatGPT","MiniMax H3","Suno","CapCut","타입캐스트"],h:215,h2:185},
+ {v:0,id:"VgTobqh0Km4",t:"하늘이 주신 선물, 완주",org:"완주군",tags:["도시홍보","AI CF"],dur:"1일",tools:["ChatGPT","Flow","Suno","CapCut","타입캐스트"],h:130,h2:60},
  {v:0,id:"TMee_wUq5uc",t:"청주시 홍보 AI CF",org:"청주시",tags:["도시홍보","AI CF"],dur:"1일",tools:["ChatGPT","Flow","Suno","CapCut","타입캐스트"],h:22,h2:350,todo:"작품명 확인 중"}
 ];
 // 일반 웹사이트에서는 사이트 안에서 재생, 임베드가 막힌 환경(Claude 미리보기)에서는 유튜브 링크로 열기
