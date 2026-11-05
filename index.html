@@ -303,6 +303,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .grid-h .work:first-child{grid-column:auto}
 .grid-h .work:first-child .screen{aspect-ratio:16/9}
 .grid-h .work:first-child .screen .t{font-size:clamp(19px,1.9vw,25px)}
+/* 가로형 9편: 3칸 x 3줄 */
+.grid-h{grid-template-columns:repeat(3,minmax(0,1fr));gap:44px 22px}
+.grid-h .screen .t,.grid-h .work:first-child .screen .t{font-size:clamp(17px,1.6vw,21px)}
+@media (max-width:760px){.grid-h{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -514,6 +518,7 @@ const W=[
  {v:0,id:"VgTobqh0Km4",t:"하늘이 주신 선물, 완주",org:"완주군",tags:["도시홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut","타입캐스트"],h:130,h2:60},
  {v:0,id:"gm58HNd4K6o",t:"소년의 꿈이 모두의 꿈이 되다",org:"과학기술정보통신부",tags:["AI경진대회 홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut"],h:225,h2:280},
  {v:0,id:"fm4HEtj63io",t:"음성으로 가을을 담겠소",org:"충북 음성군",tags:["도시홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut"],h:25,h2:45},
+ {v:0,id:"jgtar7RHvKc",t:"이런 휴게소 있었으면 좋겠어!",org:"한국도로공사",tags:["기업홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut"],h:95,h2:170},
  {v:0,id:"TMee_wUq5uc",t:"청주시 홍보 AI CF",org:"청주시",tags:["도시홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut","타입캐스트"],h:22,h2:350,todo:"작품명 확인 중"}
 ];
 // 일반 웹사이트에서는 사이트 안에서 재생, 임베드가 막힌 환경(Claude 미리보기)에서는 유튜브 링크로 열기
