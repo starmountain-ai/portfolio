@@ -307,6 +307,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .grid-h{grid-template-columns:repeat(3,minmax(0,1fr));gap:44px 22px}
 .grid-h .screen .t,.grid-h .work:first-child .screen .t{font-size:clamp(17px,1.6vw,21px)}
 @media (max-width:760px){.grid-h{grid-template-columns:1fr}}
+/* 세로형 11편: 6칸 */
+.grid-v{grid-template-columns:repeat(6,minmax(0,1fr));gap:36px 16px}
+.grid-v .screen{padding:12px}
+.grid-v .screen .t{font-size:clamp(15px,1.35vw,18px)}
+@media (max-width:1000px){.grid-v{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:760px){.grid-v{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
@@ -503,6 +509,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 const W=[
  {v:1,id:"2A1fqXvqsTQ",t:"당신의 상상이, 미래의 신세계가 되다",org:"광주신세계",tags:["기업홍보","인터뷰"],award:"2등 수상 · 상금 100만원",dur:"1일",tools:["ChatGPT","Claude","Gemini","Flow","Suno","CapCut","타입캐스트"],h:28,h2:45},
  {v:1,id:"xhz7kFzFKWY",t:"아직도 나를 몰라?",org:"하이라이트TV",award:"우수상 수상 · 상금 50만원",tags:["AI 광고","코믹 판타지"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut","타입캐스트"],h:315,h2:55},
+ {v:1,id:"Dv1mnPEPijQ",t:"슈퍼스타 매돌이! 광양을 누비다",org:"광양시",tags:["캐릭터 홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut"],h:200,h2:100},
+ {v:1,id:"hC09DtlbOjQ",t:"추억을 여는 화성특례시",org:"화성특례시",tags:["도시홍보","SF·판타지"],dur:"1일",tools:["ChatGPT","Claude","MiniMax H3","Flow","Suno","CapCut"],h:285,h2:200},
  {v:1,id:"2_vnGm8oROk",t:"K-비빔밥",org:"세븐일레븐",tags:["제품홍보","뮤직비디오","CM송"],dur:"1일",tools:["ChatGPT","Claude","Gemini","Seedance 2.5","Suno","CapCut"],h:8,h2:40},
  {v:1,id:"x1qzrFNO8DE",t:"딱! 삑! 바로!",org:"GS칼텍스",tags:["제품홍보","뮤직비디오","CM송"],dur:"1일",tools:["ChatGPT","Claude","Gemini","Flow","Suno","CapCut"],h:150,h2:95},
  {v:1,id:"e36xMNcmY5s",t:"스트레스 쌓일 때, 볼링! 볼링!",org:"국민체육진흥공단 · 문화체육관광부",sub:"국민체육진흥공단 공모전 출품",tags:["스포츠홍보","뮤직비디오","CM송"],dur:"1일",tools:["ChatGPT","Claude","Gemini","Flow","Suno","CapCut"],h:268,h2:310},
@@ -510,15 +518,14 @@ const W=[
  {v:1,id:"fFZ08i5fNmY",t:"빛나! 빛나! 화성!",org:"화성특례시",tags:["도시홍보","CM송"],dur:"1일",tools:["ChatGPT","Claude","Gemini","Flow","Suno","CapCut"],h:330,h2:20},
  {v:1,id:"TGkUDmpgRI8",t:"나주본색(羅州本色)",org:"나주시",tags:["영산강축제 홍보","패러디"],dur:"1일",tools:["ChatGPT","Claude","MiniMax H3","Flow","Suno","CapCut"],h:0,h2:30},
  {v:1,id:"6bE-qLhw_L0",t:"과학관이 살아있다",org:"국립과천과학관",tags:["기관홍보","코믹"],dur:"1일",tools:["ChatGPT","Claude","MiniMax H3","Flow","Suno","CapCut"],h:180,h2:130},
- {v:1,id:"hC09DtlbOjQ",t:"추억을 여는 화성특례시",org:"화성특례시",tags:["도시홍보","SF·판타지"],dur:"1일",tools:["ChatGPT","Claude","MiniMax H3","Flow","Suno","CapCut"],h:285,h2:200},
+ {v:0,id:"jgtar7RHvKc",t:"이런 휴게소 있었으면 좋겠어!",org:"한국도로공사",tags:["기업홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut"],h:95,h2:170},
+ {v:0,id:"fm4HEtj63io",t:"음성으로 가을을 담겠소",org:"충북 음성군",tags:["도시홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut"],h:25,h2:45},
+ {v:0,id:"gm58HNd4K6o",t:"소년의 꿈이 모두의 꿈이 되다",org:"과학기술정보통신부",tags:["AI경진대회 홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut"],h:225,h2:280},
+ {v:0,id:"VgTobqh0Km4",t:"하늘이 주신 선물, 완주",org:"완주군",tags:["도시홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut","타입캐스트"],h:130,h2:60},
  {v:0,id:"LVWkZPgnv4E",t:"언제나 당신 곁엔 필요한 건 하나",org:"하나손해보험",tags:["브랜드 홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Seedance 2.0","Suno","CapCut","타입캐스트"],h:168,h2:190},
  {v:0,id:"hSpjMjXMY0w",t:"K-SAMCHEOK! 다시 삼척의 시대",org:"삼척시",tags:["도시홍보","뮤직비디오","CM송"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut","타입캐스트"],h:200,h2:170},
  {v:0,id:"fFb7x3_uDkw",t:"빛으로 길이 열리는 화성",org:"화성특례시",tags:["도시홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","MiniMax H3","Suno","CapCut","타입캐스트"],h:240,h2:45},
  {v:0,id:"v_oiCSw1Uzo",t:"천년동안, 깊이가 다른 선택",org:"해양심층수산업 고성진흥원",tags:["특산품 홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","MiniMax H3","Suno","CapCut","타입캐스트"],h:215,h2:185},
- {v:0,id:"VgTobqh0Km4",t:"하늘이 주신 선물, 완주",org:"완주군",tags:["도시홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut","타입캐스트"],h:130,h2:60},
- {v:0,id:"gm58HNd4K6o",t:"소년의 꿈이 모두의 꿈이 되다",org:"과학기술정보통신부",tags:["AI경진대회 홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut"],h:225,h2:280},
- {v:0,id:"fm4HEtj63io",t:"음성으로 가을을 담겠소",org:"충북 음성군",tags:["도시홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut"],h:25,h2:45},
- {v:0,id:"jgtar7RHvKc",t:"이런 휴게소 있었으면 좋겠어!",org:"한국도로공사",tags:["기업홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut"],h:95,h2:170},
  {v:0,id:"TMee_wUq5uc",t:"청주시 홍보 AI CF",org:"청주시",tags:["도시홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut","타입캐스트"],h:22,h2:350,todo:"작품명 확인 중"}
 ];
 // 일반 웹사이트에서는 사이트 안에서 재생, 임베드가 막힌 환경(Claude 미리보기)에서는 유튜브 링크로 열기
