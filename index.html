@@ -313,6 +313,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .grid-v .screen .t{font-size:clamp(15px,1.35vw,18px)}
 @media (max-width:1000px){.grid-v{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media (max-width:760px){.grid-v{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* 가로형 10편: 2칸 x 5줄 */
+.grid-h{grid-template-columns:repeat(2,minmax(0,1fr));gap:48px 26px}
+.grid-h .screen .t,.grid-h .work:first-child .screen .t{font-size:clamp(19px,1.9vw,25px)}
+@media (max-width:760px){.grid-h{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -519,6 +523,7 @@ const W=[
  {v:1,id:"fFZ08i5fNmY",t:"빛나! 빛나! 화성!",org:"화성특례시",tags:["도시홍보","CM송"],dur:"1일",tools:["ChatGPT","Claude","Gemini","Flow","Suno","CapCut"],h:330,h2:20},
  {v:1,id:"TGkUDmpgRI8",t:"나주본색(羅州本色)",org:"나주시",tags:["영산강축제 홍보","패러디"],dur:"1일",tools:["ChatGPT","Claude","MiniMax H3","Flow","Suno","CapCut"],h:0,h2:30},
  {v:1,id:"6bE-qLhw_L0",t:"과학관이 살아있다",org:"국립과천과학관",tags:["기관홍보","코믹"],dur:"1일",tools:["ChatGPT","Claude","MiniMax H3","Flow","Suno","CapCut"],h:180,h2:130},
+ {v:0,id:"iGGq_GAEcpA",t:"갓지은 쉼터",org:"CJ제일제당",tags:["햇반 30주년 홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","MiniMax H3","Suno","CapCut"],h:35,h2:20},
  {v:0,id:"jgtar7RHvKc",t:"이런 휴게소 있었으면 좋겠어!",org:"한국도로공사",tags:["기업홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut"],h:95,h2:170},
  {v:0,id:"fm4HEtj63io",t:"음성으로 가을을 담겠소",org:"충북 음성군",tags:["도시홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut"],h:25,h2:45},
  {v:0,id:"gm58HNd4K6o",t:"소년의 꿈이 모두의 꿈이 되다",org:"과학기술정보통신부",tags:["AI경진대회 홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut"],h:225,h2:280},
