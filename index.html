@@ -325,6 +325,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .grid-v .work.award:first-child .screen .t{font-size:clamp(24px,3vw,40px)}
 @media (max-width:1000px){.grid-v{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media (max-width:760px){.grid-v{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* 세로형 14편: 4칸, 수상작 2편 모두 2x2 */
+.grid-v .work.award,.grid-v .work.award:first-child{grid-column:span 2;grid-row:auto}
+.grid-v .work.award .screen,.grid-v .work.award:first-child .screen{aspect-ratio:9/8;flex:none}
+.grid-v .work.award .screen .t{font-size:clamp(24px,3vw,40px)}
 </style>
 </head>
 <body>
@@ -521,6 +525,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 const W=[
  {v:1,id:"2A1fqXvqsTQ",t:"당신의 상상이, 미래의 신세계가 되다",org:"광주신세계",tags:["기업홍보","인터뷰"],award:"2등 수상 · 상금 100만원",dur:"1일",tools:["ChatGPT","Claude","Gemini","Flow","Suno","CapCut","타입캐스트"],h:28,h2:45},
  {v:1,id:"xhz7kFzFKWY",t:"아직도 나를 몰라?",org:"하이라이트TV",award:"우수상 수상 · 상금 50만원",tags:["AI 광고","코믹 판타지"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut","타입캐스트"],h:315,h2:55},
+ {v:1,id:"g9r6XB2imaA",t:"전북에 푹 빠졌쏭",org:"전북특별자치도",tags:["관광지 홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut"],h:150,h2:55},
  {v:1,id:"zE3lWVqgM4Y",t:"어흥하다 알바 됐습니다",org:"세종사이버대학교",tags:["전래동화 캐릭터 재해석","코믹 판타지"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut"],h:30,h2:340},
  {v:1,id:"rzUY7FGo0JA",t:"퓨리얼, 맑은 일상의 기준이 되다!",org:"퓨리얼",tags:["제품홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut"],h:195,h2:175},
  {v:1,id:"Dv1mnPEPijQ",t:"슈퍼스타 매돌이! 광양을 누비다",org:"광양시",tags:["캐릭터 홍보","AI CF"],dur:"1일",tools:["ChatGPT","Claude","Flow","Suno","CapCut"],h:200,h2:100},
