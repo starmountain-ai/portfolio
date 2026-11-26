@@ -333,6 +333,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .grid-v .work.award,.grid-v .work.award:first-child{grid-column:auto;grid-row:auto}
 .grid-v .work.award .screen,.grid-v .work.award:first-child .screen{aspect-ratio:9/16;flex:none}
 .grid-v .work.award .screen .t,.grid-v .work.award:first-child .screen .t{font-size:clamp(17px,1.7vw,22px)}
+/* 운영 채널 4개: 4칸 */
+.channels{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:1000px){.channels{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){.channels{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -492,11 +496,17 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
           <p>50~70대를 위한 쉬운 AI·스마트폰 사용법</p>
           <div class="url">starmountain.tistory.com</div>
         </a>
-        <a class="ch" href="https://www.youtube.com/@HealingMusicMix" target="_blank" rel="noopener">
+        <a class="ch" href="https://www.youtube.com/channel/UC3OhL8QEB6BpN5meOGKNL0A" target="_blank" rel="noopener">
           <div class="mono">YouTube <em>Channel ↗</em></div>
-          <b>힐링뮤직믹스</b>
-          <p>힐링 음악 믹스 채널</p>
-          <div class="url">youtube.com/@HealingMusicMix</div>
+          <b>까닭노트</b>
+          <p>요즘 뜨는 이슈의 이유를 짧은 영상으로 전하는 채널</p>
+          <div class="url">youtube.com · 까닭노트</div>
+        </a>
+        <a class="ch" href="https://www.youtube.com/channel/UCF0X89IRjj42u39t2jzB5MQ" target="_blank" rel="noopener">
+          <div class="mono">YouTube <em>Channel ↗</em></div>
+          <b>까닭시네마</b>
+          <p>AI로 만드는 숏드라마 채널</p>
+          <div class="url">youtube.com · 까닭시네마</div>
         </a>
       </div>
     </div>
